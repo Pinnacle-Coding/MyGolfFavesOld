@@ -1,23 +1,35 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { Component } from 'react';
+import { AppRegistry, ScrollView, Image, Text, StyleSheet, View } from 'react-native'
 
-export default class App extends React.Component {
+export default class Login extends Component {
   render() {
-    return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <Text>Changes you make will automatically reload.</Text>
-        <Text>Shake your phone to open the developer menu.</Text>
-      </View>
+      return (
+        <View style={{flex: 1}}>
+          <View style={styles.header}>
+            <Text style={{fontSize:36}}>Create an Account</Text>
+          </View>
+          <ScrollView style={styles.login}>
+            <Text style={{fontSize:96}}>Scroll me plz</Text>
+            <Text style={{fontSize:96}}>If you like</Text>
+            <Text style={{fontSize:96}}>Scrolling down</Text>
+            <Text style={{fontSize:96}}>Framework around?</Text>
+            <Text style={{fontSize:80}}>React Native</Text>
+          </ScrollView>
+        </View>
     );
   }
 }
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+  login: {
+      backgroundColor: '#efefef',
+      padding: 30,
+      flexDirection: 'column'
   },
+  header: {
+      backgroundColor: '#ffffff',
+      paddingTop: 35,
+      paddingBottom: 30,
+      flexDirection: 'column',
+      alignItems: 'center'
+  }
 });
