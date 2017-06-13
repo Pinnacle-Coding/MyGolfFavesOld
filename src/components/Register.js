@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry, ScrollView, Image, Text, StyleSheet, View, Platform } from 'react-native';
+import { TextInput, ScrollView, Image, Text, StyleSheet, View, Platform } from 'react-native';
 import { Font } from 'expo';
 
 export default class Register extends Component {
@@ -20,18 +20,27 @@ export default class Register extends Component {
   }
   render() {
       return (
-        <View style={containerStyles.loginRegisterBackground}>
+        <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-between'}}>
           <View style={containerStyles.loginRegisterHeader}>
           {
             this.state.fontsLoaded ? <Text style={textStyles.titleText}>Create an Account</Text> : undefined
           }
           </View>
-          <ScrollView>
-            <Text style={{fontSize:96}}>Scroll me plz</Text>
-            <Text style={{fontSize:96}}>If you like</Text>
-            <Text style={{fontSize:96}}>Scrolling down</Text>
-            <Text style={{fontSize:96}}>Framework around?</Text>
-            <Text style={{fontSize:80}}>React Native</Text>
+          <ScrollView style={containerStyles.loginRegisterBackground}>
+            <View style={{backgroundColor: '#ffffff'}}>
+              <TextInput
+                style={{height: 40}}
+                placeholder="First Name"
+                onChangeText={(text) => this.setState({text})}
+              />
+            </View>
+            <View style={{backgroundColor: '#ffffff'}}>
+              <TextInput
+                style={{height: 40}}
+                placeholder="First Name"
+                onChangeText={(text) => this.setState({text})}
+              />
+            </View>
           </ScrollView>
         </View>
     );
