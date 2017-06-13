@@ -49,51 +49,54 @@ export default class Register extends Component {
                   style={textStyles.formText}
                   placeholder="Last Name"
                   returnKeyType = {"next"}
-                  onSubmitEditing={() => focusTextInput(this.refs.lastName)}
+                  onSubmitEditing={() => focusTextInput(this.refs.email)}
                 />
             </View>
             <View style={containerStyles.loginRegisterTextbox}>
                 <TextInput
-                  ref=""
+                  ref="email"
                   style={textStyles.formText}
                   placeholder="Email Address"
                   returnKeyType = {"next"}
-                  onSubmitEditing={() => focusTextInput(this.refs.lastName)}
+                  onSubmitEditing={() => focusTextInput(this.refs.confirmEmail)}
                 />
             </View>
             <View style={containerStyles.loginRegisterTextbox}>
                 <TextInput
+                  ref="confirmEmail"
                   style={textStyles.formText}
                   placeholder="Confirm Email"
                   returnKeyType = {"next"}
-                  onSubmitEditing={() => focusTextInput(this.refs.lastName)}
+                  onSubmitEditing={() => focusTextInput(this.refs.username)}
                 />
             </View>
             <View style={{borderBottomColor:'gray', borderBottomWidth:3, borderStyle: 'solid', padding:15}}/>
             <View style={{padding:15}}/>
             <View style={containerStyles.loginRegisterTextbox}>
                 <TextInput
+                  ref="username"
                   style={textStyles.formText}
                   placeholder="Username"
                   returnKeyType = {"next"}
-                  onChangeText={(text) => this.setState({text})}
+                  onSubmitEditing={() => focusTextInput(this.refs.password)}
                 />
             </View>
             <View style={containerStyles.loginRegisterTextbox}>
                 <TextInput
+                  ref="password"
                   style={textStyles.formText}
                   placeholder="Password"
                   returnKeyType = {"next"}
                   secureTextEntry
-                  onChangeText={(text) => this.setState({text})}
+                  onSubmitEditing={() => focusTextInput(this.refs.confirmPassword)}
                 />
             </View>
             <View style={containerStyles.loginRegisterTextbox}>
                 <TextInput
+                  ref="confirmPassword"
                   style={textStyles.formText}
                   placeholder="Confirm Password"
                   secureTextEntry
-                  onChangeText={(text) => this.setState({text})}
                 />
             </View>
             <View style={{padding:10}}/>
