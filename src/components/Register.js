@@ -30,7 +30,7 @@ export default class Register extends Component {
           <KeyboardAwareScrollView
           style={containerStyles.loginRegisterBackground}
           resetScrollToCoords={{ x: 0, y: 0 }}
-          extraHeight={150}
+          extraHeight={175}
           scrollEnabled={true}>
             <View style={containerStyles.loginRegisterTextbox}>
                 <TextInput
