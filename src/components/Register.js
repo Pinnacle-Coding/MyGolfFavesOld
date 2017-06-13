@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TextInput, ScrollView, Image, Text, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { TextInput, ScrollView, Image, Text, StyleSheet, View, TouchableOpacity, Linking } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { Font } from 'expo';
 
@@ -30,12 +30,12 @@ export default class Register extends Component {
           }
           </View>
           <KeyboardAwareScrollView
-          style={containerStyles.loginRegisterBackground}
+          style={localStyles.registerBackground}
           resetScrollToCoords={{ x: 0, y: 0 }}
           extraHeight={175}
           keyboardOpeningTime={0}
           scrollEnabled={true}>
-            <View style={containerStyles.loginRegisterTextbox}>
+            <View style={localStyles.registerTextbox}>
                 <TextInput
                   ref="firstName"
                   style={textStyles.formText}
@@ -44,7 +44,7 @@ export default class Register extends Component {
                   onSubmitEditing={() => focusTextInput(this.refs.lastName)}
                 />
             </View>
-            <View style={containerStyles.loginRegisterTextbox}>
+            <View style={localStyles.registerTextbox}>
                 <TextInput
                   ref="lastName"
                   style={textStyles.formText}
@@ -53,7 +53,7 @@ export default class Register extends Component {
                   onSubmitEditing={() => focusTextInput(this.refs.email)}
                 />
             </View>
-            <View style={containerStyles.loginRegisterTextbox}>
+            <View style={localStyles.registerTextbox}>
                 <TextInput
                   ref="email"
                   style={textStyles.formText}
@@ -62,7 +62,7 @@ export default class Register extends Component {
                   onSubmitEditing={() => focusTextInput(this.refs.confirmEmail)}
                 />
             </View>
-            <View style={containerStyles.loginRegisterTextbox}>
+            <View style={localStyles.registerTextbox}>
                 <TextInput
                   ref="confirmEmail"
                   style={textStyles.formText}
@@ -73,7 +73,7 @@ export default class Register extends Component {
             </View>
             <View style={{borderBottomColor:'gray', borderBottomWidth:3, borderStyle: 'solid', padding:15}}/>
             <View style={{padding:15}}/>
-            <View style={containerStyles.loginRegisterTextbox}>
+            <View style={localStyles.registerTextbox}>
                 <TextInput
                   ref="username"
                   style={textStyles.formText}
@@ -82,7 +82,7 @@ export default class Register extends Component {
                   onSubmitEditing={() => focusTextInput(this.refs.password)}
                 />
             </View>
-            <View style={containerStyles.loginRegisterTextbox}>
+            <View style={localStyles.registerTextbox}>
                 <TextInput
                   ref="password"
                   style={textStyles.formText}
@@ -92,7 +92,7 @@ export default class Register extends Component {
                   onSubmitEditing={() => focusTextInput(this.refs.confirmPassword)}
                 />
             </View>
-            <View style={containerStyles.loginRegisterTextbox}>
+            <View style={localStyles.registerTextbox}>
                 <TextInput
                   ref="confirmPassword"
                   style={textStyles.formText}
@@ -108,8 +108,10 @@ export default class Register extends Component {
             </TouchableOpacity>
             <View style={{padding:10}}/>
             <View>
-              <Text>By creating an account, you agree to our</Text>
-              <Text>Terms and Conditions</Text>
+              {this.state.fontsLoaded ? <Text style={localStyles.termsPre}>By creating an account, you agree to our</Text> : undefined}
+              <TouchableOpacity onPress={() => {Linking.openURL("http://www.mygolffaves.com/index.cfm?event=public.terms").catch(err => console.error('An error occured', err))} }>
+                 {this.state.fontsLoaded ? <Text style={localStyles.terms}>Terms and Conditions.</Text> : undefined }
+              </TouchableOpacity>
             </View>
             <View style={{padding:30}}/>
           </KeyboardAwareScrollView>
@@ -130,5 +132,22 @@ const localStyles = StyleSheet.create({
     fontFamily: 'OpenSans-Regular',
     textAlign: 'center',
     color:'#FFF'
+  },
+  registerBackground: {
+    backgroundColor: '#efefef',
+    padding: 30
+  },
+  registerTextbox: {
+    padding: 10
+  },
+  termsPre: {
+    fontSize: 17,
+    fontFamily: 'OpenSans-Regular'
+  },
+  terms: {
+    color: '#509E2f',
+    textDecorationLine: 'underline',
+    fontSize: 17,
+    fontFamily: 'OpenSans-Regular'
   }
 });

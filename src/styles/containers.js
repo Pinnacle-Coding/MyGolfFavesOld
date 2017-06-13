@@ -2,18 +2,11 @@ import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
   loginRegisterHeader: {
-      backgroundColor: '#ffffff',
-      paddingTop: 25,
-      paddingBottom: 20,
-      flexDirection: 'column',
-      alignItems: 'center'
-  },
-  loginRegisterBackground: {
-      backgroundColor: '#efefef',
-      padding: 30
-  },
-  loginRegisterTextbox: {
-    padding: 10
+    backgroundColor: '#ffffff',
+    paddingTop: 25,
+    paddingBottom: 20,
+    flexDirection: 'column',
+    alignItems: 'center'
   }
 });
 
