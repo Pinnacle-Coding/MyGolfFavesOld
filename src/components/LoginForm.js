@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TextInput, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, View, TextInput, TouchableOpacity, Text, KeyboardAvoidingView } from 'react-native';
 import { Font } from 'expo';
 
 export default class LoginForm extends Component {
@@ -20,22 +20,26 @@ export default class LoginForm extends Component {
   }
   render() {
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView behavior="padding" style={styles.container}>
         <TextInput
           placeholder="Username"
+          returnKeyType="next"
+          onSubmitEditing={() => this.passwordInput.foucs()}
           style={styles.input}
         />
         <TextInput
           placeholder="Password"
           secureTextEntry
+          returnKeyType="go"
           style={styles.input}
+          ref={(input) => this.passwordInput = input}
         />
         <TouchableOpacity style={styles.loginContainer}>
         {
           this.state.fontsLoaded ? <Text style={styles.loginText}>LOG IN</Text> : undefined
         }
         </TouchableOpacity>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
