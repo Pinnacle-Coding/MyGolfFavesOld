@@ -11,6 +11,9 @@ const styles = StyleSheet.create({
   loginRegisterBackground: {
       backgroundColor: '#efefef',
       padding: 30
+  },
+  loginRegisterTextbox: {
+    padding: 10
   }
 });
 
