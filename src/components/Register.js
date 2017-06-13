@@ -30,6 +30,7 @@ export default class Register extends Component {
           <KeyboardAwareScrollView
           style={containerStyles.loginRegisterBackground}
           resetScrollToCoords={{ x: 0, y: 0 }}
+          extraHeight={150}
           scrollEnabled={true}>
             <View style={containerStyles.loginRegisterTextbox}>
                 <TextInput
@@ -95,7 +96,7 @@ export default class Register extends Component {
               <Text>By creating an account, you agree to our</Text>
               <Text>Terms and Conditions</Text>
             </View>
-            <View style={{padding:60}}/>
+            <View style={{padding:30}}/>
           </KeyboardAwareScrollView>
         </View>
     );
