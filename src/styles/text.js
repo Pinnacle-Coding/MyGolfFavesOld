@@ -1,9 +1,10 @@
-import React from 'react';
 import { StyleSheet } from 'react-native'
 
-module.exports = StyleSheet.create({
+const styles = StyleSheet.create({
   titleText: {
     fontFamily:'OpenSans-Light',
     fontSize: 36
   }
 });
+
+export default styles
