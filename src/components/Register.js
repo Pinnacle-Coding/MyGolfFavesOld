@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TextInput, ScrollView, Image, Text, StyleSheet, View, Platform } from 'react-native';
+import { TextInput, ScrollView, Image, Text, StyleSheet, View, Divider } from 'react-native';
 import { Font } from 'expo';
 
 export default class Register extends Component {
@@ -27,20 +27,35 @@ export default class Register extends Component {
           }
           </View>
           <ScrollView style={containerStyles.loginRegisterBackground}>
-            <View style={{backgroundColor: '#ffffff'}}>
-              <TextInput
-                style={{height: 40}}
-                placeholder="First Name"
-                onChangeText={(text) => this.setState({text})}
-              />
+            <View style={containerStyles.loginRegisterTextbox}>
+                <TextInput
+                  style={textStyles.formText}
+                  placeholder="First Name"
+                  onChangeText={(text) => this.setState({text})}
+                />
             </View>
-            <View style={{backgroundColor: '#ffffff'}}>
-              <TextInput
-                style={{height: 40}}
-                placeholder="First Name"
-                onChangeText={(text) => this.setState({text})}
-              />
+            <View style={containerStyles.loginRegisterTextbox}>
+                <TextInput
+                  style={textStyles.formText}
+                  placeholder="Last Name"
+                  onChangeText={(text) => this.setState({text})}
+                />
             </View>
+            <View style={containerStyles.loginRegisterTextbox}>
+                <TextInput
+                  style={textStyles.formText}
+                  placeholder="Email Address"
+                  onChangeText={(text) => this.setState({text})}
+                />
+            </View>
+            <View style={containerStyles.loginRegisterTextbox}>
+                <TextInput
+                  style={textStyles.formText}
+                  placeholder="Confirm Address"
+                  onChangeText={(text) => this.setState({text})}
+                />
+            </View>
+            <View style={{borderBottomColor:'gray', borderBottomWidth:3, borderStyle: 'solid', padding:15}}/>
           </ScrollView>
         </View>
     );
