@@ -22,6 +22,13 @@ export default class LoginForm extends Component {
   render() {
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
+        <View flexDirection="row">
+          {this.state.fontsLoaded ? <Text style={styles.noAccountTxt}>Don't have an account? </Text> : undefined }
+          <TouchableOpacity onPress={() => {Linking.openURL("http://www.google.com/").catch(err => console.error('An error occured', err))} }>
+             {this.state.fontsLoaded ? <Text style={styles.createAccntLink}>Create an Account</Text> : undefined }
+          </TouchableOpacity>
+        </View>
+
         <TextInput
           placeholder="Username"
           returnKeyType="next"
@@ -37,14 +44,14 @@ export default class LoginForm extends Component {
           ref='passwordInput'
         />
 
-        <TouchableOpacity onPress={() => {Linking.openURL("http://www.google.com/").catch(err => console.error('An error occured', err))} }>
+        <TouchableOpacity onPress={() => {Linking.openURL("http://www.mygolffaves.com").catch(err => console.error('An error occured', err))} }>
            {this.state.fontsLoaded ? <Text style={styles.forgot}>Forgot Username/Password</Text> : undefined }
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.loginContainer}>
           { this.state.fontsLoaded ? <Text style={styles.loginText}>LOG IN</Text> : undefined }
         </TouchableOpacity>
-        
+
       </KeyboardAvoidingView>
     );
   }
@@ -53,6 +60,17 @@ export default class LoginForm extends Component {
 const styles = StyleSheet.create({
   container: {
 
+  },
+  noAccountTxt: {
+    fontSize: 17,
+    marginBottom: 20,
+    fontFamily: 'OpenSans-Regular'
+  },
+  createAccntLink: {
+    color: '#509E2f',
+    fontSize: 17,
+    marginBottom: 20,
+    fontFamily: 'OpenSans-Regular'
   },
   input: {
     height: 50,
