@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
-import { AppRegistry, ScrollView, Image, Text, StyleSheet, View, Platform } from 'react-native'
-import { Font } from 'expo'
-
-import textStyles from '../styles/text.js';
-import containerStyles from '../styles/containers.js';
-const localStyles = StyleSheet.create({});
+import { AppRegistry, ScrollView, Image, Text, StyleSheet, View, Platform } from 'react-native';
+import { Font } from 'expo';
 
 export default class Register extends Component {
   constructor() {
@@ -24,13 +20,13 @@ export default class Register extends Component {
   }
   render() {
       return (
-        <View style={{flex: 1}}>
+        <View style={containerStyles.loginRegisterBackground}>
           <View style={containerStyles.loginRegisterHeader}>
           {
             this.state.fontsLoaded ? <Text style={textStyles.titleText}>Create an Account</Text> : undefined
           }
           </View>
-          <ScrollView style={containerStyles.loginRegisterBackground}>
+          <ScrollView>
             <Text style={{fontSize:96}}>Scroll me plz</Text>
             <Text style={{fontSize:96}}>If you like</Text>
             <Text style={{fontSize:96}}>Scrolling down</Text>
@@ -41,3 +37,7 @@ export default class Register extends Component {
     );
   }
 }
+
+import textStyles from '../styles/text.js';
+import containerStyles from '../styles/containers.js';
+const localStyles = StyleSheet.create({});

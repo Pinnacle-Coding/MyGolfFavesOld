@@ -11,7 +11,9 @@ const styles = StyleSheet.create({
   loginRegisterBackground: {
       backgroundColor: '#efefef',
       padding: 30,
-      flexDirection: 'column'
+      flexDirection: 'column',
+      flex: 1,
+      justifyContent: 'space-between'
   }
 });
 
