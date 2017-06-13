@@ -1,28 +1,32 @@
 import React, { Component } from 'react';
-import { AppRegistry, ScrollView, Image, Text, StyleSheet, View } from 'react-native'
+import { AppRegistry, ScrollView, Image, Text, StyleSheet, View, Platform } from 'react-native'
 import { Font } from 'expo'
 
 export default class Login extends Component {
-  state = {
-    fontsLoaded: false,
-  };
+  constructor() {
+    super();
+    this.state = {
+      fontsLoaded: false
+    };
+  }
   async componentDidMount() {
     await Font.loadAsync({
       'OpenSans-Regular': require('./assets/fonts/OpenSans-Regular.ttf'),
       'OpenSans-Light': require('./assets/fonts/OpenSans-Light.ttf'),
-      'OpenSans-Bold': require('./assets/fonts/OpenSans-Bold.ttf'),
     });
-    this.setState({ fontsLoaded: true });
+    this.setState({
+      fontsLoaded: true
+    })
   }
   render() {
       return (
         <View style={{flex: 1}}>
-          <View style={styles.header}>
+          <View style={styles.headerView}>
           {
-            this.state.fontsLoaded ? <Text style={{fontFamily:'OpenSans-Regular', fontSize:36}}>Create an Account</Text> : null
+            this.state.fontsLoaded ? <Text style={{fontFamily:'OpenSans-Light',fontSize: 36}}>Create an Account</Text> : undefined
           }
           </View>
-          <ScrollView style={styles.login}>
+          <ScrollView style={styles.loginView}>
             <Text style={{fontSize:96}}>Scroll me plz</Text>
             <Text style={{fontSize:96}}>If you like</Text>
             <Text style={{fontSize:96}}>Scrolling down</Text>
@@ -35,16 +39,16 @@ export default class Login extends Component {
 }
 
 const styles = StyleSheet.create({
-  login: {
-      backgroundColor: '#efefef',
-      padding: 30,
-      flexDirection: 'column'
-  },
-  header: {
+  headerView: {
       backgroundColor: '#ffffff',
       paddingTop: 35,
       paddingBottom: 30,
       flexDirection: 'column',
       alignItems: 'center'
+  },
+  loginView: {
+      backgroundColor: '#efefef',
+      padding: 30,
+      flexDirection: 'column'
   }
 });
