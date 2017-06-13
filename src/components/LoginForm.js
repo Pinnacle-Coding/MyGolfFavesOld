@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TextInput, TouchableOpacity, Text, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, View, TextInput, TouchableOpacity, Text, KeyboardAvoidingView, Linking } from 'react-native';
 import { Font } from 'expo';
+import focusTextInput from '../utils/TextInputManager.js'
 
 export default class LoginForm extends Component {
   constructor() {
@@ -24,21 +25,26 @@ export default class LoginForm extends Component {
         <TextInput
           placeholder="Username"
           returnKeyType="next"
-          onSubmitEditing={() => this.passwordInput.foucs()}
+          onSubmitEditing={() => focusTextInput(this.refs.passwordInput)}
           style={styles.input}
         />
+
         <TextInput
           placeholder="Password"
           secureTextEntry
           returnKeyType="go"
           style={styles.input}
-          ref={(input) => this.passwordInput = input}
+          ref='passwordInput'
         />
-        <TouchableOpacity style={styles.loginContainer}>
-        {
-          this.state.fontsLoaded ? <Text style={styles.loginText}>LOG IN</Text> : undefined
-        }
+
+        <TouchableOpacity onPress={() => {Linking.openURL("http://www.google.com/").catch(err => console.error('An error occured', err))} }>
+           {this.state.fontsLoaded ? <Text style={styles.forgot}>Forgot Username/Password</Text> : undefined }
         </TouchableOpacity>
+
+        <TouchableOpacity style={styles.loginContainer}>
+          { this.state.fontsLoaded ? <Text style={styles.loginText}>LOG IN</Text> : undefined }
+        </TouchableOpacity>
+        
       </KeyboardAvoidingView>
     );
   }
@@ -59,6 +65,12 @@ const styles = StyleSheet.create({
   loginContainer: {
     paddingVertical: 14,
     backgroundColor: '#509E2f'
+  },
+  forgot: {
+    color: '#509E2f',
+    fontSize: 17,
+    marginBottom: 20,
+    fontFamily: 'OpenSans-Regular'
   },
   loginText: {
     fontSize: 20,
