@@ -6,7 +6,7 @@ export default class Login extends Component {
       return (
         <View style={{flex: 1}}>
           <View style={styles.header}>
-            <Text style={{fontSize:36}}>Create an Account</Text>
+            <Text style={{fontFamily:'OpenSans-Light', fontSize:36}}>Create an Account</Text>
           </View>
           <ScrollView style={styles.login}>
             <Text style={{fontSize:96}}>Scroll me plz</Text>

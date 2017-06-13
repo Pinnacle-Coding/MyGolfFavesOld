@@ -1,4 +1,6 @@
 {
+  "name": "MyGolfFaves",
+  "displayName": "MyGolfFaves",
   "expo": {
     "sdkVersion": "17.0.0"
   }
