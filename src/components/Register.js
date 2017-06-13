@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { TextInput, ScrollView, Image, Text, StyleSheet, View, Divider } from 'react-native';
+import { TextInput, ScrollView, Image, Text, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { Font } from 'expo';
 
 export default class Register extends Component {
@@ -26,7 +27,10 @@ export default class Register extends Component {
             this.state.fontsLoaded ? <Text style={textStyles.titleText}>Create an Account</Text> : undefined
           }
           </View>
-          <ScrollView style={containerStyles.loginRegisterBackground}>
+          <KeyboardAwareScrollView
+          style={containerStyles.loginRegisterBackground}
+          resetScrollToCoords={{ x: 0, y: 0 }}
+          scrollEnabled={true}>
             <View style={containerStyles.loginRegisterTextbox}>
                 <TextInput
                   style={textStyles.formText}
@@ -51,12 +55,48 @@ export default class Register extends Component {
             <View style={containerStyles.loginRegisterTextbox}>
                 <TextInput
                   style={textStyles.formText}
-                  placeholder="Confirm Address"
+                  placeholder="Confirm Email"
                   onChangeText={(text) => this.setState({text})}
                 />
             </View>
             <View style={{borderBottomColor:'gray', borderBottomWidth:3, borderStyle: 'solid', padding:15}}/>
-          </ScrollView>
+            <View style={{padding:15}}/>
+            <View style={containerStyles.loginRegisterTextbox}>
+                <TextInput
+                  style={textStyles.formText}
+                  placeholder="Username"
+                  onChangeText={(text) => this.setState({text})}
+                />
+            </View>
+            <View style={containerStyles.loginRegisterTextbox}>
+                <TextInput
+                  style={textStyles.formText}
+                  placeholder="Password"
+                  secureTextEntry
+                  onChangeText={(text) => this.setState({text})}
+                />
+            </View>
+            <View style={containerStyles.loginRegisterTextbox}>
+                <TextInput
+                  style={textStyles.formText}
+                  placeholder="Confirm Password"
+                  secureTextEntry
+                  onChangeText={(text) => this.setState({text})}
+                />
+            </View>
+            <View style={{padding:10}}/>
+            <TouchableOpacity style={localStyles.registerContainer}>
+            {
+              this.state.fontsLoaded ? <Text style={localStyles.registerText}>CREATE ACCOUNT</Text> : undefined
+            }
+            </TouchableOpacity>
+            <View style={{padding:10}}/>
+            <View>
+              <Text>By creating an account, you agree to our</Text>
+              <Text>Terms and Conditions</Text>
+            </View>
+            <View style={{padding:60}}/>
+          </KeyboardAwareScrollView>
         </View>
     );
   }
@@ -64,4 +104,15 @@ export default class Register extends Component {
 
 import textStyles from '../styles/text.js';
 import containerStyles from '../styles/containers.js';
-const localStyles = StyleSheet.create({});
+const localStyles = StyleSheet.create({
+  registerContainer: {
+    paddingVertical: 15,
+    backgroundColor: '#509E2f'
+  },
+  registerText: {
+    fontSize: 20,
+    fontFamily: 'OpenSans-Regular',
+    textAlign: 'center',
+    color:'#FFF'
+  }
+});
