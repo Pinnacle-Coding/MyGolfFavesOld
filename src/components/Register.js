@@ -3,6 +3,8 @@ import { TextInput, ScrollView, Image, Text, StyleSheet, View, TouchableOpacity 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { Font } from 'expo';
 
+import focusTextInput from '../utils/TextInputManager.js'
+
 export default class Register extends Component {
   constructor() {
     super();
@@ -34,30 +36,37 @@ export default class Register extends Component {
           scrollEnabled={true}>
             <View style={containerStyles.loginRegisterTextbox}>
                 <TextInput
+                  ref="firstName"
                   style={textStyles.formText}
                   placeholder="First Name"
-                  onChangeText={(text) => this.setState({text})}
+                  returnKeyType={"next"}
+                  onSubmitEditing={() => focusTextInput(this.refs.lastName)}
                 />
             </View>
             <View style={containerStyles.loginRegisterTextbox}>
                 <TextInput
+                  ref="lastName"
                   style={textStyles.formText}
                   placeholder="Last Name"
-                  onChangeText={(text) => this.setState({text})}
+                  returnKeyType = {"next"}
+                  onSubmitEditing={() => focusTextInput(this.refs.lastName)}
                 />
             </View>
             <View style={containerStyles.loginRegisterTextbox}>
                 <TextInput
+                  ref=""
                   style={textStyles.formText}
                   placeholder="Email Address"
-                  onChangeText={(text) => this.setState({text})}
+                  returnKeyType = {"next"}
+                  onSubmitEditing={() => focusTextInput(this.refs.lastName)}
                 />
             </View>
             <View style={containerStyles.loginRegisterTextbox}>
                 <TextInput
                   style={textStyles.formText}
                   placeholder="Confirm Email"
-                  onChangeText={(text) => this.setState({text})}
+                  returnKeyType = {"next"}
+                  onSubmitEditing={() => focusTextInput(this.refs.lastName)}
                 />
             </View>
             <View style={{borderBottomColor:'gray', borderBottomWidth:3, borderStyle: 'solid', padding:15}}/>
@@ -66,6 +75,7 @@ export default class Register extends Component {
                 <TextInput
                   style={textStyles.formText}
                   placeholder="Username"
+                  returnKeyType = {"next"}
                   onChangeText={(text) => this.setState({text})}
                 />
             </View>
@@ -73,6 +83,7 @@ export default class Register extends Component {
                 <TextInput
                   style={textStyles.formText}
                   placeholder="Password"
+                  returnKeyType = {"next"}
                   secureTextEntry
                   onChangeText={(text) => this.setState({text})}
                 />
