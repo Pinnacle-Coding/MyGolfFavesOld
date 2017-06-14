@@ -10,6 +10,7 @@ export default class Login extends Component {
       fontsLoaded: false
     };
   }
+
   async componentDidMount() {
     await Font.loadAsync({
       'OpenSans-Regular': require('../../assets/fonts/OpenSans-Regular.ttf'),
@@ -19,6 +20,9 @@ export default class Login extends Component {
       fontsLoaded: true
     })
   }
+
+  changeComponent:
+
   render() {
       return (
         <View style={{flex: 1}}>
