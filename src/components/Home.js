@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView, Text } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, TouchableHighlight } from 'react-native';
 import { Font } from 'expo';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { Link } from 'react-router-native';
 
 import Header from './Header.js'
 
@@ -27,17 +28,19 @@ export default class Home extends Component {
         <Header title="Home"/>
         <View style={{borderBottomColor:'gray', borderBottomWidth:1, borderStyle: 'solid', padding:0}}/>
         <ScrollView>
-          <View style={styles.homeLinkAccented}>
-            <Icon name="user" size={50} color="#509E2f"/>
-            <View style={{paddingLeft: 10}}>
-            {
-              this.state.fontsLoaded ? <Text style={styles.homeTitleText}>My Profile</Text> : undefined
-            }
-            {
-              this.state.fontsLoaded ? <Text style={styles.homeSubtitleText}>Update your personal profile</Text> : undefined
-            }
+          <Link to='/profile'>
+            <View style={styles.homeLinkAccented}>
+              <Icon name="user" size={50} color="#509E2f"/>
+              <View style={{paddingLeft: 10}}>
+              {
+                this.state.fontsLoaded ? <Text style={styles.homeTitleText}>My Profile</Text> : undefined
+              }
+              {
+                this.state.fontsLoaded ? <Text style={styles.homeSubtitleText}>Update your personal profile</Text> : undefined
+              }
+              </View>
             </View>
-          </View>
+          </Link>
           <View style={styles.homeLink}>
             <Icon name="clipboard" size={50} color="#509E2f"/>
             <View style={{paddingLeft: 10}}>
