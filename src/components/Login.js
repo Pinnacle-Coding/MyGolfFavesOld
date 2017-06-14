@@ -13,8 +13,8 @@ export default class Login extends Component {
 
   async componentDidMount() {
     await Font.loadAsync({
-      'OpenSans-Regular': require('../../public/fonts/OpenSans-Regular.ttf'),
-      'OpenSans-Light': require('../../public/fonts/OpenSans-Light.ttf'),
+      'OpenSans-Regular': require('../../assets/fonts/OpenSans-Regular.ttf'),
+      'OpenSans-Light': require('../../assets/fonts/OpenSans-Light.ttf'),
     });
     this.setState({
       fontsLoaded: true
