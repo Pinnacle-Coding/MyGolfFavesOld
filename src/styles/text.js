@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native'
 const styles = StyleSheet.create({
   titleText: {
     fontFamily:'OpenSans-Light',
-    fontSize: 32
+    fontSize: 28
   },
   formText: {
     height: 50,

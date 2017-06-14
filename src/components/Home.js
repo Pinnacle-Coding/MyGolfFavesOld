@@ -3,6 +3,8 @@ import { StyleSheet, View, ScrollView, Text } from 'react-native';
 import { Font } from 'expo';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import Header from './Header.js'
+
 export default class Home extends Component {
   constructor() {
     super();
@@ -22,11 +24,7 @@ export default class Home extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={containerStyles.loginRegisterHeader}>
-        {
-          this.state.fontsLoaded ? <Text style={textStyles.titleText}>Home</Text> : undefined
-        }
-        </View>
+        <Header title="Home"/>
         <View style={{borderBottomColor:'gray', borderBottomWidth:1, borderStyle: 'solid', padding:0}}/>
         <ScrollView>
           <View style={styles.homeLinkAccented}>
@@ -91,7 +89,6 @@ export default class Home extends Component {
 }
 
 import textStyles from '../styles/text.js';
-import containerStyles from '../styles/containers.js';
 const styles = StyleSheet.create({
   homeTitleText: {
     fontFamily:'OpenSans-Regular',

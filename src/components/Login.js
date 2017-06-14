@@ -3,8 +3,10 @@ import { StyleSheet, View, TextInput, TouchableOpacity, Text, KeyboardAvoidingVi
 import { Font } from 'expo';
 import { Link } from 'react-router-native'
 
-import focusTextInput from '../utils/TextInputManager.js'
-import renderIf from '../utils/renderif.js'
+import focusTextInput from '../utils/TextInputManager.js';
+import renderIf from '../utils/renderif.js';
+
+import Header from './Header.js'
 
 export default class Login extends Component {
   constructor() {
@@ -31,15 +33,11 @@ export default class Login extends Component {
   }
   render() {
       return (
-        <View style={{flex: 1}}>
-          <View style={containerStyles.loginRegisterHeader}>
-          {
-            this.state.fontsLoaded ? <Text style={textStyles.titleText}>Login</Text> : undefined
-          }
-          </View>
+        <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-between'}}>
+          <Header title="Login"/>
           <KeyboardAvoidingView behavior="padding" style={styles.container}>
             <View flexDirection="row" style={styles.topText}>
-              {this.state.fontsLoaded ? <Text style={styles.noAccountTxt}>Dont have an account? </Text> : undefined }
+              {this.state.fontsLoaded ? <Text style={styles.noAccountTxt}>Don't have an account? </Text> : undefined }
               <Link to="/register">
                 {this.state.fontsLoaded ? <Text style={styles.createAccntLink}>Create an Account</Text> : <Text>Create an Account</Text> }
               </Link>
@@ -89,7 +87,6 @@ export default class Login extends Component {
 }
 
 import textStyles from '../styles/text.js';
-import containerStyles from '../styles/containers.js';
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#efefef',
