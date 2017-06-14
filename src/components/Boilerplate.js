@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Font } from 'expo';
 
+import Header from './Header.js'
+
 export default class Boilerplate extends Component {
   constructor() {
     super();
@@ -21,7 +23,7 @@ export default class Boilerplate extends Component {
   render() {
     return (
       <View style={styles.container}>
-
+        <Header title="Placeholder"/>
       </View>
     );
   }
