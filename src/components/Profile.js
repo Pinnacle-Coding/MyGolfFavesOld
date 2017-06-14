@@ -5,6 +5,8 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 import Header from './Header.js'
 
+import renderIf from '../utils/renderif.js';
+
 var t = require('tcomb-form-native');
 var Form = t.form.Form;
 var ProfileModel = t.struct({
@@ -24,15 +26,18 @@ var ProfileModel = t.struct({
     L: 'Less Than 10 Times a Year',
     N: 'New Golfer'
   }),
+  username: t.String,
 });
 
 export default class Profile extends Component {
   constructor() {
     super();
     this.state = {
-      fontsLoaded: false
+      fontsLoaded: false,
+      showNewPassword: false
     };
   }
+
   async componentDidMount() {
     await Font.loadAsync({
       'OpenSans-Regular': require('../../assets/fonts/OpenSans-Regular.ttf'),
@@ -42,13 +47,13 @@ export default class Profile extends Component {
       fontsLoaded: true
     })
   }
-  onPress() {
-    // call getValue() to get the values of the form
-    var value = this.refs.form.getValue();
-    if (value) { // if validation fails, value will be null
-      console.log(value); // value here is an instance of Person
-    }
+
+  onTogglePassword() {
+    this.setState({
+      showNewPassword: !this.state.showNewPassword
+    });
   }
+
   render() {
     return (
       <View style={styles.container}>

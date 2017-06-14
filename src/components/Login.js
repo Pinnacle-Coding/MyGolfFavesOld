@@ -12,14 +12,9 @@ export default class Login extends Component {
   constructor() {
     super();
     this.state = {
-      fontsLoaded: false
+      fontsLoaded: false,
+      showForgotLogin: false
     };
-  }
-
-  toggleStatus() {
-    this.setState({
-      showForgotLogin:!this.state.showForgotLogin
-    });
   }
 
   async componentDidMount() {
@@ -31,6 +26,13 @@ export default class Login extends Component {
       fontsLoaded: true
     })
   }
+
+  toggleStatus() {
+    this.setState({
+      showForgotLogin: !this.state.showForgotLogin
+    });
+  }
+
   render() {
       return (
         <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-between'}}>
