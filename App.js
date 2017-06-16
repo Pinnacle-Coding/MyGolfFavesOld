@@ -6,6 +6,7 @@ import Register from './src/components/Register.js';
 import Login from './src/components/Login.js';
 import Home from './src/components/Home.js';
 import Profile from './src/components/Profile.js';
+import Rewards from './src/components/Rewards.js';
 
 import history from './src/utils/history.js';
 
@@ -18,6 +19,7 @@ export default class App extends Component {
           <Route path="/register" component={Register}/>
           <Route path="/home" component={Home}/>
           <Route path="/profile" component={Profile}/>
+          <Route path="/rewards" component={Rewards}/>
         </Switch>
       </Router>
     );

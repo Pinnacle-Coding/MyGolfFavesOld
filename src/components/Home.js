@@ -85,17 +85,19 @@ export default class Home extends Component {
             }
             </View>
           </View>
-          <View style={styles.homeLink}>
-            <Icon name="check-circle" size={50} color="#509E2f"/>
-            <View style={{paddingLeft: 10}}>
-            {
-              this.state.fontsLoaded ? <Text style={styles.homeTitleText}>My Rewards</Text> : undefined
-            }
-            {
-              this.state.fontsLoaded ? <Text style={styles.homeSubtitleText}>View rewards</Text> : undefined
-            }
+          <Link to='/rewards'>
+            <View style={styles.homeLink}>
+              <Icon name="check-circle" size={50} color="#509E2f"/>
+              <View style={{paddingLeft: 10}}>
+              {
+                this.state.fontsLoaded ? <Text style={styles.homeTitleText}>My Rewards</Text> : undefined
+              }
+              {
+                this.state.fontsLoaded ? <Text style={styles.homeSubtitleText}>View rewards</Text> : undefined
+              }
+              </View>
             </View>
-          </View>
+          </Link>
         </ScrollView>
       </View>
     );
