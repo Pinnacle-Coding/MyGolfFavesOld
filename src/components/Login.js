@@ -77,7 +77,9 @@ export default class Login extends Component {
                 />
 
                 <TouchableOpacity style={styles.loginContainer}>
-                  { this.state.fontsLoaded ? <Text style={styles.loginText}>SEND LOGIN CREDENTIALS</Text> : undefined }
+                  <Link to="/home">
+                    { this.state.fontsLoaded ? <Text style={styles.loginText}>SEND LOGIN CREDENTIALS</Text> : undefined }
+                  </Link>
                 </TouchableOpacity>
               </View>
             )}
