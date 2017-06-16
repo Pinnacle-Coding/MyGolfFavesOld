@@ -36,7 +36,7 @@ export default class Boilerplate extends Component {
           <View style={styles.paramContainer}>
 
           </View>
-          <View style={}>
+          <View >
 
           </View>
         </KeyboardAwareScrollView>
