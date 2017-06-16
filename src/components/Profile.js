@@ -26,6 +26,12 @@ var ProfileModel = t.struct({
     L: 'Less Than 10 Times a Year',
     N: 'New Golfer'
   }),
+  "withWhomDoYouMostOftenPlayGolf?": t.struct({
+    businessAssociates: t.Boolean,
+    friends: t.Boolean,
+    spouse: t.Boolean,
+    "jr.Golfers": t.Boolean,
+  }),
   username: t.String,
 });
 var ProfilePasswordModel = t.struct({
@@ -46,6 +52,12 @@ var ProfilePasswordModel = t.struct({
     N: 'New Golfer'
   }),
   username: t.String,
+  "withWhomDoYouMostOftenPlayGolf?": t.struct({
+    businessAssociates: t.Boolean,
+    friends: t.Boolean,
+    spouse: t.Boolean,
+    "jr.Golfers": t.Boolean,
+  }),
   currentPassword: t.String,
   newPassword: t.String,
   verifyPassword: t.String
