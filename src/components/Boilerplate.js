@@ -24,6 +24,7 @@ export default class Boilerplate extends Component {
     return (
       <View style={styles.container}>
         <Header title="Placeholder"/>
+        <View style={{borderBottomColor:'gray', borderBottomWidth:1, borderStyle: 'solid', padding:0}}/>
       </View>
     );
   }
