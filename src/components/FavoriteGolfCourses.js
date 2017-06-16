@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, View,  } from 'react-native';
 import { Font } from 'expo';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { List } from 'react-native-elements';
 
 import Header from './Header.js'
 
@@ -36,7 +37,7 @@ export default class Boilerplate extends Component {
 
           </View>
           <View style={}>
-            
+
           </View>
         </KeyboardAwareScrollView>
       </View>
