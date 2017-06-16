@@ -56,7 +56,7 @@ var ProfilePasswordModel = t.struct({
     businessAssociates: t.Boolean,
     friends: t.Boolean,
     spouse: t.Boolean,
-    "jr.Golfers": t.Boolean,
+    "juniorGolfers": t.Boolean,
   }),
   currentPassword: t.String,
   newPassword: t.String,
