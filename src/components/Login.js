@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TextInput, TouchableOpacity, Text, KeyboardAvoidingView, Linking } from 'react-native';
+import { StyleSheet, View, TextInput, TouchableOpacity, Text, Linking } from 'react-native';
 import { Font } from 'expo';
 import { Link } from 'react-router-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import focusTextInput from '../utils/TextInputManager.js';
 import renderIf from '../utils/renderif.js';
@@ -37,7 +38,12 @@ export default class Login extends Component {
       return (
         <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-between'}}>
           <Header title="Login"/>
-          <KeyboardAvoidingView behavior="padding" style={styles.container}>
+          <KeyboardAwareScrollView
+          style={styles.container}
+          resetScrollToCoords={{ x: 0, y: 0 }}
+          extraHeight={175}
+          keyboardOpeningTime={0}
+          scrollEnabled={true}>
             <View flexDirection="row" style={styles.topText}>
               {this.state.fontsLoaded ? <Text style={styles.noAccountTxt}>Don't have an account? </Text> : undefined }
               <Link to="/register">
@@ -87,7 +93,7 @@ export default class Login extends Component {
               </View>
             )}
 
-          </KeyboardAvoidingView>
+          </KeyboardAwareScrollView>
       </View>
     );
   }
