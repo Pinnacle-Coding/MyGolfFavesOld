@@ -26,6 +26,16 @@ export default class Header extends Component {
     return (
       <View>
         {
+          /*
+          rightButton={
+            history.index + 1 < history.length ?
+            <TouchableHighlight underlayColor="#999" style={{paddingLeft:20,paddingRight:20}} onPress={history.goForward}>
+              <Icon name="angle-right" size={36} color="#000" style={{paddingTop:5}}/>
+            </TouchableHighlight> : <View></View>
+          }
+          */
+        }
+        {
         this.state.fontsLoaded ? <NavigationBar
           containerStyle={styles.navbar}
           title={{
@@ -36,12 +46,6 @@ export default class Header extends Component {
             history.index > 0 ?
             <TouchableHighlight underlayColor="#999" style={{paddingLeft:20,paddingRight:20}} onPress={history.goBack}>
               <Icon name="angle-left" size={36} color="#000" style={{paddingTop:5}}/>
-            </TouchableHighlight> : <View></View>
-          }
-          rightButton={
-            history.index + 1 < history.length ?
-            <TouchableHighlight underlayColor="#999" style={{paddingLeft:20,paddingRight:20}} onPress={history.goForward}>
-              <Icon name="angle-right" size={36} color="#000" style={{paddingTop:5}}/>
             </TouchableHighlight> : <View></View>
           }
         /> : undefined
