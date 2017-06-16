@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text, TouchableHighlight } from 'react-native';
 import { Font } from 'expo';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Link } from 'react-router-native';
 
 import Header from './Header.js'
@@ -30,7 +30,7 @@ export default class Home extends Component {
         <ScrollView>
           <Link to='/profile'>
             <View style={styles.homeLinkAccented}>
-              <Icon name="user" size={50} color="#509E2f"/>
+              <Icon name="person" size={50} color="#509E2f"/>
               <View style={{paddingLeft: 10}}>
               {
                 this.state.fontsLoaded ? <Text style={styles.homeTitleText}>My Profile</Text> : undefined
@@ -42,7 +42,7 @@ export default class Home extends Component {
             </View>
           </Link>
           <View style={styles.homeLink}>
-            <Icon name="clipboard" size={50} color="#509E2f"/>
+            <Icon name="golf-course" size={50} color="#509E2f"/>
             <View style={{paddingLeft: 10}}>
             {
               this.state.fontsLoaded ? <Text style={styles.homeTitleText}>Favorite Golf Courses</Text> : undefined
@@ -53,7 +53,7 @@ export default class Home extends Component {
             </View>
           </View>
           <View style={styles.homeLinkAccented}>
-            <Icon name="question-circle" size={50} color="#509E2f"/>
+            <Icon name="info" size={50} color="#509E2f"/>
             <View style={{paddingLeft: 10}}>
             {
               this.state.fontsLoaded ? <Text style={styles.homeTitleText}>My Offers</Text> : undefined
@@ -75,7 +75,7 @@ export default class Home extends Component {
             </View>
           </View>
           <View style={styles.homeLinkAccented}>
-            <Icon name="feed" size={50} color="#509E2f"/>
+            <Icon name="notifications" size={50} color="#509E2f"/>
             <View style={{paddingLeft: 10}}>
             {
               this.state.fontsLoaded ? <Text style={styles.homeTitleText}>My Notifications</Text> : undefined
@@ -87,7 +87,7 @@ export default class Home extends Component {
           </View>
           <Link to='/rewards'>
             <View style={styles.homeLink}>
-              <Icon name="check-circle" size={50} color="#509E2f"/>
+              <Icon name="redeem" size={50} color="#509E2f"/>
               <View style={{paddingLeft: 10}}>
               {
                 this.state.fontsLoaded ? <Text style={styles.homeTitleText}>My Rewards</Text> : undefined
