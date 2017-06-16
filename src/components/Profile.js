@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableHighlight, Text, ScrollView } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, ScrollView } from 'react-native';
 import { Font } from 'expo';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
-import Header from './Header.js'
+import Header from './Header.js';
 
 import renderIf from '../utils/renderif.js';
 
@@ -27,6 +27,9 @@ var ProfileModel = t.struct({
     N: 'New Golfer'
   }),
   username: t.String,
+  currentPassword: t.String,
+  newPassword: t.String,
+  verifyPassword: t.String
 });
 
 export default class Profile extends Component {
@@ -34,8 +37,17 @@ export default class Profile extends Component {
     super();
     this.state = {
       fontsLoaded: false,
-      showNewPassword: false
+      showChangePassword: false,
+      formOptions: {
+        fields: {
+          currentPassword: {},
+          newPassword: {},
+          verifyPassword: {},
+        }
+      }
     };
+
+    this.togglePassword = this.togglePassword.bind(this);
   }
 
   async componentDidMount() {
@@ -45,13 +57,28 @@ export default class Profile extends Component {
     });
     this.setState({
       fontsLoaded: true
-    })
+    });
+    this.togglePassword();
   }
 
-  onTogglePassword() {
+  togglePassword() {
     this.setState({
-      showNewPassword: !this.state.showNewPassword
+      showChangePassword: !this.state.showChangePassword
     });
+    var options = t.update(this.state.formOptions, {
+    fields: {
+        currentPassword: {
+          editable: {'$set': this.state.showChangePassword}
+        },
+        newPassword: {
+          editable: {'$set': this.state.showChangePassword}
+        },
+        verifyPassword: {
+          editable: {'$set': this.state.showChangePassword}
+        },
+      }
+    });
+    this.setState({formOptions: options});
   }
 
   render() {
@@ -68,10 +95,14 @@ export default class Profile extends Component {
           <Form
             ref="form"
             type={ProfileModel}
+            options={this.state.formOptions}
           />
-          <TouchableHighlight style={styles.button} onPress={this.onPress} underlayColor='#99d9f4'>
+          <TouchableOpacity style={styles.button} onPress={this.togglePassword}>
+            <Text style={styles.buttonText}>Change Password</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={this.onPress}>
             <Text style={styles.buttonText}>Save</Text>
-          </TouchableHighlight>
+          </TouchableOpacity>
           <View style={{padding:100}}/>
         </KeyboardAwareScrollView>
       </View>
@@ -93,8 +124,8 @@ const styles = StyleSheet.create({
   },
   button: {
     height: 36,
-    backgroundColor: '#48BBEC',
-    borderColor: '#48BBEC',
+    backgroundColor: '#509E2f',
+    borderColor: '#509E2f',
     borderWidth: 1,
     borderRadius: 8,
     marginBottom: 10,

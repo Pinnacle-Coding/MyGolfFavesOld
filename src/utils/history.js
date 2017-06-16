@@ -1,7 +1,7 @@
 import { createMemoryHistory } from 'history'
 
 const history = createMemoryHistory({
-  initialEntries: [ '/home' ], 
+  initialEntries: [ '/login' ],
   initialIndex: 0
 });
 
