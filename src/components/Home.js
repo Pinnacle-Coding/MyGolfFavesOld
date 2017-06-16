@@ -41,17 +41,19 @@ export default class Home extends Component {
               </View>
             </View>
           </Link>
-          <View style={styles.homeLink}>
-            <Icon name="golf-course" size={50} color="#509E2f"/>
-            <View style={{paddingLeft: 10}}>
-            {
-              this.state.fontsLoaded ? <Text style={styles.homeTitleText}>Favorite Golf Courses</Text> : undefined
-            }
-            {
-              this.state.fontsLoaded ? <Text style={styles.homeSubtitleText}>Update your favorite golf courses</Text> : undefined
-            }
+          <Link to='/favoriteCourses'>
+            <View style={styles.homeLink}>
+              <Icon name="golf-course" size={50} color="#509E2f"/>
+              <View style={{paddingLeft: 10}}>
+              {
+                this.state.fontsLoaded ? <Text style={styles.homeTitleText}>Favorite Golf Courses</Text> : undefined
+              }
+              {
+                this.state.fontsLoaded ? <Text style={styles.homeSubtitleText}>Update your favorite golf courses</Text> : undefined
+              }
+              </View>
             </View>
-          </View>
+          </Link>
           <View style={styles.homeLinkAccented}>
             <Icon name="info" size={50} color="#509E2f"/>
             <View style={{paddingLeft: 10}}>
