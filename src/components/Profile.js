@@ -27,6 +27,25 @@ var ProfileModel = t.struct({
     N: 'New Golfer'
   }),
   username: t.String,
+});
+var ProfilePasswordModel = t.struct({
+  firstName: t.String,
+  lastName: t.String,
+  zipCode: t.Number,
+  city: t.String,
+  state: t.String,
+  emailAddress: t.String,
+  birthYear: t.Number,
+  gender: t.enums({
+    M: 'Male',
+    F: 'Female'
+  }),
+  "howOftenDoYouPlayGolf?": t.enums({
+    F: 'Frequently',
+    L: 'Less Than 10 Times a Year',
+    N: 'New Golfer'
+  }),
+  username: t.String,
   currentPassword: t.String,
   newPassword: t.String,
   verifyPassword: t.String
@@ -38,16 +57,10 @@ export default class Profile extends Component {
     this.state = {
       fontsLoaded: false,
       showChangePassword: false,
-      formOptions: {
-        fields: {
-          currentPassword: {},
-          newPassword: {},
-          verifyPassword: {},
-        }
-      }
+      formType: ProfileModel
     };
 
-    this.togglePassword = this.togglePassword.bind(this);
+    this.onTogglePassword = this.onTogglePassword.bind(this);
   }
 
   async componentDidMount() {
@@ -58,27 +71,21 @@ export default class Profile extends Component {
     this.setState({
       fontsLoaded: true
     });
-    this.togglePassword();
   }
 
-  togglePassword() {
-    this.setState({
-      showChangePassword: !this.state.showChangePassword
-    });
-    var options = t.update(this.state.formOptions, {
-    fields: {
-        currentPassword: {
-          editable: {'$set': this.state.showChangePassword}
-        },
-        newPassword: {
-          editable: {'$set': this.state.showChangePassword}
-        },
-        verifyPassword: {
-          editable: {'$set': this.state.showChangePassword}
-        },
-      }
-    });
-    this.setState({formOptions: options});
+  onTogglePassword() {
+    if (this.state.showChangePassword) {
+      this.setState({
+        formType: ProfileModel,
+        showChangePassword: false
+      });
+    }
+    else {
+      this.setState({
+        formType: ProfilePasswordModel,
+        showChangePassword: true
+      });
+    }
   }
 
   render() {
@@ -94,10 +101,9 @@ export default class Profile extends Component {
         scrollEnabled={true}>
           <Form
             ref="form"
-            type={ProfileModel}
-            options={this.state.formOptions}
+            type={this.state.formType}
           />
-          <TouchableOpacity style={styles.button} onPress={this.togglePassword}>
+          <TouchableOpacity style={styles.button} onPress={this.onTogglePassword}>
             <Text style={styles.buttonText}>Change Password</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={this.onPress}>
