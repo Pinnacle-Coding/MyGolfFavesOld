@@ -64,8 +64,13 @@ export default class Login extends Component {
                {this.state.fontsLoaded ? <Text style={styles.forgot}>Forgot Username/Password</Text> : undefined }
             </TouchableOpacity>
 
+            {/* TODO: Remove link later and replace with user auth */}
             <TouchableOpacity style={styles.loginContainer}>
-              { this.state.fontsLoaded ? <Text style={styles.loginText}>LOG IN</Text> : undefined }
+                { this.state.fontsLoaded ?
+                  <Link to="/home">
+                    <Text style={styles.loginText}>LOG IN</Text>
+                  </Link>
+                : undefined }
             </TouchableOpacity>
 
             {renderIf(this.state.showForgotLogin)(
@@ -77,9 +82,7 @@ export default class Login extends Component {
                 />
 
                 <TouchableOpacity style={styles.loginContainer}>
-                  <Link to="/home">
                     { this.state.fontsLoaded ? <Text style={styles.loginText}>SEND LOGIN CREDENTIALS</Text> : undefined }
-                  </Link>
                 </TouchableOpacity>
               </View>
             )}
