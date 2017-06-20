@@ -1,8 +1,35 @@
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, FlatList, Text, ScrollView } from 'react-native';
 import { Font } from 'expo';
 
 import Header from './Header.js'
+
+var courses = [
+  {
+    key: guid(),
+    name: "Moorpark Country Club",
+    startDate: new Date(2017, 6, 5, 12, 0, 0, 0),
+    endDate: new Date(2017, 7, 31, 12, 0, 0, 0),
+    distance: 10.50,
+    offer: "Play 18 Hole Round of Golf any day - Receive day of week and time of day Free Replay"
+  },
+  {
+    key: guid(),
+    name: "Moorpark Country Club",
+    startDate: new Date(2017, 6, 5, 12, 0, 0, 0),
+    endDate: new Date(2017, 8, 5, 12, 0, 0, 0),
+    distance: 10.50,
+    offer: "Complimentary Guest"
+  },
+  {
+    key: guid(),
+    name: "Ojai Valley Inn",
+    startDate: new Date(2017, 6, 5, 12, 0, 0, 0),
+    endDate:new Date(2017, 8, 15, 12, 0, 0, 0),
+    distance: 32.43,
+    offer: "Play 18 Hole Round of Golf any day - Receive day of week and time of day Free Replay"
+  }
+]
 
 export default class Boilerplate extends Component {
   constructor() {
@@ -25,6 +52,22 @@ export default class Boilerplate extends Component {
       <View style={styles.container}>
         <Header title="Offers"/>
         <View style={{borderBottomColor:'gray', borderBottomWidth:1, borderStyle: 'solid', padding:0}}/>
+        <ScrollView>
+          <FlatList
+            data={courses}
+            renderItem={
+              ({item}) =>
+              <View>
+                <Text style={styles.itemTitle}>{item.name}</Text>
+                <Text style={styles.itemText}><Text style={{fontWeight: 'bold'}}>Offer:</Text> {item.offer}</Text>
+                <Text style={styles.itemText}><Text style={{fontWeight: 'bold'}}>Start Date:</Text> {item.startDate.toDateString()}</Text>
+                <Text style={styles.itemText}><Text style={{fontWeight: 'bold'}}>End Date:</Text> {item.endDate.toDateString()}</Text>
+                <Text style={styles.itemText}><Text style={{fontWeight: 'bold'}}>Distance:</Text> {item.distance} miles</Text>
+                <View style={{borderBottomColor:'gray', borderBottomWidth:1, borderStyle: 'solid', padding:0}}/>
+              </View>
+            }
+          />
+        </ScrollView>
       </View>
     );
   }
@@ -33,5 +76,23 @@ export default class Boilerplate extends Component {
 const styles = StyleSheet.create({
   container: {
 
+  },
+  itemTitle: {
+    fontSize: 28,
+    fontFamily: 'OpenSans-Regular',
+    paddingBottom: 5
+  },
+  itemText: {
+    padding: 5
   }
 });
+
+function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4();
+}
