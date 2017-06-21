@@ -6,7 +6,7 @@ import Header from './Header.js'
 
 var courses = [
   {
-    key: guid(),
+    key: 2057,
     name: "Moorpark Country Club",
     startDate: new Date(2017, 6, 5, 12, 0, 0, 0),
     endDate: new Date(2017, 7, 31, 12, 0, 0, 0),
@@ -14,7 +14,7 @@ var courses = [
     offer: "Play 18 Hole Round of Golf any day - Receive day of week and time of day Free Replay"
   },
   {
-    key: guid(),
+    key: 2060,
     name: "Moorpark Country Club",
     startDate: new Date(2017, 6, 5, 12, 0, 0, 0),
     endDate: new Date(2017, 8, 5, 12, 0, 0, 0),
@@ -22,7 +22,7 @@ var courses = [
     offer: "Complimentary Guest"
   },
   {
-    key: guid(),
+    key: 2062,
     name: "Ojai Valley Inn",
     startDate: new Date(2017, 6, 5, 12, 0, 0, 0),
     endDate:new Date(2017, 8, 15, 12, 0, 0, 0),
@@ -86,13 +86,3 @@ const styles = StyleSheet.create({
     padding: 5
   }
 });
-
-function guid() {
-  function s4() {
-    return Math.floor((1 + Math.random()) * 0x10000)
-      .toString(16)
-      .substring(1);
-  }
-  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-    s4() + '-' + s4() + s4() + s4();
-}
