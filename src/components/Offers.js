@@ -58,12 +58,14 @@ export default class Boilerplate extends Component {
             renderItem={
               ({item}) =>
               <View>
-                <Text style={styles.itemTitle}>{item.name}</Text>
-                <Text style={styles.itemText}><Text style={{fontWeight: 'bold'}}>Start Date:</Text> {item.startDate.toDateString()}</Text>
-                <Text style={styles.itemText}><Text style={{fontWeight: 'bold'}}>End Date:</Text> {item.endDate.toDateString()}</Text>
-                <Text style={styles.itemText}><Text style={{fontWeight: 'bold'}}>Distance:</Text> {item.distance} miles</Text>
-                <Text style={styles.itemText}><Text style={{fontWeight: 'bold'}}>Offer:</Text> {item.offer}</Text>
-                <View style={{borderBottomColor:'gray', borderBottomWidth:1, borderStyle: 'solid', padding:0}}/>
+                <Link to='/offer/'>
+                  <Text style={styles.itemTitle}>{item.name}</Text>
+                  <Text style={styles.itemText}><Text style={{fontWeight: 'bold'}}>Start Date:</Text> {item.startDate.toDateString()}</Text>
+                  <Text style={styles.itemText}><Text style={{fontWeight: 'bold'}}>End Date:</Text> {item.endDate.toDateString()}</Text>
+                  <Text style={styles.itemText}><Text style={{fontWeight: 'bold'}}>Distance:</Text> {item.distance} miles</Text>
+                  <Text style={styles.itemText}><Text style={{fontWeight: 'bold'}}>Offer:</Text> {item.offer}</Text>
+                  <View style={{borderBottomColor:'gray', borderBottomWidth:1, borderStyle: 'solid', padding:0}}/>
+                </Link>
               </View>
             }
           />
