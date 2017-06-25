@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, FlatList, Text, ScrollView } from 'react-native';
 import { Font } from 'expo';
+import { Link } from 'react-router-native';
 
 import Header from './Header.js'
 
@@ -8,24 +9,24 @@ var courses = [
   {
     key: 2057,
     name: "Moorpark Country Club",
-    startDate: new Date(2017, 6, 5, 12, 0, 0, 0),
-    endDate: new Date(2017, 7, 31, 12, 0, 0, 0),
+    startDate: new Date(2017, 5, 5, 12, 0, 0, 0),
+    endDate: new Date(2017, 6, 31, 12, 0, 0, 0),
     distance: 10.50,
     offer: "Play 18 Hole Round of Golf any day - Receive day of week and time of day Free Replay"
   },
   {
     key: 2060,
     name: "Moorpark Country Club",
-    startDate: new Date(2017, 6, 5, 12, 0, 0, 0),
-    endDate: new Date(2017, 8, 5, 12, 0, 0, 0),
+    startDate: new Date(2017, 5, 5, 12, 0, 0, 0),
+    endDate: new Date(2017, 7, 5, 12, 0, 0, 0),
     distance: 10.50,
     offer: "Complimentary Guest"
   },
   {
     key: 2062,
     name: "Ojai Valley Inn",
-    startDate: new Date(2017, 6, 5, 12, 0, 0, 0),
-    endDate:new Date(2017, 8, 15, 12, 0, 0, 0),
+    startDate: new Date(2017, 5, 5, 12, 0, 0, 0),
+    endDate:new Date(2017, 7, 15, 12, 0, 0, 0),
     distance: 32.43,
     offer: "Play 18 Hole Round of Golf any day - Receive day of week and time of day Free Replay"
   }
@@ -58,17 +59,20 @@ export default class Boilerplate extends Component {
             renderItem={
               ({item}) =>
               <View>
-                <Link to='/offer/'>
-                  <Text style={styles.itemTitle}>{item.name}</Text>
-                  <Text style={styles.itemText}><Text style={{fontWeight: 'bold'}}>Start Date:</Text> {item.startDate.toDateString()}</Text>
-                  <Text style={styles.itemText}><Text style={{fontWeight: 'bold'}}>End Date:</Text> {item.endDate.toDateString()}</Text>
-                  <Text style={styles.itemText}><Text style={{fontWeight: 'bold'}}>Distance:</Text> {item.distance} miles</Text>
-                  <Text style={styles.itemText}><Text style={{fontWeight: 'bold'}}>Offer:</Text> {item.offer}</Text>
-                  <View style={{borderBottomColor:'gray', borderBottomWidth:1, borderStyle: 'solid', padding:0}}/>
+                <Link to='/offer'>
+                  <View>
+                    <Text style={styles.itemTitle}>{item.name}</Text>
+                    <Text style={styles.itemText}><Text style={{fontWeight: 'bold'}}>Start Date:</Text> {item.startDate.toDateString()}</Text>
+                    <Text style={styles.itemText}><Text style={{fontWeight: 'bold'}}>End Date:</Text> {item.endDate.toDateString()}</Text>
+                    <Text style={styles.itemText}><Text style={{fontWeight: 'bold'}}>Distance:</Text> {item.distance} miles</Text>
+                    <Text style={styles.itemText}><Text style={{fontWeight: 'bold'}}>Offer:</Text> {item.offer}</Text>
+                    <View style={{borderBottomColor:'lightgray', borderBottomWidth:1, borderStyle: 'solid', padding:10}}/>
+                  </View>
                 </Link>
               </View>
             }
           />
+          <View style={{padding:100}}/>
         </ScrollView>
       </View>
     );
@@ -80,6 +84,7 @@ const styles = StyleSheet.create({
 
   },
   itemTitle: {
+    paddingTop: 10,
     fontSize: 28,
     fontFamily: 'OpenSans-Regular',
     paddingBottom: 5

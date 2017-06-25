@@ -24,7 +24,8 @@ export default class App extends Component {
           <Route path="/profile" component={Profile}/>
           <Route path="/favoriteCourses" component={FavoriteGolfCourses}/>
           <Route path="/offers" component={Offers}/>
-          <Route path="/offer/:oid" component={Offer}/>
+          {/*<Route path="/offer/:oid" component={Offer}/>*/}
+          <Route path="/offer" component={Offer}/>
           <Route path="/rewards" component={Rewards}/>
         </Switch>
       </Router>
