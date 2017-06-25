@@ -5,7 +5,7 @@ import { Link } from 'react-router-native';
 
 import Header from './Header.js'
 
-var courses = [
+var offers = [
   {
     key: 2057,
     name: "Moorpark Country Club",
@@ -55,10 +55,10 @@ export default class Boilerplate extends Component {
         <View style={{borderBottomColor:'gray', borderBottomWidth:1, borderStyle: 'solid', padding:0}}/>
         <ScrollView>
           <FlatList
-            data={courses}
+            data={offers}
             renderItem={
               ({item}) =>
-              <View>
+              <View style={{padding: 10}}>
                 <Link to='/offer'>
                   <View>
                     <Text style={styles.itemTitle}>{item.name}</Text>
@@ -84,7 +84,6 @@ const styles = StyleSheet.create({
 
   },
   itemTitle: {
-    paddingTop: 10,
     fontSize: 28,
     fontFamily: 'OpenSans-Regular',
     paddingBottom: 5

@@ -67,17 +67,19 @@ export default class Home extends Component {
               </View>
             </View>
           </Link>
-          <View style={styles.homeLink}>
-            <Icon name="check-circle" size={50} color="#509E2f"/>
-            <View style={{paddingLeft: 10}}>
-            {
-              this.state.fontsLoaded ? <Text style={styles.homeTitleText}>My Wallet</Text> : undefined
-            }
-            {
-              this.state.fontsLoaded ? <Text style={styles.homeSubtitleText}>View offers you have accepted</Text> : undefined
-            }
+          <Link to='/wallet'>
+            <View style={styles.homeLink}>
+              <Icon name="check-circle" size={50} color="#509E2f"/>
+              <View style={{paddingLeft: 10}}>
+              {
+                this.state.fontsLoaded ? <Text style={styles.homeTitleText}>My Wallet</Text> : undefined
+              }
+              {
+                this.state.fontsLoaded ? <Text style={styles.homeSubtitleText}>View offers you have accepted</Text> : undefined
+              }
+              </View>
             </View>
-          </View>
+          </Link>
           <View style={styles.homeLinkAccented}>
             <Icon name="notifications" size={50} color="#509E2f"/>
             <View style={{paddingLeft: 10}}>
