@@ -4,7 +4,7 @@ import { Font } from 'expo';
 
 import Header from './Header.js'
 
-var course = {
+var offer = {
   key: 2062,
   name: "Ojai Valley Inn",
   startDate: new Date(2017, 5, 5, 12, 0, 0, 0),
@@ -54,15 +54,15 @@ export default class Boilerplate extends Component {
         <ScrollView style={{padding: 10}}>
           <View>
               {
-                this.state.fontsLoaded ? <Text style={styles.title}>{course.name}</Text> : undefined
+                this.state.fontsLoaded ? <Text style={styles.title}>{offer.name}</Text> : undefined
               }
           </View>
           <View style={{paddingTop: 10, paddingBottom: 10}}>
             {
-              this.state.fontsLoaded ? <Text style={styles.description}>{course.offer}</Text> : undefined
+              this.state.fontsLoaded ? <Text style={styles.description}>{offer.offer}</Text> : undefined
             }
           </View>
-          <Image source={{uri: course.image}} style={{width: 400, height: 250}} />
+          <Image source={{uri: offer.image}} style={{width: 400, height: 250}} />
           <View style={{borderBottomColor:'lightgray', borderBottomWidth:1, borderStyle: 'solid', padding:10}}/>
           <View style={{paddingTop: 10}}>
             {
@@ -75,9 +75,9 @@ export default class Boilerplate extends Component {
                 this.state.fontsLoaded ? <Text style={styles.subtitle}>Redemption Location</Text> : undefined
               }
             </View>
-            <TouchableOpacity onPress={() => {Linking.openURL(this.getGPSLink(course.location.lat, course.location.long)).catch(err => console.error('An error occured', err))} }>
+            <TouchableOpacity onPress={() => {Linking.openURL(this.getGPSLink(offer.location.lat, offer.location.long)).catch(err => console.error('An error occured', err))} }>
               {
-                this.state.fontsLoaded ? <Text style={styles.subcontent}>{course.locationName}</Text> : undefined
+                this.state.fontsLoaded ? <Text style={styles.subcontent}>{offer.locationName}</Text> : undefined
               }
             </TouchableOpacity>
           </View>
@@ -87,9 +87,9 @@ export default class Boilerplate extends Component {
                 this.state.fontsLoaded ? <Text style={styles.subtitle}>Website</Text> : undefined
               }
             </View>
-            <TouchableOpacity onPress={() => {Linking.openURL(course.website).catch(err => console.error('An error occured', err))} }>
+            <TouchableOpacity onPress={() => {Linking.openURL(offer.website).catch(err => console.error('An error occured', err))} }>
               {
-                this.state.fontsLoaded ? <Text style={styles.subcontent}>{course.website}</Text> : undefined
+                this.state.fontsLoaded ? <Text style={styles.subcontent}>{offer.website}</Text> : undefined
               }
             </TouchableOpacity>
           </View>
@@ -101,7 +101,7 @@ export default class Boilerplate extends Component {
             </View>
             <View>
               {
-                this.state.fontsLoaded ? <Text style={styles.subcontent}>{course.endDate.toDateString()}</Text> : undefined
+                this.state.fontsLoaded ? <Text style={styles.subcontent}>{offer.endDate.toDateString()}</Text> : undefined
               }
             </View>
           </View>
@@ -113,7 +113,7 @@ export default class Boilerplate extends Component {
             </View>
             <View>
               {
-                this.state.fontsLoaded ? <Text style={styles.subcontent}>{course.moreDetails}</Text> : undefined
+                this.state.fontsLoaded ? <Text style={styles.subcontent}>{offer.moreDetails}</Text> : undefined
               }
             </View>
           </View>
@@ -125,7 +125,7 @@ export default class Boilerplate extends Component {
             </View>
             <View>
               {
-                this.state.fontsLoaded ? <Text style={styles.subcontent}>{course.terms}</Text> : undefined
+                this.state.fontsLoaded ? <Text style={styles.subcontent}>{offer.terms}</Text> : undefined
               }
             </View>
           </View>

@@ -11,6 +11,7 @@ import FavoriteGolfCourses from './src/components/FavoriteGolfCourses.js'
 import Offers from './src/components/Offers.js'
 import Offer from './src/components/Offer.js'
 import Wallet from './src/components/Wallet.js'
+import Redeem from './src/components/Redeem.js'
 
 import history from './src/utils/history.js';
 
@@ -28,6 +29,8 @@ export default class App extends Component {
           {/*<Route path="/offer/:oid" component={Offer}/>*/}
           <Route path="/offer" component={Offer}/>
           <Route path="/wallet" component={Wallet}/>
+          {/*<Route path="/redeem/:oid" component={Redeem}/>*/}
+          <Route path="/redeem" component={Redeem}/>
           <Route path="/rewards" component={Rewards}/>
         </Switch>
       </Router>

@@ -1,17 +1,20 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text, FlatList, TouchableOpacity } from 'react-native';
 import { Font } from 'expo';
+import { Link } from 'react-router-native';
 
 import Header from './Header.js'
 
 var offers = [
   {
-    name: 'Moorpark Country Club - Complimentary Guest',
-    key: 0
+    key: 2058,
+    name: 'Moorpark Country Club',
+    offer: 'Complimentary Guest'
   },
   {
-    name: 'Moorpark Country Club - Play 18 Hole Round of Golf any day - Receive day of week and time of day Free Replay',
-    key: 1
+    key: 2059,
+    name: 'Moorpark Country Club',
+    offer: 'Play 18 Hole Round of Golf any day - Receive day of week and time of day Free Replay'
   }
 ]
 
@@ -42,10 +45,12 @@ export default class Boilerplate extends Component {
             renderItem={
               ({item}) =>
               <View style={{padding: 10}}>
-                  <Text style={styles.itemTitle}>{item.name}</Text>
+                  <Text style={styles.itemTitle}>{item.name} - {item.offer}</Text>
                   <TouchableOpacity style={styles.redeemContainer}>
                     {
-                      <Text style={styles.redeemText}>REDEEM</Text>
+                      <Link to="/redeem">
+                        <Text style={styles.redeemText}>REDEEM</Text>
+                      </Link>
                     }
                   </TouchableOpacity>
                   <View style={{borderBottomColor:'lightgray', borderBottomWidth:1, borderStyle: 'solid', padding:10}}/>
@@ -77,6 +82,7 @@ const styles = StyleSheet.create({
   redeemText: {
     fontSize: 20,
     textAlign: 'center',
+    fontFamily: 'OpenSans-Regular',
     color:'#FFF'
   }
 });
