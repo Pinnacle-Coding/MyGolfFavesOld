@@ -52,11 +52,24 @@ export default class Boilerplate extends Component {
         extraHeight={175}
         keyboardOpeningTime={0}
         scrollEnabled={true}>
+          <View style={{paddingTop: 10}}>
+            {
+              this.state.fontsLoaded ? <Text style={styles.title}>{offer.offer}</Text> : undefined
+            }
+          </View>
+          <View style={{paddingBottom: 10}}>
+            {
+              this.state.fontsLoaded ? <Text style={styles.title}>@ {offer.name}</Text> : undefined
+            }
+          </View>
           <Form
             ref="form"
             type={RedeemModel}
             options={options}
           />
+          <TouchableOpacity style={styles.button} onPress={this.onPress}>
+            <Text style={styles.buttonText}>Redeem</Text>
+          </TouchableOpacity>
           <View style={{padding:100}}/>
       </KeyboardAwareScrollView>
       </View>
@@ -70,5 +83,25 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     padding: 20
+  },
+  title: {
+    fontSize: 22,
+    fontFamily: 'OpenSans-Light',
+    textAlign: 'center'
+  },
+  buttonText: {
+    fontSize: 18,
+    color: 'white',
+    alignSelf: 'center'
+  },
+  button: {
+    height: 36,
+    backgroundColor: '#509E2f',
+    borderColor: '#509E2f',
+    borderWidth: 1,
+    borderRadius: 8,
+    marginBottom: 10,
+    alignSelf: 'stretch',
+    justifyContent: 'center'
   }
 });
