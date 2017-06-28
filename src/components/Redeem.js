@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import { Font } from 'expo';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
@@ -57,7 +57,7 @@ export default class Boilerplate extends Component {
               this.state.fontsLoaded ? <Text style={styles.title}>{offer.offer}</Text> : undefined
             }
           </View>
-          <View style={{paddingBottom: 10}}>
+          <View style={{paddingBottom: 20}}>
             {
               this.state.fontsLoaded ? <Text style={styles.title}>@ {offer.name}</Text> : undefined
             }
