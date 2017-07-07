@@ -17,7 +17,7 @@ import Redeem from './src/components/Redeem.js';
 
 import history from './src/utils/history.js';
 
-import reducer from './reducers';
+import reducer from './src/reducers/index.js';
 
 const store = createStore(reducer);
 
