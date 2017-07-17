@@ -11,7 +11,14 @@ export default class Register extends Component {
   constructor() {
     super();
     this.state = {
-      fontsLoaded: false
+      fontsLoaded: false,
+      firstName: '',
+      lastName: '',
+      email: '',
+      confirmEmail: '',
+      username: '',
+      password: '',
+      confirmPassword: ''
     };
   }
   async componentDidMount() {
@@ -22,6 +29,36 @@ export default class Register extends Component {
     this.setState({
       fontsLoaded: true
     })
+  }
+  createAccount() {
+    if (!this.state.username || !this.state.password || !this.state.firstName || !this.state.lastName || !this.state.email) {
+      return;
+    }
+    if (this.state.email !== this.state.confirmEmail || this.state.password !== this.state.confirmPassword) {
+      return;
+    }
+    fetch('http://business.mygolffaves.com/ws/mobilePublicService.cfc?method=createMemberAccount', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        emailAddress: this.state.email,
+        firstName: this.state.firstName,
+        lastName: this.state.lastName,
+        password: this.state.password,
+        username: this.state.username,
+        UID: 1,
+        PWD: 'mob!leMGF'
+      })
+    }).then((response) => response.json())
+      .then((responseJson) => {
+        console.log(responseJson);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
   render() {
       return (
@@ -39,6 +76,7 @@ export default class Register extends Component {
                   style={textStyles.formText}
                   placeholder="First Name"
                   returnKeyType={"next"}
+                  onChangeText={(text) => this.setState({firstName: text})}
                   onSubmitEditing={() => focusTextInput(this.refs.lastName)}
                 />
             </View>
@@ -48,6 +86,7 @@ export default class Register extends Component {
                   style={textStyles.formText}
                   placeholder="Last Name"
                   returnKeyType = {"next"}
+                  onChangeText={(text) => this.setState({lastName: text})}
                   onSubmitEditing={() => focusTextInput(this.refs.email)}
                 />
             </View>
@@ -57,6 +96,7 @@ export default class Register extends Component {
                   style={textStyles.formText}
                   placeholder="Email Address"
                   returnKeyType = {"next"}
+                  onChangeText={(text) => this.setState({email: text})}
                   onSubmitEditing={() => focusTextInput(this.refs.confirmEmail)}
                 />
             </View>
@@ -66,6 +106,7 @@ export default class Register extends Component {
                   style={textStyles.formText}
                   placeholder="Confirm Email"
                   returnKeyType = {"next"}
+                  onChangeText={(text) => this.setState({confirmPassword: text})}
                   onSubmitEditing={() => focusTextInput(this.refs.username)}
                 />
             </View>
@@ -77,6 +118,7 @@ export default class Register extends Component {
                   style={textStyles.formText}
                   placeholder="Username"
                   returnKeyType = {"next"}
+                  onChangeText={(text) => this.setState({username: text})}
                   onSubmitEditing={() => focusTextInput(this.refs.password)}
                 />
             </View>
@@ -87,6 +129,7 @@ export default class Register extends Component {
                   placeholder="Password"
                   returnKeyType = {"next"}
                   secureTextEntry
+                  onChangeText={(text) => this.setState({password: text})}
                   onSubmitEditing={() => focusTextInput(this.refs.confirmPassword)}
                 />
             </View>
@@ -96,10 +139,11 @@ export default class Register extends Component {
                   style={textStyles.formText}
                   placeholder="Confirm Password"
                   secureTextEntry
+                  onChangeText={(text) => this.setState({confirmPassword: text})}
                 />
             </View>
             <View style={{padding:10}}/>
-            <TouchableOpacity style={styles.registerContainer}>
+            <TouchableOpacity style={styles.registerContainer} onPress={() => this.createAccount()}>
             {
               this.state.fontsLoaded ? <Text style={styles.registerText}>CREATE ACCOUNT</Text> : undefined
             }
