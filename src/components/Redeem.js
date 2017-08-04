@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
-import { AppLoading } from 'expo';
+import { Font, AppLoading } from 'expo';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import Header from './Header.js'
-import SetupComponent from './SetupComponent.js'
 
 var t = require('tcomb-form-native');
 var Form = t.form.Form;
@@ -26,13 +25,21 @@ var offer = {
   offer: 'Complimentary Guest'
 }
 
-export default class Redeem extends SetupComponent {
-  constructor() {
-    super();
-    this.state = {
-      loaded: false
-    };
+export default class Redeem extends Component {
+  state = {
+    loaded: false
+  };
+
+  async componentDidMount() {
+    await Font.loadAsync({
+      'OpenSans-Regular': require('../../assets/fonts/OpenSans-Regular.ttf'),
+      'OpenSans-Light': require('../../assets/fonts/OpenSans-Light.ttf'),
+    });
+    this.setState({
+      loaded: true
+    })
   }
+
   render() {
     if (!this.state.loaded) {
       return <AppLoading/>;

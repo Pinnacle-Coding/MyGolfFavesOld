@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ListView, Text, TouchableOpacity  } from 'react-native';
-import { AppLoading } from 'expo';
+import { Font, AppLoading } from 'expo';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { CheckBox } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import Header from './Header.js'
-import SetupComponent from './SetupComponent.js'
 
 var testData = [
   {
@@ -23,7 +22,7 @@ var testData = [
   }
 ]
 
-export default class FavoriteGolfCourses extends SetupComponent {
+export default class FavoriteGolfCourses extends Component {
   constructor() {
     super();
     const ds = new ListView.DataSource({rowHasChanged: (r1,r2) => ri != r2})
@@ -78,7 +77,7 @@ const styles = StyleSheet.create({
 
   },
   scrollContainer: {
-    o
+
   },
   paramContainer: {
 

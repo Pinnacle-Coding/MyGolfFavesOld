@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import { TextInput, ScrollView, Image, Text, StyleSheet, View, TouchableOpacity, Linking } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { AppLoading } from 'expo';
+import { Font, AppLoading } from 'expo';
 import { Link } from 'react-router-native'
 
 import focusTextInput from '../utils/TextInputManager.js';
 import Header from './Header.js'
-import SetupComponent from './SetupComponent.js'
 
-export default class Register extends SetupComponent {
+export default class Register extends Component {
   constructor() {
     super();
     this.state = {
@@ -22,6 +21,17 @@ export default class Register extends SetupComponent {
       confirmPassword: ''
     };
   }
+
+  async componentDidMount() {
+    await Font.loadAsync({
+      'OpenSans-Regular': require('../../assets/fonts/OpenSans-Regular.ttf'),
+      'OpenSans-Light': require('../../assets/fonts/OpenSans-Light.ttf'),
+    });
+    this.setState({
+      loaded: true
+    })
+  }
+
   createAccount() {
     if (!this.state.username || !this.state.password || !this.state.firstName || !this.state.lastName || !this.state.email) {
       return;

@@ -6,7 +6,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 import focusTextInput from '../utils/TextInputManager.js';
 import renderIf from '../utils/renderif.js';
-import history from './src/utils/history.js';
+import history from '../utils/history.js';
 
 import Header from './Header.js'
 
@@ -21,6 +21,16 @@ export default class Login extends Component {
       username: '',
       password: ''
     };
+  }
+
+  async componentDidMount() {
+    await Font.loadAsync({
+      'OpenSans-Regular': require('../../assets/fonts/OpenSans-Regular.ttf'),
+      'OpenSans-Light': require('../../assets/fonts/OpenSans-Light.ttf'),
+    });
+    this.setState({
+      loaded: true
+    })
   }
 
   toggleStatus() {
@@ -86,7 +96,7 @@ export default class Login extends Component {
           keyboardOpeningTime={0}
           scrollEnabled={true}>
             <View flexDirection="row" style={styles.topText}>
-              <Text style={styles.noAccountTxt}>Don.t have an account? </Text>
+              <Text style={styles.noAccountTxt}>Don't have an account? </Text>
               <Link to="/register">
                 <Text style={styles.createAccntLink}>Create an Account</Text>
               </Link>
@@ -172,7 +182,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     paddingVertical: 14,
     backgroundColor: '#B22222'
-  }
+  },
   forgot: {
     color: '#509E2f',
     fontSize: 17,

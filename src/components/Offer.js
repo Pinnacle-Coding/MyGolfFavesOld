@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Linking, Image, Platform } from 'react-native';
-import { AppLoading } from 'expo';
+import { Font, AppLoading } from 'expo';
 
 import Header from './Header.js'
-import SetupComponent from './SetupComponent.js'
 
 var offer = {
   key: 2062,
@@ -23,21 +22,33 @@ var offer = {
   terms: "Some restrictions may apply. Not valid in combination with any other offers or discounts. Proper golf attire required - collared shirts required and no blue jeans are allowed."
 }
 
-export default class Offer extends SetupComponent {
+export default class Offer extends Component {
   constructor() {
     super();
     this.state = {
       loaded: false
     };
   }
+
+  async componentDidMount() {
+    await Font.loadAsync({
+      'OpenSans-Regular': require('../../assets/fonts/OpenSans-Regular.ttf'),
+      'OpenSans-Light': require('../../assets/fonts/OpenSans-Light.ttf'),
+    });
+    this.setState({
+      loaded: true
+    })
+  }
+
   getGPSLink(latArg, longArg) {
     if (Platform.OS === 'ios') {
       return 'http://maps.apple.com/?ll='+latArg+','+longArg
     }
     else {
-      return 'geo:'+latArg+','+longArg
+      return 'geo:'+latArgs+','+longArg
     }
   }
+
   render() {
     if (!this.state.loaded) {
       return <AppLoading/>;
