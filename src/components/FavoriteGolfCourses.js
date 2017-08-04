@@ -36,7 +36,7 @@ export default class FavoriteGolfCourses extends SetupComponent {
   }
 
   changeChecked() {
-    if (this.state.checkedSrc.equals('check-box')){
+    if (this.state.checkedSrc == 'check-box'){
       this.setState({checkedSrc: 'check-box-outline-blank'})
     } else {
       this.setState({checkedSrc: 'check-box'})
@@ -57,10 +57,9 @@ export default class FavoriteGolfCourses extends SetupComponent {
             <View style = {{flexDirection: 'row'}}>
               <TouchableOpacity onPress={() => {
                 rowData.checked = !rowData.checked;
-                this.changeChecked();
               }}>
                 <Icon
-                  name={this.state.checkedSrc}
+                  name={rowData.checked ? 'check-box' : 'check-box-outline-blank'}
                   size={30}
                   style={{padding: 10}}
                 />
@@ -79,7 +78,7 @@ const styles = StyleSheet.create({
 
   },
   scrollContainer: {
-
+    o
   },
   paramContainer: {
 
