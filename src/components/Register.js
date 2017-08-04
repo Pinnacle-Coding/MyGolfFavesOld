@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import { TextInput, ScrollView, Image, Text, StyleSheet, View, TouchableOpacity, Linking } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { Font } from 'expo';
+import { AppLoading } from 'expo';
 import { Link } from 'react-router-native'
 
 import focusTextInput from '../utils/TextInputManager.js';
 import Header from './Header.js'
+import SetupComponent from './SetupComponent.js'
 
-export default class Register extends Component {
+export default class Register extends SetupComponent {
   constructor() {
     super();
     this.state = {
-      fontsLoaded: false,
+      loaded: false,
       firstName: '',
       lastName: '',
       email: '',
@@ -21,20 +22,14 @@ export default class Register extends Component {
       confirmPassword: ''
     };
   }
-  async componentDidMount() {
-    await Font.loadAsync({
-      'OpenSans-Regular': require('../../assets/fonts/OpenSans-Regular.ttf'),
-      'OpenSans-Light': require('../../assets/fonts/OpenSans-Light.ttf'),
-    });
-    this.setState({
-      fontsLoaded: true
-    })
-  }
   createAccount() {
     if (!this.state.username || !this.state.password || !this.state.firstName || !this.state.lastName || !this.state.email) {
       return;
     }
-    if (this.state.email !== this.state.confirmEmail || this.state.password !== this.state.confirmPassword) {
+    if (this.state.email !== this.state.confirmEmail) {
+      return;
+    }
+    if (this.state.password !== this.state.confirmPassword) {
       return;
     }
     fetch('http://business.mygolffaves.com/ws/mobilePublicService.cfc?method=createMemberAccount', {
@@ -61,6 +56,9 @@ export default class Register extends Component {
       });
   }
   render() {
+      if (!this.state.loaded) {
+        return <AppLoading/>;
+      }
       return (
         <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-between'}}>
           <Header title="Create an Account"/>
@@ -144,15 +142,13 @@ export default class Register extends Component {
             </View>
             <View style={{padding:10}}/>
             <TouchableOpacity style={styles.registerContainer} onPress={() => this.createAccount()}>
-            {
-              this.state.fontsLoaded ? <Text style={styles.registerText}>CREATE ACCOUNT</Text> : undefined
-            }
+              <Text style={styles.registerText}>CREATE ACCOUNT</Text>
             </TouchableOpacity>
             <View style={{padding:10}}/>
             <View>
-              {this.state.fontsLoaded ? <Text style={styles.termsPre}>By creating an account, you agree to our</Text> : undefined}
+              <Text style={styles.termsPre}>By creating an account, you agree to our</Text>
               <TouchableOpacity onPress={() => {Linking.openURL("http://www.mygolffaves.com/index.cfm?event=public.terms").catch(err => console.error('An error occured', err))} }>
-                 {this.state.fontsLoaded ? <Text style={styles.terms}>Terms and Conditions.</Text> : undefined }
+                 <Text style={styles.terms}>Terms and Conditions.</Text>
               </TouchableOpacity>
             </View>
             <View style={{padding:30}}/>

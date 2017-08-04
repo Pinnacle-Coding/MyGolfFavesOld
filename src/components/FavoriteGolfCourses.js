@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ListView, Text, TouchableOpacity  } from 'react-native';
-import { Font } from 'expo';
+import { AppLoading } from 'expo';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { CheckBox } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import Header from './Header.js'
+import SetupComponent from './SetupComponent.js'
 
 var testData = [
   {
@@ -22,26 +23,16 @@ var testData = [
   }
 ]
 
-export default class Boilerplate extends Component {
+export default class FavoriteGolfCourses extends SetupComponent {
   constructor() {
     super();
     const ds = new ListView.DataSource({rowHasChanged: (r1,r2) => ri != r2})
 
     this.state = {
-      fontsLoaded: false,
+      loaded: false,
       dataSource: ds.cloneWithRows(testData),
       checkedSrc: 'check-box'
     };
-  }
-
-  async componentDidMount() {
-    await Font.loadAsync({
-      'OpenSans-Regular': require('../../assets/fonts/OpenSans-Regular.ttf'),
-      'OpenSans-Light': require('../../assets/fonts/OpenSans-Light.ttf'),
-    });
-    this.setState({
-      fontsLoaded: true
-    })
   }
 
   changeChecked() {
@@ -53,6 +44,9 @@ export default class Boilerplate extends Component {
   }
 
   render() {
+    if (!this.state.loaded) {
+      return <AppLoading/>;
+    }
     return (
       <View style={styles.container}>
         <Header title="Favorite Golf Courses"/>

@@ -1,31 +1,26 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TextInput, TouchableOpacity, Text, Linking } from 'react-native';
-import { Font } from 'expo';
+import { Font, AppLoading } from 'expo';
 import { Link } from 'react-router-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import focusTextInput from '../utils/TextInputManager.js';
 import renderIf from '../utils/renderif.js';
+import history from './src/utils/history.js';
 
 import Header from './Header.js'
+
+var auth = require('../services/AuthControl.js');
 
 export default class Login extends Component {
   constructor() {
     super();
     this.state = {
-      fontsLoaded: false,
-      showForgotLogin: false
+      loaded: false,
+      showForgotLogin: false,
+      username: '',
+      password: ''
     };
-  }
-
-  async componentDidMount() {
-    await Font.loadAsync({
-      'OpenSans-Regular': require('../../assets/fonts/OpenSans-Regular.ttf'),
-      'OpenSans-Light': require('../../assets/fonts/OpenSans-Light.ttf'),
-    });
-    this.setState({
-      fontsLoaded: true
-    })
   }
 
   toggleStatus() {
@@ -34,7 +29,53 @@ export default class Login extends Component {
     });
   }
 
+  login() {
+    auth.login(this.state.username, this.state.password, function(err, message) {
+      if (err) {
+        console.error(err);
+        this.setState({password: ''});
+      }
+      else if (message) {
+        this.setState({password: ''});
+      }
+      else {
+        console.log(auth.getUser());
+        this.setState({username: ''});
+        this.setState({password: ''});
+        history.push('/home');
+      }
+    });
+  }
+
+  logout() {
+    auth.logout();
+    this.forceUpdate();
+  }
+
   render() {
+      if (!this.state.loaded) {
+        return <AppLoading/>;
+      }
+      if (!auth.isAuthenticated) {
+        return (
+          <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-between'}}>
+            <Header title="Login"/>
+            <View style={{borderBottomColor:'gray', borderBottomWidth:1, borderStyle: 'solid', padding:0}}/>
+            <View style={{
+            justifyContent: 'center',
+            alignItems: 'center'}}>
+              <TouchableOpacity style={styles.loginContainer}>
+                  <Link to="/home">
+                    <Text style={styles.loginText}>RETURN TO HOME</Text>
+                  </Link>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.logoutContainer} onPress={() => this.logout()}>
+                  <Text style={styles.loginText}>LOG OUT</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )
+      }
       return (
         <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-between'}}>
           <Header title="Login"/>
@@ -45,15 +86,16 @@ export default class Login extends Component {
           keyboardOpeningTime={0}
           scrollEnabled={true}>
             <View flexDirection="row" style={styles.topText}>
-              {this.state.fontsLoaded ? <Text style={styles.noAccountTxt}>Don't have an account? </Text> : undefined }
+              <Text style={styles.noAccountTxt}>Don.t have an account? </Text>
               <Link to="/register">
-                {this.state.fontsLoaded ? <Text style={styles.createAccntLink}>Create an Account</Text> : <Text>Create an Account</Text> }
+                <Text style={styles.createAccntLink}>Create an Account</Text>
               </Link>
             </View>
 
             <TextInput
               placeholder="Username"
               returnKeyType="next"
+              onChangeText={(text) => this.setState({username: text})}
               onSubmitEditing={() => focusTextInput(this.refs.passwordInput)}
               style={styles.input}
             />
@@ -64,34 +106,32 @@ export default class Login extends Component {
               returnKeyType="go"
               style={styles.input}
               ref='passwordInput'
+              onChangeText={(text) => this.setState({password: text})}
             />
 
-            <TouchableOpacity onPress={() => this.toggleStatus() }>
-               {this.state.fontsLoaded ? <Text style={styles.forgot}>Forgot Username/Password</Text> : undefined }
+            <TouchableOpacity onPress={() => this.toggleStatus()}>
+              <Text style={styles.forgot}>Forgot Username/Password</Text>
             </TouchableOpacity>
 
-            {/* TODO: Remove link later and replace with user auth */}
-            <TouchableOpacity style={styles.loginContainer}>
-                { this.state.fontsLoaded ?
-                  <Link to="/home">
-                    <Text style={styles.loginText}>LOG IN</Text>
-                  </Link>
-                : undefined }
+            <TouchableOpacity style={styles.loginContainer} onPress={() => this.login()}>
+                <Text style={styles.loginText}>LOG IN</Text>
             </TouchableOpacity>
 
-            {renderIf(this.state.showForgotLogin)(
-              <View>
-                <TextInput
-                  placeholder="Email Address"
-                  returnKeyType="go"
-                  style={styles.input}
-                />
+            {
+              renderIf(this.state.showForgotLogin)(
+                <View>
+                  <TextInput
+                    placeholder="Email Address"
+                    returnKeyType="go"
+                    style={styles.input}
+                  />
 
-                <TouchableOpacity style={styles.loginContainer}>
-                    { this.state.fontsLoaded ? <Text style={styles.loginText}>SEND LOGIN CREDENTIALS</Text> : undefined }
-                </TouchableOpacity>
-              </View>
-            )}
+                  <TouchableOpacity style={styles.loginContainer}>
+                    <Text style={styles.loginText}>SEND LOGIN CREDENTIALS</Text>
+                  </TouchableOpacity>
+                </View>
+              )
+            }
 
           </KeyboardAwareScrollView>
       </View>
@@ -128,6 +168,11 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     backgroundColor: '#509E2f'
   },
+  logoutContainer: {
+    marginTop: 20,
+    paddingVertical: 14,
+    backgroundColor: '#B22222'
+  }
   forgot: {
     color: '#509E2f',
     fontSize: 17,

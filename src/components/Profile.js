@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, ScrollView } from 'react-native';
-import { Font } from 'expo';
+import { AppLoading } from 'expo';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import Header from './Header.js';
+import SetupComponent from './SetupComponent.js'
 
 import renderIf from '../utils/renderif.js';
 
@@ -63,26 +64,16 @@ var ProfilePasswordModel = t.struct({
   verifyPassword: t.String
 });
 
-export default class Profile extends Component {
+export default class Profile extends SetupComponent {
   constructor() {
     super();
     this.state = {
-      fontsLoaded: false,
+      loaded: false,
       showChangePassword: false,
       formType: ProfileModel
     };
 
     this.onTogglePassword = this.onTogglePassword.bind(this);
-  }
-
-  async componentDidMount() {
-    await Font.loadAsync({
-      'OpenSans-Regular': require('../../assets/fonts/OpenSans-Regular.ttf'),
-      'OpenSans-Light': require('../../assets/fonts/OpenSans-Light.ttf'),
-    });
-    this.setState({
-      fontsLoaded: true
-    });
   }
 
   onTogglePassword() {
@@ -101,6 +92,9 @@ export default class Profile extends Component {
   }
 
   render() {
+    if (!this.state.loaded) {
+      return <AppLoading/>;
+    }
     return (
       <View style={styles.container}>
         <Header title="Profile"/>

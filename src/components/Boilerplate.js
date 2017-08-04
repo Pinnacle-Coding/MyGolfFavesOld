@@ -1,26 +1,21 @@
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Font } from 'expo';
+import { AppLoading } from 'expo';
 
 import Header from './Header.js'
+import SetupComponent from './SetupComponent.js'
 
-export default class Boilerplate extends Component {
+export default class Boilerplate extends SetupComponent {
   constructor() {
     super();
     this.state = {
-      fontsLoaded: false
+      loaded: false
     };
   }
-  async componentDidMount() {
-    await Font.loadAsync({
-      'OpenSans-Regular': require('../../assets/fonts/OpenSans-Regular.ttf'),
-      'OpenSans-Light': require('../../assets/fonts/OpenSans-Light.ttf'),
-    });
-    this.setState({
-      fontsLoaded: true
-    })
-  }
   render() {
+    if (!this.state.loaded) {
+      return <AppLoading/>;
+    }
     return (
       <View style={styles.container}>
         <Header title="Placeholder"/>

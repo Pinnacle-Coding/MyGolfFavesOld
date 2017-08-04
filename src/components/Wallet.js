@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text, FlatList, TouchableOpacity } from 'react-native';
-import { Font } from 'expo';
+import { AppLoading } from 'expo';
 import { Link } from 'react-router-native';
 
 import Header from './Header.js'
+import SetupComponent from './SetupComponent.js'
 
 var offers = [
   {
@@ -18,23 +19,17 @@ var offers = [
   }
 ]
 
-export default class Boilerplate extends Component {
+export default class Boilerplate extends SetupComponent {
   constructor() {
     super();
     this.state = {
-      fontsLoaded: false
+      loaded: false
     };
   }
-  async componentDidMount() {
-    await Font.loadAsync({
-      'OpenSans-Regular': require('../../assets/fonts/OpenSans-Regular.ttf'),
-      'OpenSans-Light': require('../../assets/fonts/OpenSans-Light.ttf'),
-    });
-    this.setState({
-      fontsLoaded: true
-    })
-  }
   render() {
+    if (!this.state.loaded) {
+      return <AppLoading/>;
+    }
     return (
       <View style={styles.container}>
         <Header title="Wallet"/>

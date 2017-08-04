@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
-import { Font } from 'expo';
+import { AppLoading } from 'expo';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import Header from './Header.js'
+import SetupComponent from './SetupComponent.js'
 
 var t = require('tcomb-form-native');
 var Form = t.form.Form;
@@ -25,23 +26,17 @@ var offer = {
   offer: 'Complimentary Guest'
 }
 
-export default class Boilerplate extends Component {
+export default class Redeem extends SetupComponent {
   constructor() {
     super();
     this.state = {
-      fontsLoaded: false
+      loaded: false
     };
   }
-  async componentDidMount() {
-    await Font.loadAsync({
-      'OpenSans-Regular': require('../../assets/fonts/OpenSans-Regular.ttf'),
-      'OpenSans-Light': require('../../assets/fonts/OpenSans-Light.ttf'),
-    });
-    this.setState({
-      fontsLoaded: true
-    })
-  }
   render() {
+    if (!this.state.loaded) {
+      return <AppLoading/>;
+    }
     return (
       <View style={styles.container}>
         <Header title="Redeem Offer"/>
@@ -53,14 +48,10 @@ export default class Boilerplate extends Component {
         keyboardOpeningTime={0}
         scrollEnabled={true}>
           <View style={{paddingTop: 10}}>
-            {
-              this.state.fontsLoaded ? <Text style={styles.title}>{offer.offer}</Text> : undefined
-            }
+            <Text style={styles.title}>{offer.offer}</Text>
           </View>
           <View style={{paddingBottom: 20}}>
-            {
-              this.state.fontsLoaded ? <Text style={styles.title}>@ {offer.name}</Text> : undefined
-            }
+            <Text style={styles.title}>@ {offer.name}</Text>
           </View>
           <Form
             ref="form"

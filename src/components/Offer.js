@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Linking, Image, Platform } from 'react-native';
-import { Font } from 'expo';
+import { AppLoading } from 'expo';
 
 import Header from './Header.js'
+import SetupComponent from './SetupComponent.js'
 
 var offer = {
   key: 2062,
@@ -22,21 +23,12 @@ var offer = {
   terms: "Some restrictions may apply. Not valid in combination with any other offers or discounts. Proper golf attire required - collared shirts required and no blue jeans are allowed."
 }
 
-export default class Boilerplate extends Component {
+export default class Offer extends SetupComponent {
   constructor() {
     super();
     this.state = {
-      fontsLoaded: false
+      loaded: false
     };
-  }
-  async componentDidMount() {
-    await Font.loadAsync({
-      'OpenSans-Regular': require('../../assets/fonts/OpenSans-Regular.ttf'),
-      'OpenSans-Light': require('../../assets/fonts/OpenSans-Light.ttf'),
-    });
-    this.setState({
-      fontsLoaded: true
-    })
   }
   getGPSLink(latArg, longArg) {
     if (Platform.OS === 'ios') {
@@ -47,92 +39,67 @@ export default class Boilerplate extends Component {
     }
   }
   render() {
+    if (!this.state.loaded) {
+      return <AppLoading/>;
+    }
     return (
       <View style={styles.container}>
         <Header title="Offer"/>
         <View style={{borderBottomColor:'gray', borderBottomWidth:1, borderStyle: 'solid', padding:0}}/>
         <ScrollView style={{padding: 10}}>
           <View>
-              {
-                this.state.fontsLoaded ? <Text style={styles.title}>{offer.name}</Text> : undefined
-              }
+            <Text style={styles.title}>{offer.name}</Text>
           </View>
           <View style={{paddingTop: 10, paddingBottom: 10}}>
-            {
-              this.state.fontsLoaded ? <Text style={styles.description}>{offer.offer}</Text> : undefined
-            }
+            <Text style={styles.description}>{offer.offer}</Text>
           </View>
           <Image source={{uri: offer.image}} style={{width: 400, height: 250}} />
           <View style={{borderBottomColor:'lightgray', borderBottomWidth:1, borderStyle: 'solid', padding:10}}/>
           <View style={{paddingTop: 10}}>
-            {
-              this.state.fontsLoaded ? <Text style={styles.title}>Offer Details</Text> : undefined
-            }
+            <Text style={styles.title}>Offer Details</Text>
           </View>
           <View style={styles.subsection}>
             <View>
-              {
-                this.state.fontsLoaded ? <Text style={styles.subtitle}>Redemption Location</Text> : undefined
-              }
+              <Text style={styles.subtitle}>Redemption Location</Text>
             </View>
             <TouchableOpacity onPress={() => {Linking.openURL(this.getGPSLink(offer.location.lat, offer.location.long)).catch(err => console.error('An error occured', err))} }>
-              {
-                this.state.fontsLoaded ? <Text style={styles.subcontent}>{offer.locationName}</Text> : undefined
-              }
+              <Text style={styles.subcontent}>{offer.locationName}</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.subsection}>
             <View>
-              {
-                this.state.fontsLoaded ? <Text style={styles.subtitle}>Website</Text> : undefined
-              }
+              <Text style={styles.subtitle}>Website</Text>
             </View>
             <TouchableOpacity onPress={() => {Linking.openURL(offer.website).catch(err => console.error('An error occured', err))} }>
-              {
-                this.state.fontsLoaded ? <Text style={styles.subcontent}>{offer.website}</Text> : undefined
-              }
+              <Text style={styles.subcontent}>{offer.website}</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.subsection}>
             <View>
-              {
-                this.state.fontsLoaded ? <Text style={styles.subtitle}>Expires on</Text> : undefined
-              }
+              <Text style={styles.subtitle}>Expires on</Text>
             </View>
             <View>
-              {
-                this.state.fontsLoaded ? <Text style={styles.subcontent}>{offer.endDate.toDateString()}</Text> : undefined
-              }
+              <Text style={styles.subcontent}>{offer.endDate.toDateString()}</Text>
             </View>
           </View>
           <View style={styles.subsection}>
             <View>
-              {
-                this.state.fontsLoaded ? <Text style={styles.subtitle}>More details</Text> : undefined
-              }
+              <Text style={styles.subtitle}>More details</Text>
             </View>
             <View>
-              {
-                this.state.fontsLoaded ? <Text style={styles.subcontent}>{offer.moreDetails}</Text> : undefined
-              }
+              <Text style={styles.subcontent}>{offer.moreDetails}</Text>
             </View>
           </View>
           <View style={styles.subsection}>
             <View>
-              {
-                this.state.fontsLoaded ? <Text style={styles.subtitle}>Terms</Text> : undefined
-              }
+              <Text style={styles.subtitle}>Terms</Text>
             </View>
             <View>
-              {
-                this.state.fontsLoaded ? <Text style={styles.subcontent}>{offer.terms}</Text> : undefined
-              }
+              <Text style={styles.subcontent}>{offer.terms}</Text>
             </View>
           </View>
           <TouchableOpacity style={styles.finishContainer}>
-              { this.state.fontsLoaded ?
-                <Text style={styles.finishText}>ADD TO WALLET</Text>
-              : undefined }
+            <Text style={styles.finishText}>ADD TO WALLET</Text>
           </TouchableOpacity>
           <View style={{padding:80}}/>
         </ScrollView>
