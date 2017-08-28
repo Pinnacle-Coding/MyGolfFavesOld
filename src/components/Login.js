@@ -3,6 +3,7 @@ import { StyleSheet, View, TextInput, TouchableOpacity, Text, Linking } from 're
 import { Font, AppLoading } from 'expo';
 import { Link } from 'react-router-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import Modal from 'react-native-modal'
 
 import focusTextInput from '../utils/TextInputManager.js';
 import renderIf from '../utils/renderif.js';
@@ -18,6 +19,8 @@ export default class Login extends Component {
     this.state = {
       loaded: false,
       showForgotLogin: false,
+      showModal: false,
+      modalText: '',
       username: '',
       password: ''
     };
@@ -42,19 +45,21 @@ export default class Login extends Component {
   login() {
     auth.login(this.state.username, this.state.password, function(err, message) {
       if (err) {
-        console.error(err);
         this.setState({password: ''});
+        this.setState({modalText: err});
+        this.setState({showModal: true});
       }
       else if (message) {
         this.setState({password: ''});
+        this.setState({modalText: message});
+        this.setState({showModal: true});
       }
       else {
-        console.log(auth.getUser());
         this.setState({username: ''});
         this.setState({password: ''});
-        history.push('/home');
+        history.replace('/home');
       }
-    });
+    }.bind(this));
   }
 
   logout() {
@@ -89,6 +94,18 @@ export default class Login extends Component {
       return (
         <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-between'}}>
           <Header title="Login"/>
+
+          <Modal isVisible={this.state.showModal}>
+            <View style={styles.modalContainer}>
+              <Text style={{fontSize: 20}}>{this.state.modalText}</Text>
+              <TouchableOpacity onPress={() => this.setState({showModal: false})}>
+                <View style={styles.modalCloseButton}>
+                  <Text style={{color:'#FFF'}}>Close</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+
           <KeyboardAwareScrollView
           style={styles.container}
           resetScrollToCoords={{ x: 0, y: 0 }}
@@ -194,5 +211,22 @@ const styles = StyleSheet.create({
     fontFamily: 'OpenSans-Regular',
     textAlign: 'center',
     color:'#FFF'
+  },
+  modalContainer: {
+    backgroundColor: 'white',
+    padding: 22,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  modalCloseButton: {
+    backgroundColor: '#509E2f',
+    padding: 12,
+    margin: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
   }
 });

@@ -7,6 +7,8 @@ import Header from './Header.js';
 
 import renderIf from '../utils/renderif.js';
 
+var auth = require('../services/AuthControl.js');
+
 var t = require('tcomb-form-native');
 var Form = t.form.Form;
 var ProfileModel = t.struct({

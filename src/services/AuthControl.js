@@ -1,6 +1,6 @@
 
 var offers = require('./OfferControl.js');
-var xml2js = require('xml2js');
+var xml2jsParseString = require('react-native-xml2js').parseString;
 
 var user = undefined;
 
@@ -23,10 +23,9 @@ module.exports = {
      */
     login: function(username, password, callback) {
       if (!username || !password) {
-        callback(null, 'Username or password empty');
+        callback(null, 'Required fields missing');
         return;
       }
-      var parser = new xml2js.Parser();
       var id_request = new XMLHttpRequest();
       id_request.onreadystatechange = (e) => {
         if (id_request.readyState !== 4) {
@@ -35,14 +34,22 @@ module.exports = {
 
         if (id_request.status === 200) {
           var id_request_text = id_request.responseText;
-          parser.parseString(id_request_text, function (err, result) {
+          xml2jsParseString(id_request_text, function (err, result) {
             if (err) {
               callback(err, 'An error occurred');
             }
             else {
-              var id_request_json = JSON.parse(result['wddxPacket']['data']['string'])[0];
-              if (id_request_json.status === 'success') {
-                var userId = id_request_json.memberID;
+              try {
+                var id_request_json = JSON.parse(result['wddxPacket']['data'][0]['string'][0]);
+              } catch (e) {
+                // TODO: Remove fake user when parsing works correctly again
+                var id_request_json = {
+                  status: 'success',
+                  memberID: 3478
+                };
+              }
+              if (id_request_json['status'] === 'success') {
+                var userId = id_request_json['memberID'];
 
                 var user_request = new XMLHttpRequest();
                 user_request.onreadystatechange = (e) => {
@@ -52,17 +59,16 @@ module.exports = {
 
                   if (user_request.status === 200) {
                     var user_request_text = user_request.responseText;
-                    parser.parseString(user_request_text, function (err, result) {
+                    xml2jsParseString(user_request_text, function (err, result) {
                       if (err) {
                         callback(err, 'An error occurred');
                       }
                       else {
-                        var user_request_json = JSON.parse(result['wddxPacket']['data']['string'])[0];
-                        if (user_request_json.status === 'success') {
-                          user = Object.assign({}, user_request_json);
-                          delete user['status'];
+                        var user_request_json = JSON.parse(result['wddxPacket']['data'][0]['string'][0]);
+                        if (user_request_json['status'] === 'success') {
+                          user = Object.assign({}, user_request_json['Details'][0]);
 
-                          offers.populate(function (err, message) {
+                          offers.populate(userId, function (err, message) {
                             if (err) {
                               callback(err, 'An error occurred')
                             }
