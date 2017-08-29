@@ -54,6 +54,7 @@ export default class FavoriteGolfCourses extends Component {
     showModal: false,
     modalText: '',
     selectedCity: 'Los Angeles',
+    selectedZipCodeInvalid: false,
     locationLat: citiesData['Los Angeles'].lat,
     locationLong: citiesData['Los Angeles'].long,
     locationRadius: '50',
@@ -79,13 +80,14 @@ export default class FavoriteGolfCourses extends Component {
       this.setState({
         locationOption: 0,
         locationLat: zipcodeData.lat,
-        locationLong: zipcodeData.long
+        locationLong: zipcodeData.long,
+        selectedZipCodeInvalid: false
       });
     }
     else {
       this.setState({
-        showModal: true,
-        modalText: 'Invalid US zip code entered.'
+        locationOption: 0,
+        selectedZipCodeInvalid: true
       });
     }
   }
@@ -116,6 +118,12 @@ export default class FavoriteGolfCourses extends Component {
   }
 
   getNearbyAffiliates() {
+    if (this.state.locationOption === 0 && this.state.selectedZipCodeInvalid) {
+      this.setState({
+        showModal: true,
+        modalText: 'Invalid US zip code entered. Using your last saved location instead.'
+      });
+    }
     affiliateCtrl.getNearbyAffiliates(authCtrl.getUser().memberID, this.state.locationLat, this.state.locationLong, this.state.locationRadius, function (err, message, affiliates) {
       if (err) {
         this.setState({
