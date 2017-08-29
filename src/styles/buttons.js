@@ -24,6 +24,19 @@ const styles = StyleSheet.create({
     fontFamily: 'OpenSans-Regular',
     textAlign: 'center',
     color:'#509E2F'
+  },
+  fringedRedButton: {
+    marginTop: 20,
+    paddingVertical: 14,
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: '#D12020'
+  },
+  fringedRedButtonText: {
+    fontSize: 20,
+    fontFamily: 'OpenSans-Regular',
+    textAlign: 'center',
+    color:'#D12020'
   }
 });
 

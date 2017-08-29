@@ -60,6 +60,10 @@ module.exports = {
     })
   },
 
+  saveNearbyAffliates: function (memberID, nearbyAffiliates, callback) {
+
+  },
+
   /**
    * Called by AuthControl's login method. Populates the service with the user's favorite courses, downloaded from the API.
    * @param String memberID The user's ID

@@ -28,7 +28,8 @@ export default class FavoriteGolfCourses extends Component {
     locationLat: 36.171,
     locationLong: -115.1258,
     locationRadius: "50",
-    currentAffiliates: []
+    nearbyAffiliates: [],
+    showSelectAll: true
   };
 
   async componentDidMount() {
@@ -56,14 +57,48 @@ export default class FavoriteGolfCourses extends Component {
         });
       }
       else {
-        affiliates.forEach(function(affiliate) {
+        affiliates.forEach(function (affiliate) {
           affiliate.key = affiliate.companyID;
         });
         this.setState({
-          currentAffiliates: affiliates
+          nearbyAffiliates: affiliates,
+          showSelectAll: true
         });
       }
     }.bind(this));
+  }
+
+  selectAllAffiliates() {
+    if (this.state.showSelectAll) {
+      this.state.nearbyAffiliates.forEach(function (affiliate) {
+        affiliate.memberFavorite = "true";
+      });
+    }
+    else {
+      this.state.nearbyAffiliates.forEach(function (affiliate) {
+        affiliate.memberFavorite = "false";
+      });
+    }
+    this.setState({
+      showSelectAll: !this.state.showSelectAll
+    });
+  }
+
+  selectAffiliate(item) {
+    if (item.memberFavorite === 'true') {
+      item.memberFavorite = 'false';
+    }
+    else {
+      item.memberFavorite = 'true';
+    }
+    // Re-render by accessing state but not changing it
+    this.setState({
+      showSelectAll: this.state.showSelectAll
+    });
+  }
+
+  saveNearbyAffliates() {
+
   }
 
   render() {
@@ -180,16 +215,28 @@ export default class FavoriteGolfCourses extends Component {
 
           </View>
 
-          <TouchableOpacity style={buttonStyles.fringedGreenButton}>
-            <Text style={buttonStyles.fringedGreenButtonText}>SELECT ALL</Text>
-          </TouchableOpacity>
+          {
+            renderIf(this.state.showSelectAll)(
+              <TouchableOpacity style={buttonStyles.fringedGreenButton} onPress={() => this.selectAllAffiliates()}>
+                <Text style={buttonStyles.fringedGreenButtonText}>SELECT ALL</Text>
+              </TouchableOpacity>
+            )
+          }
+
+          {
+            renderIf(!this.state.showSelectAll)(
+              <TouchableOpacity style={buttonStyles.fringedRedButton} onPress={() => this.selectAllAffiliates()}>
+                <Text style={buttonStyles.fringedRedButtonText}>CLEAR ALL</Text>
+              </TouchableOpacity>
+            )
+          }
 
           <FlatList
             style={{paddingTop: 10}}
-            data={this.state.currentAffiliates}
+            data={this.state.nearbyAffiliates}
             renderItem={
               ({item}) =>
-              <View style={{padding: 10, flexDirection: 'row'}}>
+              <TouchableOpacity style={{padding: 10, flexDirection: 'row'}} onPress={() => this.selectAffiliate(item)}>
                 {
                   renderIf(item.memberFavorite === 'true')(
                     <Icon name="check" size={30} color="#509E2F"/>
@@ -201,13 +248,15 @@ export default class FavoriteGolfCourses extends Component {
                   )
                 }
                 <Text style={{fontFamily:'OpenSans-Regular', fontSize: 18, paddingLeft: 5, paddingTop: 5}}>{item.companyName} <Text style={{fontFamily:'OpenSans-Regular', fontSize: 14}}>{item.distance}</Text></Text>
-              </View>
+              </TouchableOpacity>
             }
           />
 
-          <TouchableOpacity style={buttonStyles.solidGreenButton}>
+          <TouchableOpacity style={buttonStyles.solidGreenButton} onPress={() => this.saveNearbyAffliates()}>
             <Text style={buttonStyles.solidGreenButtonText}>SAVE CHOICES</Text>
           </TouchableOpacity>
+
+          <View style={{padding:100}}/>
         </ScrollView>
       </View>
     )
