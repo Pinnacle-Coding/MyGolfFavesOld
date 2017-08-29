@@ -60,6 +60,9 @@ module.exports = {
         if (err) {
           callback(err, 'An error occurred');
         }
+        else if (result.fail) {
+          callback(null, result.fail);
+        }
         else if (result.status !== 'success') {
           callback(null, result.message);
         }
@@ -68,6 +71,9 @@ module.exports = {
           sendRequest('http://business.mygolffaves.com/ws/mobilePublicService.cfc?method=getMemberAccount&UID=1&PWD=mob!leMGF&memberID='+userID, function (err, result) {
             if (err) {
               callback(err, 'An error occurred');
+            }
+            else if (result.fail) {
+              callback(null, result.fail);
             }
             else if (result.status !== 'success') {
               callback(null, result.message);
@@ -82,7 +88,7 @@ module.exports = {
                   callback(null, message);
                 }
                 else {
-                  offers.refresh(userID, function (err, message) {
+                  offers.refresh(userID, user, function (err, message) {
                     if (err) {
                       callback(err, 'An error occurred')
                     }

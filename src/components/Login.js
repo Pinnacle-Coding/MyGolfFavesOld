@@ -16,9 +16,10 @@ var auth = require('../services/AuthControl.js');
 export default class Login extends Component {
   state = {
     loaded: false,
-    showForgotLogin: false,
     showModal: false,
     modalText: '',
+    enableLogin: true,
+    showForgotLogin: false,
     username: '',
     password: ''
   };
@@ -40,25 +41,31 @@ export default class Login extends Component {
   }
 
   login() {
+    this.setState({
+      enableLogin: false
+    });
     auth.login(this.state.username, this.state.password, function(err, message) {
       if (err) {
         this.setState({
           password: '',
           modalText: err,
-          showModal: true
+          showModal: true,
+          enableLogin: true
         });
       }
       else if (message) {
         this.setState({
           password: '',
           modalText: message,
-          showModal: true
+          showModal: true,
+          enableLogin: true
         });
       }
       else {
         this.setState({
           username: '',
-          password: ''
+          password: '',
+          enableLogin: true
         });
         history.replace('/home');
       }
@@ -110,11 +117,11 @@ export default class Login extends Component {
           </Modal>
 
           <KeyboardAwareScrollView
-          style={styles.container}
-          resetScrollToCoords={{ x: 0, y: 0 }}
-          extraHeight={175}
-          keyboardOpeningTime={0}
-          scrollEnabled={true}>
+            style={styles.container}
+            resetScrollToCoords={{ x: 0, y: 0 }}
+            extraHeight={175}
+            keyboardOpeningTime={0}
+            scrollEnabled={true}>
             <View flexDirection="row" style={styles.topText}>
               <Text style={styles.noAccountTxt}>Don't have an account? </Text>
               <Link to="/register">
@@ -143,7 +150,10 @@ export default class Login extends Component {
               <Text style={styles.forgot}>Forgot Username/Password</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={buttonStyles.solidGreenButton} onPress={() => this.login()}>
+            <TouchableOpacity
+              disabled={!this.state.enableLogin}
+              style={buttonStyles.solidGreenButton}
+              onPress={() => this.login()}>
                 <Text style={buttonStyles.solidGreenButtonText}>LOG IN</Text>
             </TouchableOpacity>
 

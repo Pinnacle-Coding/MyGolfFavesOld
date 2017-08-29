@@ -38,6 +38,9 @@ var saveAffiliateAsync = function(memberID, nearbyAffiliates, callback) {
     if (err) {
       callback(err, 'An error occurred');
     }
+    else if (result.fail) {
+      callback(null, result.fail);
+    }
     else if (result.status !== 'success') {
       callback(null, result.message);
     }
@@ -56,6 +59,9 @@ var refreshInternal = function(memberID, callback) {
   sendRequest('http://business.mygolffaves.com/ws/mobilePublicService.cfc?method=getAffiliatesByMemberID&UID=1&PWD=mob!leMGF&memberID='+memberID, function (err, result) {
     if (err) {
       callback(err, 'An error occurred');
+    }
+    else if (result.fail) {
+      callback(null, result.fail);
     }
     else if (result.status !== 'success') {
       callback(null, result.message);
@@ -76,6 +82,28 @@ module.exports = {
     return affiliates;
   },
 
+  getAffiliate: function (companyID, callback) {
+    sendRequest('http://business.mygolffaves.com/ws/mobilePublicService.cfc?method=getAffiliateDetail&companyID='+companyID+'&UID=1&PWD=mob!leMGF', function (err, result) {
+      if (err) {
+        callback(err, 'An error occurred', null);
+      }
+      else if (result.fail) {
+        callback(null, result.fail, null);
+      }
+      else if (result.status !== 'success') {
+        callback(null, result.message, null);
+      }
+      else {
+        if (result.Details) {
+          callback(null, null, result.Details[0]);
+        }
+        else {
+          callback(null, 'No company with that ID exists', null);
+        }
+      }
+    });
+  },
+
   /**
    * Returns a list of nearby affiliates to the user's location in the callback function.
    * @param {String} memberID The user's ID
@@ -89,14 +117,14 @@ module.exports = {
       if (err) {
         callback(err, 'An error occurred', null);
       }
+      else if (result.fail) {
+        callback(null, result.fail, null);
+      }
       else if (result.status !== 'success') {
         callback(null, result.message, null);
       }
       else {
-        var nearbyAffiliates = result.Affiliates;
-        if (!nearbyAffiliates) {
-          nearbyAffiliates = [];
-        }
+        var nearbyAffiliates = result.Affiliates || [];
         callback(null, null, nearbyAffiliates);
       }
     })

@@ -2,33 +2,17 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Linking, Image, Platform } from 'react-native';
 import { Font, AppLoading } from 'expo';
 
-import Header from './Header.js'
+import Header from './Header.js';
 
-var offer = {
-  key: 2062,
-  name: "Ojai Valley Inn",
-  startDate: new Date(2017, 5, 5, 12, 0, 0, 0),
-  endDate:new Date(2017, 7, 15, 12, 0, 0, 0),
-  distance: 32.43,
-  image: "http://business.mygolffaves.com/img/143/offer-images/Rio%20Secco.jpg",
-  location: {
-    lat: -33.8356372,
-    long: 18.6947617
-  },
-  locationName: "905 Country Club Road Ojai, CA 93023",
-  offer: "Play 18 Hole Round of Golf any day - Receive day of week and time of day Free Replay",
-  website: "http://www.ojairesort.com/golf",
-  moreDetails: "Limited to 4 per person. Reservation required on our website www.GibbsCC.com or by calling the pro shop at (818) 878-9544. Green fee rate determined by available rate at time of reservation. Replay rounds are based on availability for the same day of the week at a similar tee time.",
-  terms: "Some restrictions may apply. Not valid in combination with any other offers or discounts. Proper golf attire required - collared shirts required and no blue jeans are allowed."
-}
+var offerCtrl = require('../services/OfferControl.js');
+var affiliateCtrl = require('../services/AffiliateControl.js');
 
 export default class Offer extends Component {
-  constructor() {
-    super();
-    this.state = {
-      loaded: false
-    };
-  }
+  state = {
+    loaded: false,
+    showModal: false,
+    modalText: ''
+  };
 
   async componentDidMount() {
     await Font.loadAsync({
@@ -40,13 +24,38 @@ export default class Offer extends Component {
     })
   }
 
-  getGPSLink(latArg, longArg) {
-    if (Platform.OS === 'ios') {
-      return 'http://maps.apple.com/?ll='+latArg+','+longArg
+  formatWebsite(website) {
+    if (!website.startsWith('http')) {
+      return 'http://' + website;
     }
-    else {
-      return 'geo:'+latArgs+','+longArg
-    }
+    return website;
+  }
+
+  openOfferLocation() {
+    var companyID = offerCtrl.getSelectedOffer().companyID;
+    affiliateCtrl.getAffiliate(companyID, function (err, message, company) {
+      if (err) {
+        this.setState({
+          modalText: err,
+          showModal: true
+        });
+      }
+      else if (message) {
+        this.setState({
+          modalText: message,
+          showModal: true
+        });
+      }
+      else {
+        if (Platform.OS === 'ios') {
+          var gpsLink = 'http://maps.apple.com/?ll='+company.lat+','+company.long;
+        }
+        else {
+          var gpsLink = 'geo:'+company.lat+','+company.long;
+        }
+        Linking.openURL(gpsLink).catch(err => console.error('An error occured', err))
+      }
+    });
   }
 
   render() {
@@ -57,14 +66,26 @@ export default class Offer extends Component {
       <View>
         <Header title="Offer"/>
         <View style={{borderBottomColor:'gray', borderBottomWidth:1, borderStyle: 'solid', padding:0}}/>
+
+        <Modal isVisible={this.state.showModal}>
+          <View style={modalStyles.modalContainer}>
+            <Text style={{fontSize: 20}}>{this.state.modalText}</Text>
+            <TouchableOpacity onPress={() => this.setState({showModal: false})}>
+              <View style={modalStyles.modalCloseButton}>
+                <Text style={{color:'#FFF'}}>Close</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+
         <ScrollView style={{padding: 10}}>
           <View>
-            <Text style={styles.title}>{offer.name}</Text>
+            <Text style={styles.title}>{offerCtrl.getSelectedOffer().companyName}</Text>
           </View>
           <View style={{paddingTop: 10, paddingBottom: 10}}>
-            <Text style={styles.description}>{offer.offer}</Text>
+            <Text style={styles.description}>{offerCtrl.getSelectedOffer().offerTitle}</Text>
           </View>
-          <Image source={{uri: offer.image}} style={{width: 400, height: 250}} />
+          <Image source={{uri: offerCtrl.getSelectedOffer().logoImageURL}} style={{width: 400, height: 250}} />
           <View style={{borderBottomColor:'lightgray', borderBottomWidth:1, borderStyle: 'solid', padding:10}}/>
           <View style={{paddingTop: 10}}>
             <Text style={styles.title}>Offer Details</Text>
@@ -73,16 +94,16 @@ export default class Offer extends Component {
             <View>
               <Text style={styles.subtitle}>Redemption Location</Text>
             </View>
-            <TouchableOpacity onPress={() => {Linking.openURL(this.getGPSLink(offer.location.lat, offer.location.long)).catch(err => console.error('An error occured', err))} }>
-              <Text style={styles.subcontent}>{offer.locationName}</Text>
+            <TouchableOpacity onPress={() => this.openOfferLocation()}>
+              <Text style={styles.subcontent}>{offerCtrl.getSelectedOffer().addressLine1 + ', ' + offerCtrl.getSelectedOffer().city + ', ' + offerCtrl.getSelectedOffer().stateCD + ' ' + offerCtrl.getSelectedOffer().zipCode}</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.subsection}>
             <View>
               <Text style={styles.subtitle}>Website</Text>
             </View>
-            <TouchableOpacity onPress={() => {Linking.openURL(offer.website).catch(err => console.error('An error occured', err))} }>
-              <Text style={styles.subcontent}>{offer.website}</Text>
+            <TouchableOpacity onPress={() => {Linking.openURL(formatWebsite(offerCtrl.getSelectedOffer().website)).catch(err => console.error('An error occured', err))} }>
+              <Text style={styles.subcontent}>{offerCtrl.getSelectedOffer().website}</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.subsection}>
@@ -90,7 +111,7 @@ export default class Offer extends Component {
               <Text style={styles.subtitle}>Expires on</Text>
             </View>
             <View>
-              <Text style={styles.subcontent}>{offer.endDate.toDateString()}</Text>
+              <Text style={styles.subcontent}>{offerCtrl.getSelectedOffer().endDate}</Text>
             </View>
           </View>
           <View style={styles.subsection}>
@@ -98,7 +119,7 @@ export default class Offer extends Component {
               <Text style={styles.subtitle}>More details</Text>
             </View>
             <View>
-              <Text style={styles.subcontent}>{offer.moreDetails}</Text>
+              <Text style={styles.subcontent}>{offerCtrl.getSelectedOffer().details}</Text>
             </View>
           </View>
           <View style={styles.subsection}>
@@ -106,7 +127,7 @@ export default class Offer extends Component {
               <Text style={styles.subtitle}>Terms</Text>
             </View>
             <View>
-              <Text style={styles.subcontent}>{offer.terms}</Text>
+              <Text style={styles.subcontent}>{offerCtrl.getSelectedOffer().terms}</Text>
             </View>
           </View>
           <TouchableOpacity style={buttonStyles.solidGreenButton}>
@@ -119,6 +140,7 @@ export default class Offer extends Component {
   }
 }
 
+import modalStyles from '../styles/modal.js';
 import buttonStyles from '../styles/buttons.js';
 const styles = StyleSheet.create({
   title: {

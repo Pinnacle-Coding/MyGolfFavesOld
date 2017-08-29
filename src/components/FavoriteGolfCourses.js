@@ -53,14 +53,16 @@ export default class FavoriteGolfCourses extends Component {
     loaded: false,
     showModal: false,
     modalText: '',
+    enableSearch: true,
     selectedCity: 'Los Angeles',
     selectedZipCodeInvalid: false,
     locationLat: citiesData['Los Angeles'].lat,
     locationLong: citiesData['Los Angeles'].long,
     locationRadius: '50',
+    ignoreRadius: false,
     locationOption: 2,
     nearbyAffiliates: [],
-    showSelectAll: true,
+    showSelectAll: true
   };
 
   async componentDidMount() {
@@ -114,27 +116,36 @@ export default class FavoriteGolfCourses extends Component {
   }
 
   getLocationShowAll() {
-
+    this.setState({
+      ignoreRadius: !this.state.ignoreRadius
+    });
+    this.getNearbyAffiliates(); // Click Show All/Less triggers a refresh of the affiliates list
   }
 
   getNearbyAffiliates() {
+    this.setState({
+      enableSearch: false
+    });
     if (this.state.locationOption === 0 && this.state.selectedZipCodeInvalid) {
       this.setState({
         showModal: true,
         modalText: 'Invalid US zip code entered. Using your last saved location instead.'
       });
     }
-    affiliateCtrl.getNearbyAffiliates(authCtrl.getUser().memberID, this.state.locationLat, this.state.locationLong, this.state.locationRadius, function (err, message, affiliates) {
+    var radius = this.state.ignoreRadius ? 100000 : this.state.locationRadius;
+    affiliateCtrl.getNearbyAffiliates(authCtrl.getUser().memberID, this.state.locationLat, this.state.locationLong, radius, function (err, message, affiliates) {
       if (err) {
         this.setState({
           modalText: err,
-          showModal: true
+          showModal: true,
+          enableSearch: true
         });
       }
       else if (message) {
         this.setState({
           modalText: message,
-          showModal: true
+          showModal: true,
+          enableSearch: true
         });
       }
       else {
@@ -143,7 +154,8 @@ export default class FavoriteGolfCourses extends Component {
         });
         this.setState({
           nearbyAffiliates: affiliates,
-          showSelectAll: true
+          showSelectAll: true,
+          enableSearch: true
         });
       }
     }.bind(this));
@@ -289,41 +301,44 @@ export default class FavoriteGolfCourses extends Component {
             <View style={{flexDirection: 'row'}}>
               <Text style={{padding: 5, paddingLeft: 20, fontFamily:'OpenSans-Regular', fontSize: 16}}>{this.state.locationOption === 2 ? '\u2023' : '\u2022'} </Text>
               <ModalSelector
-              style={{paddingTop: 2, width: 200}}
-              data={citiesMenu}
-              initValue="- Select a location -"
-              onChange={(option) => this.getLocationFromCity(option.label)}>
+                style={{paddingTop: 2, width: 200}}
+                data={citiesMenu}
+                initValue="- Select a location -"
+                onChange={(option) => this.getLocationFromCity(option.label)}>
                 <TextInput
-                style={{borderWidth:1, borderColor:'#ccc', padding:10, height:30}}
-                editable={false}
-                placeholder="- Select a location -"
-                value={this.state.selectedCity} />
+                  style={{borderWidth:1, borderColor:'#ccc', padding:10, height:30}}
+                  editable={false}
+                  placeholder="- Select a location -"
+                  value={this.state.selectedCity} />
               </ModalSelector>
             </View>
 
-            <Text style={{padding: 5, paddingLeft: 20, paddingBottom: 20, fontFamily:'OpenSans-Regular', fontSize: 16}}>{this.state.locationOption === 3 ? '\u2023' : '\u2022'} <Text style={{textDecorationLine: 'underline'}}>Show All</Text></Text>
+            <TouchableOpacity onPress={() => this.getLocationShowAll()}>
+              <Text style={{padding: 5, paddingLeft: 20, paddingBottom: 20, fontFamily:'OpenSans-Regular', fontSize: 16}}>{'\u2022'} <Text style={{textDecorationLine: 'underline'}}>{this.state.ignoreRadius ? 'Show Less' : 'Show All'}</Text></Text>
+            </TouchableOpacity>
 
             <View style={{borderBottomColor: 'black', borderBottomWidth: 1, borderStyle: 'solid', padding: 0, marginLeft: 20, marginRight: 20}}/>
 
             <View style={{flexDirection: 'row'}}>
               <Text style={{padding: 5, paddingLeft: 20, paddingTop: 15, fontFamily:'OpenSans-Regular', fontSize: 16}}>{'\u2022'} Search within </Text>
               <ModalSelector
-              style={{paddingTop: 12, width: 50}}
-              data={milesMenu}
-              initValue="50"
-              onChange={(option) => {this.setState({locationRadius: option.label})}}>
+                style={{paddingTop: 12, width: 50}}
+                data={milesMenu}
+                initValue="50"
+                onChange={(option) => {this.setState({locationRadius: option.label})}}>
                 <TextInput
-                style={{borderWidth:1, borderColor:'#ccc', padding:10, height:30}}
-                editable={false}
-                placeholder="50"
-                value={this.state.locationRadius}/>
+                  style={{borderWidth:1, borderColor:'#ccc', padding:10, height:30}}
+                  editable={false}
+                  placeholder="50"
+                  value={this.state.locationRadius}/>
               </ModalSelector>
               <Text style={{padding: 5, paddingTop: 15, fontFamily:'OpenSans-Regular', fontSize: 16}}> miles</Text>
             </View>
 
             <TouchableOpacity
-            style={{marginTop: 15, marginLeft: 15, marginRight: 15, padding: 5, borderWidth: 1, borderStyle: 'solid'}}
-            onPress={() => this.getNearbyAffiliates()}>
+              disabled={!this.state.enableSearch}
+              style={{marginTop: 15, marginLeft: 15, marginRight: 15, padding: 5, borderWidth: 1, borderStyle: 'solid'}}
+              onPress={() => this.getNearbyAffiliates()}>
               <Text style={{fontSize: 16, fontFamily: 'OpenSans-Regular', textAlign: 'center'}}>GO</Text>
             </TouchableOpacity>
 

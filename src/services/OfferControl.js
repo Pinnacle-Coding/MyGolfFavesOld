@@ -58,6 +58,9 @@ module.exports = {
       if (err) {
         callback(err, 'An error occurred');
       }
+      else if (result.fail) {
+        callback(null, result.fail);
+      }
       else if (result.status !== 'success') {
         callback(null, result.message);
       }
@@ -83,6 +86,9 @@ module.exports = {
       else if (result.fail) {
         callback(null, result.fail);
       }
+      else if (result.status !== 'success') {
+        callback(null, result.message);
+      }
       else {
         var ri = -1;
         for (var i = 0; i < wallet.length; i++) {
@@ -103,22 +109,37 @@ module.exports = {
   /**
    * Populates the service with the user's offers, downloaded from the API.
    * @param {String} memberID The user's ID
+   * @param {Number} memberData The user object
    * @param {Function} callback A function taking returned with two arguments: error (or null) and message (not null when something went wrong but not an actual error)
    */
-  refresh: function(memberID, callback) {
-    sendRequest('http://business.mygolffaves.com/ws/mobilePublicService.cfc?method=getMemberWallet&UID=1&PWD=mob!leMGF&memberID='+memberID, function (err, result) {
+  refresh: function(memberID, memberData, callback) {
+    sendRequest('http://business.mygolffaves.com/ws/mobilePublicService.cfc?method=getCurrentOffers&UID=1&PWD=mob!leMGF&ageMax=29&ageMin=25&genderAbbr='+user.genderAbbr+'&golfPartnerID='+user['lstGolfPartnerID']+'&originLat='+user.lat+'&originLong='+user.long+'&memberID='+memberID+'&playGolfFrequencyID='+user.playGolfFrequencyID+'&stateCD='+user.State, function (err, result) {
       if (err) {
         callback(err, 'An error occurred');
+      }
+      else if (result.fail) {
+        callback(null, result.fail);
       }
       else if (result.status !== 'success') {
         callback(null, result.message);
       }
       else {
-        wallet = result.Offers;
-        if (!wallet) {
-          wallet = [];
-        }
-        callback(null, null);
+        offers = result.Offers || [];
+        sendRequest('http://business.mygolffaves.com/ws/mobilePublicService.cfc?method=getMemberWallet&UID=1&PWD=mob!leMGF&memberID='+memberID, function (err, result) {
+          if (err) {
+            callback(err, 'An error occurred');
+          }
+          else if (result.fail) {
+            callback(null, result.fail);
+          }
+          else if (result.status !== 'success') {
+            callback(null, result.message);
+          }
+          else {
+            wallet = result.Offers || [];
+            callback(null, null);
+          }
+        });
       }
     });
   }
