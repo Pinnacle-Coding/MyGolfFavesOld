@@ -72,9 +72,30 @@ module.exports = {
    * The user is attempting to redeem selectedOffer.
    * @param Function callback A function taking returned with two arguments: error (or null) and message (not null when something went wrong but not an actual error)
    */
-  redeemOffer: function (callback) {
-
-  }
+  redeemOffer: function (userID, redemptionCode, amount, callback) {
+    sendRequest('http://business.mygolffaves.com/ws/mobilePublicService.cfc?method=redeemOffer&UID=1&PWD=mob!leMGF&memberID='+userID+'&companyID='+selectedOffer.companyID+'&redemptionCode='+redemptionCode+'&offerID='+selectedOffer.offerID+'&amount='+amount, function (err, result) {
+      if (err) {
+        callback(err, 'An error occurred');
+      }
+      else if (result.fail) {
+        callback(null, result.fail);
+      }
+      else {
+        var ri = -1;
+        for (var i = 0; i < wallet.length; i++) {
+          if (wallet[i].offerID === selectedOffer.offerID) {
+            ri = i;
+            break;
+          }
+        }
+        if (ri !== -1) {
+          wallet.splice(ri, 1);
+        }
+        selectedOffer = undefined;
+        callback(null, null);
+      }
+    })
+  },
 
   /**
    * Called by AuthControl's login method. Populates the service with the user's offers, downloaded from the API.
@@ -91,6 +112,9 @@ module.exports = {
       }
       else {
         wallet = result.Offers;
+        if (!wallet) {
+          wallet = [];
+        }
         callback(null, null);
       }
     });

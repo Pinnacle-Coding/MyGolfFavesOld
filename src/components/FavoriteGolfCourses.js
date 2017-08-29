@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, ListView, Text, TouchableOpacity  } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, TouchableOpacity  } from 'react-native';
 import { Font, AppLoading } from 'expo';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { CheckBox } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import Header from './Header.js'
+import Header from './Header.js';
 
 var testData = [
   {
@@ -23,23 +21,18 @@ var testData = [
 ]
 
 export default class FavoriteGolfCourses extends Component {
-  constructor() {
-    super();
-    const ds = new ListView.DataSource({rowHasChanged: (r1,r2) => ri != r2})
+  state = {
+    loaded: false
+  };
 
-    this.state = {
-      loaded: false,
-      dataSource: ds.cloneWithRows(testData),
-      checkedSrc: 'check-box'
-    };
-  }
-
-  changeChecked() {
-    if (this.state.checkedSrc == 'check-box'){
-      this.setState({checkedSrc: 'check-box-outline-blank'})
-    } else {
-      this.setState({checkedSrc: 'check-box'})
-    }
+  async componentDidMount() {
+    await Font.loadAsync({
+      'OpenSans-Regular': require('../../assets/fonts/OpenSans-Regular.ttf'),
+      'OpenSans-Light': require('../../assets/fonts/OpenSans-Light.ttf'),
+    });
+    this.setState({
+      loaded: true
+    })
   }
 
   render() {
@@ -47,26 +40,17 @@ export default class FavoriteGolfCourses extends Component {
       return <AppLoading/>;
     }
     return (
-      <View style={styles.container}>
-        <Header title="Favorite Golf Courses"/>
+      <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-between'}}>
+        <Header title="Favorites"/>
         <View style={{borderBottomColor:'gray', borderBottomWidth:1, borderStyle: 'solid', padding:0}}/>
-        <ListView
-          dataSource={this.state.dataSource}
-          renderRow={(rowData) =>
-            <View style = {{flexDirection: 'row'}}>
-              <TouchableOpacity onPress={() => {
-                rowData.checked = !rowData.checked;
-              }}>
-                <Icon
-                  name={rowData.checked ? 'check-box' : 'check-box-outline-blank'}
-                  size={30}
-                  style={{padding: 10}}
-                />
-              </TouchableOpacity>
-              <Text style={{fontSize: 20, alignSelf:'center'}}>{rowData.name}</Text>
-              <Text style={{fontSize: 15, alignSelf:'center'}}>{rowData.distance} mi.</Text>
-            </View>}
-          />
+
+        <ScrollView style={styles.container}>
+          <View style={styles.locationContainer}>
+            <View style={{justifyContent: 'center'}}>
+              <Text style={{fontFamily:'OpenSans-Regular', fontSize: 24}}>Location Options</Text>
+            </View>
+          </View>
+        </ScrollView>
       </View>
     )
   }
@@ -74,13 +58,14 @@ export default class FavoriteGolfCourses extends Component {
 
 const styles = StyleSheet.create({
   container: {
-
+    padding: 30,
+    flex: 1
   },
-  scrollContainer: {
-
-  },
-  paramContainer: {
-
-  },
-
+  locationContainer: {
+    backgroundColor: '#efefef',
+    paddingTop: 40,
+    borderStyle: 'solid',
+    borderColor: 'black',
+    borderWidth: 1
+  }
 });

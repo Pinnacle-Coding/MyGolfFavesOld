@@ -4,8 +4,11 @@ import { Font, AppLoading } from 'expo';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Modal from 'react-native-modal';
 
+import history from '../utils/history.js';
+
 import Header from './Header.js';
 
+var authCtrl = require('../services/AuthControl.js');
 var offerCtrl = require('../services/OfferControl.js');
 
 var t = require('tcomb-form-native');
@@ -39,10 +42,36 @@ export default class Redeem extends Component {
     })
   }
 
+  closeModal() {
+    this.setState({showModal: false});
+    if (!offerCtrl.getSelectedOffer()) {
+      history.goBack();
+    }
+  }
+
   redeem() {
     var formValue = this.refs.form.getValue();
     if (formValue) {
-      console.log(formValue);
+      offerCtrl.redeemOffer(authCtrl.getUser().memberID, formValue.redemptionCode, formValue.enterAmount, function (err, message) {
+        if (err) {
+          this.setState({
+            modalText: err,
+            showModal: true
+          });
+        }
+        else if (message) {
+          this.setState({
+            modalText: message,
+            showModal: true
+          });
+        }
+        else {
+          this.setState({
+            modalText: 'Redeemed offer successfully!',
+            showModal: true
+          });
+        }
+      }.bind(this));
     }
     else {
       this.setState({
@@ -64,7 +93,7 @@ export default class Redeem extends Component {
         <Modal isVisible={this.state.showModal}>
           <View style={modalStyles.modalContainer}>
             <Text style={{fontSize: 20}}>{this.state.modalText}</Text>
-            <TouchableOpacity onPress={() => this.setState({showModal: false})}>
+            <TouchableOpacity onPress={() => this.closeModal()}>
               <View style={modalStyles.modalCloseButton}>
                 <Text style={{color:'#FFF'}}>Close</Text>
               </View>

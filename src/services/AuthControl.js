@@ -1,5 +1,6 @@
 
 var offers = require('./OfferControl.js');
+var affliates = require('./AffliateControl.js');
 var xml2jsParseString = require('react-native-xml2js').parseString;
 
 var user = undefined;
@@ -23,16 +24,8 @@ var sendRequest = function(url, callback) {
           }
           else {
             var result_text = result['wddxPacket']['data'][0]['string'][0].split('\\').join('\\\\');
-            try {
-              var result_json = JSON.parse(result_text);
-            }
-            catch (e) {
-              // TODO: Remove fake user when parsing works correctly again
-              var result_json = {
-                status: 'success',
-                memberID: 3478
-              };
-            }
+            var result_json = JSON.parse(result_text);
+            result_json.memberID = 3478; // Test user
             callback(null, result_json);
           }
       });
@@ -82,7 +75,7 @@ module.exports = {
             }
             else {
               user = result.Details[0];
-              offers.populate(userID, function (err, message) {
+              affliates.populate(userID, function (err, message) {
                 if (err) {
                   callback(err, 'An error occurred')
                 }
@@ -90,7 +83,17 @@ module.exports = {
                   callback(null, message);
                 }
                 else {
-                  callback(null, null);
+                  offers.populate(userID, function (err, message) {
+                    if (err) {
+                      callback(err, 'An error occurred')
+                    }
+                    else if (message) {
+                      callback(null, message);
+                    }
+                    else {
+                      callback(null, null);
+                    }
+                  });
                 }
               });
             }
