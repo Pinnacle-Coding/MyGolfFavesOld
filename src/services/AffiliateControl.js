@@ -62,6 +62,9 @@ var refreshInternal = function(memberID, callback) {
     }
     else {
       affiliates = result.Affiliates;
+      if (!affiliates) {
+        affiliates = [];
+      }
       callback(null, null);
     }
   });
@@ -90,7 +93,11 @@ module.exports = {
         callback(null, result.message, null);
       }
       else {
-        callback(null, null, result.Affiliates);
+        var nearbyAffiliates = result.Affiliates;
+        if (!nearbyAffiliates) {
+          nearbyAffiliates = [];
+        }
+        callback(null, null, nearbyAffiliates);
       }
     })
   },

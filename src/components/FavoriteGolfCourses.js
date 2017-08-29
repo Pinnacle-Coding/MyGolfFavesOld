@@ -1,35 +1,65 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text, TouchableOpacity, TextInput, FlatList, Button, Linking } from 'react-native';
-import { Font, AppLoading } from 'expo';
+import { Font, AppLoading, Location, Permissions } from 'expo';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ModalSelector from 'react-native-modal-selector';
 import Modal from 'react-native-modal';
 
 import renderIf from '../utils/renderif.js';
+import zipcodes from '../utils/zipcodes.js';
 
 import Header from './Header.js';
 
 var authCtrl = require('../services/AuthControl.js');
 var affiliateCtrl = require('../services/AffiliateControl.js');
 
-var citiesData = [
-  {
-    name: 'Las Vegas',
+var citiesData = {
+  'Los Angeles': {
+    lat: 34.0522342,
+    long: -118.2436849
+  },
+  'Las Vegas': {
     lat: 36.171,
     long: -115.1258
+  },
+  'San Diego': {
+    lat: 32.7153292,
+    long: -117.1572551
+  },
+  'San Jose': {
+    lat: 37.3393857,
+    long: -121.8949555
+  },
+  'San Luis Obispo': {
+    lat: 35.2827524,
+    long: -120.6596156
+  },
+  'Palm Springs': {
+    lat: 33.8302961,
+    long: -116.5452921
+  },
+  'Bakersfield': {
+    lat: 35.3732921,
+    long: -119.0187125
+  },
+  'Salinas': {
+    lat: 36.6777372,
+    long: -121.6555013
   }
-]
+};
 
 export default class FavoriteGolfCourses extends Component {
   state = {
     loaded: false,
     showModal: false,
     modalText: '',
-    locationLat: 36.171,
-    locationLong: -115.1258,
-    locationRadius: "50",
+    selectedCity: 'Los Angeles',
+    locationLat: citiesData['Los Angeles'].lat,
+    locationLong: citiesData['Los Angeles'].long,
+    locationRadius: '50',
+    locationOption: 2,
     nearbyAffiliates: [],
-    showSelectAll: true
+    showSelectAll: true,
   };
 
   async componentDidMount() {
@@ -39,7 +69,50 @@ export default class FavoriteGolfCourses extends Component {
     });
     this.setState({
       loaded: true
-    })
+    });
+  }
+
+  getLocationFromZipCode() {
+    var zipcode = ""+this.state.selectedZipCode;
+    if (zipcode in zipcodes) {
+      var zipcodeData = zipcodes[zipcode];
+      this.setState({
+        locationOption: 0,
+        locationLat: zipcodeData.lat,
+        locationLong: zipcodeData.long
+      });
+    }
+    else {
+      this.setState({
+        showModal: true,
+        modalText: 'Invalid US zip code entered.'
+      });
+    }
+  }
+
+  async getCurrentLocation() {
+    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status === 'granted') {
+      let location = await Location.getCurrentPositionAsync({});
+      this.setState({
+        locationLat: location.coords.latitude,
+        locationLong: location.coords.longitude,
+        locationOption: 1
+      });
+    }
+  }
+
+  getLocationFromCity(cityName) {
+    this.setState({
+      locationLat: citiesData[cityName].lat,
+      locationLong: citiesData[cityName].long,
+      locationOption: 2,
+      selectedCity: cityName
+    });
+  }
+
+  getLocationShowAll() {
+
   }
 
   getNearbyAffiliates() {
@@ -159,11 +232,13 @@ export default class FavoriteGolfCourses extends Component {
         label: 'Cities'
       },
     ];
-    for (var i = 0; i < citiesData.length; i++) {
-      citiesMenu.push({
-        key: i + 1,
-        label: citiesData[i].name
-      });
+    for (var k in citiesData) {
+      if (citiesData.hasOwnProperty(k)) {
+        citiesMenu.push({
+          key: citiesMenu.length,
+          label: k
+        });
+      }
     }
 
     if (!this.state.loaded) {
@@ -190,33 +265,35 @@ export default class FavoriteGolfCourses extends Component {
           <View style={styles.locationContainer}>
             <Text style={{paddingBottom: 5, textAlign: 'center', fontFamily:'OpenSans-Regular', fontSize: 24}}>Location Options</Text>
 
-            <View style={{flexDirection: 'row'}}>
-              <Text style={{padding: 5, paddingLeft: 20, fontFamily:'OpenSans-Regular', fontSize: 16}}>{'\u2022'} Location (click zip to change) </Text>
-              <TextInput
-                style={{borderWidth:1, borderColor:'#ccc', padding:10, height:30, width: 75}}
-                placeholder="00000"
-                keyboardType = 'numeric'
-                value={this.state.textInputValue3} />
-            </View>
+            <Text style={{padding: 5, paddingLeft: 20, fontFamily:'OpenSans-Regular', fontSize: 16}}>{this.state.locationOption === 0 ? '\u2023' : '\u2022'} Location (click zip to change) </Text>
+            <TextInput
+              style={{borderWidth:1, borderColor:'#ccc', padding:10, marginLeft: 35, height:30, width: 120}}
+              placeholder="00000"
+              keyboardType = 'numeric'
+              onChangeText={(text) => this.setState({selectedZipCode: text})}
+              onEndEditing={() => this.getLocationFromZipCode()}
+              value={this.state.selectedZipCode} />
 
-            <Text style={{padding: 5, paddingLeft: 20, fontFamily:'OpenSans-Regular', fontSize: 16}}>{'\u2022'} <Text style={{textDecorationLine: 'underline'}}>Use My Current Location</Text></Text>
+            <TouchableOpacity onPress={() => this.getCurrentLocation()}>
+              <Text style={{padding: 5, paddingLeft: 20, fontFamily:'OpenSans-Regular', fontSize: 16}}>{this.state.locationOption === 1 ? '\u2023' : '\u2022'} <Text style={{textDecorationLine: 'underline'}}>Use My Current Location</Text></Text>
+            </TouchableOpacity>
 
             <View style={{flexDirection: 'row'}}>
-              <Text style={{padding: 5, paddingLeft: 20, fontFamily:'OpenSans-Regular', fontSize: 16}}>{'\u2022'} </Text>
+              <Text style={{padding: 5, paddingLeft: 20, fontFamily:'OpenSans-Regular', fontSize: 16}}>{this.state.locationOption === 2 ? '\u2023' : '\u2022'} </Text>
               <ModalSelector
               style={{paddingTop: 2, width: 200}}
               data={citiesMenu}
               initValue="- Select a location -"
-              onChange={(option)=>{ this.setState({textInputValue2: option.label})}}>
+              onChange={(option) => this.getLocationFromCity(option.label)}>
                 <TextInput
                 style={{borderWidth:1, borderColor:'#ccc', padding:10, height:30}}
                 editable={false}
                 placeholder="- Select a location -"
-                value={this.state.textInputValue2} />
+                value={this.state.selectedCity} />
               </ModalSelector>
             </View>
 
-            <Text style={{padding: 5, paddingLeft: 20, paddingBottom: 20, fontFamily:'OpenSans-Regular', fontSize: 16}}>{'\u2022'} <Text style={{textDecorationLine: 'underline'}}>Show All</Text></Text>
+            <Text style={{padding: 5, paddingLeft: 20, paddingBottom: 20, fontFamily:'OpenSans-Regular', fontSize: 16}}>{this.state.locationOption === 3 ? '\u2023' : '\u2022'} <Text style={{textDecorationLine: 'underline'}}>Show All</Text></Text>
 
             <View style={{borderBottomColor: 'black', borderBottomWidth: 1, borderStyle: 'solid', padding: 0, marginLeft: 20, marginRight: 20}}/>
 
