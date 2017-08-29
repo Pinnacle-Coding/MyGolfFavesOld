@@ -2,25 +2,19 @@ import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text, FlatList, TouchableOpacity } from 'react-native';
 import { Font, AppLoading } from 'expo';
 import { Link } from 'react-router-native';
+import Modal from 'react-native-modal';
 
-import Header from './Header.js'
+import history from '../utils/history.js';
 
-var offers = [
-  {
-    key: 2058,
-    name: 'Moorpark Country Club',
-    offer: 'Complimentary Guest'
-  },
-  {
-    key: 2059,
-    name: 'Moorpark Country Club',
-    offer: 'Play 18 Hole Round of Golf any day - Receive day of week and time of day Free Replay'
-  }
-]
+import Header from './Header.js';
 
-export default class Boilerplate extends Component {
+var offerCtrl = require('../services/OfferControl.js');
+
+export default class Wallet extends Component {
   state = {
-    loaded: false
+    loaded: false,
+    showModal: false,
+    modalText: ''
   };
 
   async componentDidMount() {
@@ -33,6 +27,36 @@ export default class Boilerplate extends Component {
     })
   }
 
+  formatOffers(rawOffers) {
+    var newOffers = [];
+    rawOffers.forEach(function (rawOffer) {
+      var newOffer = Object.assign({}, rawOffer);
+      newOffer['key'] = newOffer['offerID'];
+      newOffers.push(newOffer);
+    });
+    return newOffers;
+  }
+
+  selectOffer(offerID) {
+    offerCtrl.selectOffer(offerID, function (err, message) {
+      if (err) {
+        this.setState({
+          modalText: err,
+          showModal: true
+        });
+      }
+      else if (message) {
+        this.setState({
+          modalText: message,
+          showModal: true
+        });
+      }
+      else {
+        history.push('/redeem');
+      }
+    }.bind(this));
+  }
+
   render() {
     if (!this.state.loaded) {
       return <AppLoading/>;
@@ -41,18 +65,28 @@ export default class Boilerplate extends Component {
       <View style={styles.container}>
         <Header title="Wallet"/>
         <View style={{borderBottomColor:'gray', borderBottomWidth:1, borderStyle: 'solid', padding:0}}/>
+
+        <Modal isVisible={this.state.showModal}>
+          <View style={modalStyles.modalContainer}>
+            <Text style={{fontSize: 20}}>{this.state.modalText}</Text>
+            <TouchableOpacity onPress={() => this.setState({showModal: false})}>
+              <View style={modalStyles.modalCloseButton}>
+                <Text style={{color:'#FFF'}}>Close</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+
         <ScrollView>
           <FlatList
-            data={offers}
+            data={this.formatOffers(offerCtrl.getMemberWallet())}
             renderItem={
               ({item}) =>
               <View style={{padding: 10}}>
-                  <Text style={styles.itemTitle}>{item.name} - {item.offer}</Text>
-                  <TouchableOpacity style={styles.redeemContainer}>
+                  <Text style={styles.itemTitle}>{item.companyName} - {item.offerTitle}</Text>
+                  <TouchableOpacity style={styles.redeemContainer} onPress={() =>  this.selectOffer(item.offerID)}>
                     {
-                      <Link to="/redeem">
-                        <Text style={styles.redeemText}>REDEEM</Text>
-                      </Link>
+                      <Text style={styles.redeemText}>REDEEM</Text>
                     }
                   </TouchableOpacity>
                   <View style={{borderBottomColor:'lightgray', borderBottomWidth:1, borderStyle: 'solid', padding:10}}/>
@@ -66,6 +100,7 @@ export default class Boilerplate extends Component {
   }
 }
 
+import modalStyles from '../styles/modal.js';
 const styles = StyleSheet.create({
   container: {
 

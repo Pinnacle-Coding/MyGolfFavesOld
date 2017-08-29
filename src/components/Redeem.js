@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import { Font, AppLoading } from 'expo';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import Modal from 'react-native-modal';
 
-import Header from './Header.js'
+import Header from './Header.js';
+
+var offerCtrl = require('../services/OfferControl.js');
 
 var t = require('tcomb-form-native');
 var Form = t.form.Form;
@@ -19,15 +22,11 @@ var options = {
   }
 };
 
-var offer = {
-  key: 2058,
-  name: 'Moorpark Country Club',
-  offer: 'Complimentary Guest'
-}
-
 export default class Redeem extends Component {
   state = {
-    loaded: false
+    loaded: false,
+    showModal: false,
+    modalText: ''
   };
 
   async componentDidMount() {
@@ -40,6 +39,19 @@ export default class Redeem extends Component {
     })
   }
 
+  redeem() {
+    var formValue = this.refs.form.getValue();
+    if (formValue) {
+      console.log(formValue);
+    }
+    else {
+      this.setState({
+        modalText: 'Required fields missing',
+        showModal: true
+      });
+    }
+  }
+
   render() {
     if (!this.state.loaded) {
       return <AppLoading/>;
@@ -48,6 +60,18 @@ export default class Redeem extends Component {
       <View style={styles.container}>
         <Header title="Redeem Offer"/>
         <View style={{borderBottomColor:'gray', borderBottomWidth:1, borderStyle: 'solid', padding:0}}/>
+
+        <Modal isVisible={this.state.showModal}>
+          <View style={modalStyles.modalContainer}>
+            <Text style={{fontSize: 20}}>{this.state.modalText}</Text>
+            <TouchableOpacity onPress={() => this.setState({showModal: false})}>
+              <View style={modalStyles.modalCloseButton}>
+                <Text style={{color:'#FFF'}}>Close</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+
         <KeyboardAwareScrollView
         style={styles.scrollContainer}
         resetScrollToCoords={{ x: 0, y: 0 }}
@@ -55,17 +79,17 @@ export default class Redeem extends Component {
         keyboardOpeningTime={0}
         scrollEnabled={true}>
           <View style={{paddingTop: 10}}>
-            <Text style={styles.title}>{offer.offer}</Text>
+            <Text style={styles.title}>{offerCtrl.getSelectedOffer().offerTitle}</Text>
           </View>
           <View style={{paddingBottom: 20}}>
-            <Text style={styles.title}>@ {offer.name}</Text>
+            <Text style={styles.title}>@ {offerCtrl.getSelectedOffer().companyName}</Text>
           </View>
           <Form
             ref="form"
             type={RedeemModel}
             options={options}
           />
-          <TouchableOpacity style={styles.button} onPress={this.onPress}>
+          <TouchableOpacity style={styles.button} onPress={() => this.redeem()}>
             <Text style={styles.buttonText}>Redeem</Text>
           </TouchableOpacity>
           <View style={{padding:100}}/>
@@ -75,6 +99,7 @@ export default class Redeem extends Component {
   }
 }
 
+import modalStyles from '../styles/modal.js';
 const styles = StyleSheet.create({
   container: {
 

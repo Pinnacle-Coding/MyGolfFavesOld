@@ -2,29 +2,26 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TextInput, TouchableOpacity, Text, Linking } from 'react-native';
 import { Font, AppLoading } from 'expo';
 import { Link } from 'react-router-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import Modal from 'react-native-modal'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import Modal from 'react-native-modal';
 
 import focusTextInput from '../utils/TextInputManager.js';
 import renderIf from '../utils/renderif.js';
 import history from '../utils/history.js';
 
-import Header from './Header.js'
+import Header from './Header.js';
 
 var auth = require('../services/AuthControl.js');
 
 export default class Login extends Component {
-  constructor() {
-    super();
-    this.state = {
-      loaded: false,
-      showForgotLogin: false,
-      showModal: false,
-      modalText: '',
-      username: '',
-      password: ''
-    };
-  }
+  state = {
+    loaded: false,
+    showForgotLogin: false,
+    showModal: false,
+    modalText: '',
+    username: '',
+    password: ''
+  };
 
   async componentDidMount() {
     await Font.loadAsync({
@@ -45,18 +42,24 @@ export default class Login extends Component {
   login() {
     auth.login(this.state.username, this.state.password, function(err, message) {
       if (err) {
-        this.setState({password: ''});
-        this.setState({modalText: err});
-        this.setState({showModal: true});
+        this.setState({
+          password: '',
+          modalText: err,
+          showModal: true
+        });
       }
       else if (message) {
-        this.setState({password: ''});
-        this.setState({modalText: message});
-        this.setState({showModal: true});
+        this.setState({
+          password: '',
+          modalText: message,
+          showModal: true
+        });
       }
       else {
-        this.setState({username: ''});
-        this.setState({password: ''});
+        this.setState({
+          username: '',
+          password: ''
+        });
         history.replace('/home');
       }
     }.bind(this));
@@ -96,10 +99,10 @@ export default class Login extends Component {
           <Header title="Login"/>
 
           <Modal isVisible={this.state.showModal}>
-            <View style={styles.modalContainer}>
+            <View style={modalStyles.modalContainer}>
               <Text style={{fontSize: 20}}>{this.state.modalText}</Text>
               <TouchableOpacity onPress={() => this.setState({showModal: false})}>
-                <View style={styles.modalCloseButton}>
+                <View style={modalStyles.modalCloseButton}>
                   <Text style={{color:'#FFF'}}>Close</Text>
                 </View>
               </TouchableOpacity>
@@ -166,6 +169,7 @@ export default class Login extends Component {
   }
 }
 
+import modalStyles from '../styles/modal.js';
 import textStyles from '../styles/text.js';
 const styles = StyleSheet.create({
   container: {
@@ -211,22 +215,5 @@ const styles = StyleSheet.create({
     fontFamily: 'OpenSans-Regular',
     textAlign: 'center',
     color:'#FFF'
-  },
-  modalContainer: {
-    backgroundColor: 'white',
-    padding: 22,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 4,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
-  },
-  modalCloseButton: {
-    backgroundColor: '#509E2f',
-    padding: 12,
-    margin: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 4,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
   }
 });
