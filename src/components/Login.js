@@ -82,13 +82,13 @@ export default class Login extends Component {
             <View style={{
             justifyContent: 'center',
             alignItems: 'center'}}>
-              <TouchableOpacity style={styles.loginContainer}>
+              <TouchableOpacity style={buttonStyles.solidGreenButton}>
                   <Link to="/home">
-                    <Text style={styles.loginText}>RETURN TO HOME</Text>
+                    <Text style={buttonStyles.solidGreenButtonText}>RETURN TO HOME</Text>
                   </Link>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.logoutContainer} onPress={() => this.logout()}>
-                  <Text style={styles.loginText}>LOG OUT</Text>
+              <TouchableOpacity style={buttonStyles.solidGreenButton} onPress={() => this.logout()}>
+                  <Text style={buttonStyles.solidGreenButtonText}>LOG OUT</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -143,8 +143,8 @@ export default class Login extends Component {
               <Text style={styles.forgot}>Forgot Username/Password</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.loginContainer} onPress={() => this.login()}>
-                <Text style={styles.loginText}>LOG IN</Text>
+            <TouchableOpacity style={buttonStyles.solidGreenButton} onPress={() => this.login()}>
+                <Text style={buttonStyles.solidGreenButtonText}>LOG IN</Text>
             </TouchableOpacity>
 
             {
@@ -156,8 +156,8 @@ export default class Login extends Component {
                     style={styles.input}
                   />
 
-                  <TouchableOpacity style={styles.loginContainer}>
-                    <Text style={styles.loginText}>SEND LOGIN CREDENTIALS</Text>
+                  <TouchableOpacity style={buttonStyles.solidGreenButton}>
+                    <Text style={buttonStyles.solidGreenButtonText}>SEND LOGIN CREDENTIALS</Text>
                   </TouchableOpacity>
                 </View>
               )
@@ -171,6 +171,7 @@ export default class Login extends Component {
 
 import modalStyles from '../styles/modal.js';
 import textStyles from '../styles/text.js';
+import buttonStyles from '../styles/buttons.js';
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#efefef',
@@ -194,26 +195,10 @@ const styles = StyleSheet.create({
     opacity: 0.9,
     fontSize: 20
   },
-  loginContainer: {
-    marginTop: 20,
-    paddingVertical: 14,
-    backgroundColor: '#509E2f'
-  },
-  logoutContainer: {
-    marginTop: 20,
-    paddingVertical: 14,
-    backgroundColor: '#B22222'
-  },
   forgot: {
     color: '#509E2f',
     fontSize: 17,
     marginTop: 20,
     fontFamily: 'OpenSans-Regular'
-  },
-  loginText: {
-    fontSize: 20,
-    fontFamily: 'OpenSans-Regular',
-    textAlign: 'center',
-    color:'#FFF'
   }
 });

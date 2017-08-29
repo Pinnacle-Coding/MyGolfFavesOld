@@ -1,6 +1,6 @@
 
 var offers = require('./OfferControl.js');
-var affliates = require('./AffliateControl.js');
+var affiliates = require('./AffiliateControl.js');
 var xml2jsParseString = require('react-native-xml2js').parseString;
 
 var user = undefined;
@@ -25,7 +25,6 @@ var sendRequest = function(url, callback) {
           else {
             var result_text = result['wddxPacket']['data'][0]['string'][0].split('\\').join('\\\\');
             var result_json = JSON.parse(result_text);
-            result_json.memberID = 3478; // Test user
             callback(null, result_json);
           }
       });
@@ -65,7 +64,7 @@ module.exports = {
           callback(null, result.message);
         }
         else {
-          var userID = result.memberID;
+          var userID = 3478; // TODO: result.memberID;
           sendRequest('http://business.mygolffaves.com/ws/mobilePublicService.cfc?method=getMemberAccount&UID=1&PWD=mob!leMGF&memberID='+userID, function (err, result) {
             if (err) {
               callback(err, 'An error occurred');
@@ -75,7 +74,7 @@ module.exports = {
             }
             else {
               user = result.Details[0];
-              affliates.populate(userID, function (err, message) {
+              affiliates.onLogin(userID, function (err, message) {
                 if (err) {
                   callback(err, 'An error occurred')
                 }
@@ -83,7 +82,7 @@ module.exports = {
                   callback(null, message);
                 }
                 else {
-                  offers.populate(userID, function (err, message) {
+                  offers.onLogin(userID, function (err, message) {
                     if (err) {
                       callback(err, 'An error occurred')
                     }

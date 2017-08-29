@@ -1,7 +1,7 @@
 
 var xml2jsParseString = require('react-native-xml2js').parseString;
 
-var affliates = [];
+var affiliates = [];
 
 /**
  * Generic function for accessing the API
@@ -34,16 +34,38 @@ var sendRequest = function(url, callback) {
 
 module.exports = {
 
-  getAffliates: function () {
-    return affliates;
+  getAffiliates: function () {
+    return affiliates;
+  },
+
+  /**
+   * Returns a list of nearby affiliates to the user's location in the callback function.
+   * @param String memberID The user's ID
+   * @param Float locationLat The latitude of the location to search from
+   * @param Float locationLong The longitude of the location to search from
+   * @param Float radius How far away from the location to search from (maximum)
+   * @param Function callback A function taking three arguments: error (or null), message (not null when something went wrong but not an actual error), affiliates (the array containing the raw data from the request)
+   */
+  getNearbyAffiliates: function (memberID, locationLat, locationLong, locationRadius, callback) {
+    sendRequest('http://business.mygolffaves.com/ws/mobilePublicService.cfc?method=getAffiliates&UID=1&PWD=mob!leMGF&memberID='+memberID+'&referenceLat='+locationLat+'&referenceLong='+locationLong+'&radius='+locationRadius, function (err, result) {
+      if (err) {
+        callback(err, 'An error occurred', null);
+      }
+      else if (result.status !== 'success') {
+        callback(null, result.message, null);
+      }
+      else {
+        callback(null, null, result.Affiliates);
+      }
+    })
   },
 
   /**
    * Called by AuthControl's login method. Populates the service with the user's favorite courses, downloaded from the API.
    * @param String memberID The user's ID
-   * @param Function callback A function taking returned with two arguments: error (or null) and message (not null when something went wrong but not an actual error)
+   * @param Function callback A function taking two arguments: error (or null), message (not null when something went wrong but not an actual error)
    */
-  populate: function(memberID, callback) {
+  onLogin: function(memberID, callback) {
     sendRequest('http://business.mygolffaves.com/ws/mobilePublicService.cfc?method=getAffiliatesByMemberID&UID=1&PWD=mob!leMGF&memberID='+memberID, function (err, result) {
       if (err) {
         callback(err, 'An error occurred');
@@ -52,7 +74,7 @@ module.exports = {
         callback(null, result.message);
       }
       else {
-        affliates = result.Affliates;
+        affiliates = result.Affiliates;
         callback(null, null);
       }
     });

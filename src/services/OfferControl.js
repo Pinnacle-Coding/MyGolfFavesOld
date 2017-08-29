@@ -102,7 +102,7 @@ module.exports = {
    * @param String memberID The user's ID
    * @param Function callback A function taking returned with two arguments: error (or null) and message (not null when something went wrong but not an actual error)
    */
-  populate: function(memberID, callback) {
+  onLogin: function(memberID, callback) {
     sendRequest('http://business.mygolffaves.com/ws/mobilePublicService.cfc?method=getMemberWallet&UID=1&PWD=mob!leMGF&memberID='+memberID, function (err, result) {
       if (err) {
         callback(err, 'An error occurred');

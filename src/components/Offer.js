@@ -54,7 +54,7 @@ export default class Offer extends Component {
       return <AppLoading/>;
     }
     return (
-      <View style={styles.container}>
+      <View>
         <Header title="Offer"/>
         <View style={{borderBottomColor:'gray', borderBottomWidth:1, borderStyle: 'solid', padding:0}}/>
         <ScrollView style={{padding: 10}}>
@@ -109,8 +109,8 @@ export default class Offer extends Component {
               <Text style={styles.subcontent}>{offer.terms}</Text>
             </View>
           </View>
-          <TouchableOpacity style={styles.finishContainer}>
-            <Text style={styles.finishText}>ADD TO WALLET</Text>
+          <TouchableOpacity style={buttonStyles.solidGreenButton}>
+            <Text style={buttonStyles.solidGreenButtonText}>ADD TO WALLET</Text>
           </TouchableOpacity>
           <View style={{padding:80}}/>
         </ScrollView>
@@ -119,10 +119,8 @@ export default class Offer extends Component {
   }
 }
 
+import buttonStyles from '../styles/buttons.js';
 const styles = StyleSheet.create({
-  container: {
-
-  },
   title: {
     fontSize: 22,
     fontFamily: 'OpenSans-Regular',
@@ -141,16 +139,5 @@ const styles = StyleSheet.create({
   },
   subcontent: {
     fontFamily: 'OpenSans-Light',
-  },
-  finishContainer: {
-    marginTop: 20,
-    paddingVertical: 14,
-    backgroundColor: '#509E2f'
-  },
-  finishText: {
-    fontSize: 20,
-    fontFamily: 'OpenSans-Regular',
-    textAlign: 'center',
-    color:'#FFF'
   }
 });

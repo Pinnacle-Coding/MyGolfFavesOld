@@ -31,7 +31,7 @@ export default class Wallet extends Component {
     var newOffers = [];
     rawOffers.forEach(function (rawOffer) {
       var newOffer = Object.assign({}, rawOffer);
-      newOffer['key'] = newOffer['offerID'];
+      newOffer.key = newOffer.offerID;
       newOffers.push(newOffer);
     });
     return newOffers;
@@ -62,7 +62,7 @@ export default class Wallet extends Component {
       return <AppLoading/>;
     }
     return (
-      <View style={styles.container}>
+      <View>
         <Header title="Wallet"/>
         <View style={{borderBottomColor:'gray', borderBottomWidth:1, borderStyle: 'solid', padding:0}}/>
 
@@ -84,9 +84,9 @@ export default class Wallet extends Component {
               ({item}) =>
               <View style={{padding: 10}}>
                   <Text style={styles.itemTitle}>{item.companyName} - {item.offerTitle}</Text>
-                  <TouchableOpacity style={styles.redeemContainer} onPress={() =>  this.selectOffer(item.offerID)}>
+                  <TouchableOpacity style={buttonStyles.solidGreenButton} onPress={() =>  this.selectOffer(item.offerID)}>
                     {
-                      <Text style={styles.redeemText}>REDEEM</Text>
+                      <Text style={buttonStyles.solidGreenButtonText}>REDEEM</Text>
                     }
                   </TouchableOpacity>
                   <View style={{borderBottomColor:'lightgray', borderBottomWidth:1, borderStyle: 'solid', padding:10}}/>
@@ -101,25 +101,12 @@ export default class Wallet extends Component {
 }
 
 import modalStyles from '../styles/modal.js';
+import buttonStyles from '../styles/buttons.js';
 const styles = StyleSheet.create({
-  container: {
-
-  },
   itemTitle: {
     paddingTop: 10,
     fontSize: 28,
     fontFamily: 'OpenSans-Regular',
     paddingBottom: 5
-  },
-  redeemContainer: {
-    marginTop: 20,
-    paddingVertical: 14,
-    backgroundColor: '#509E2f'
-  },
-  redeemText: {
-    fontSize: 20,
-    textAlign: 'center',
-    fontFamily: 'OpenSans-Regular',
-    color:'#FFF'
   }
 });
