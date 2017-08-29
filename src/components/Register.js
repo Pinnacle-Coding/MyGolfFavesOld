@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { TextInput, ScrollView, Image, Text, StyleSheet, View, TouchableOpacity, Linking } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Font, AppLoading } from 'expo';
-import { Link } from 'react-router-native'
+import { Link } from 'react-router-native';
 
 import focusTextInput from '../utils/TextInputManager.js';
-import Header from './Header.js'
+import Header from './Header.js';
 
 export default class Register extends Component {
   constructor() {

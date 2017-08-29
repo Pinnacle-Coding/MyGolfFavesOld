@@ -7,8 +7,8 @@ var user = undefined;
 
 /**
  * Generic function for accessing the API
- * @param  String url The given link
- * @param  Function callback A callback function that takes the parameters: error (null if no error), result object
+ * @param  {String} url The given link
+ * @param  {Function} callback A callback function that takes the parameters: error (null if no error), result object
  */
 var sendRequest = function(url, callback) {
   var request = new XMLHttpRequest();
@@ -46,9 +46,9 @@ module.exports = {
 
     /**
      * Login function
-     * @param String username The user's account name
-     * @param String password The user's password
-     * @param Functio callback A function taking returned with two arguments: error (or null) and message (not null when something went wrong but not an actual error)
+     * @param {String} username The user's account name
+     * @param {String} password The user's password
+     * @param {Function} callback A function taking returned with two arguments: error (or null) and message (not null when something went wrong but not an actual error)
      */
     login: function(username, password, callback) {
       if (!username || !password) {
@@ -74,7 +74,7 @@ module.exports = {
             }
             else {
               user = result.Details[0];
-              affiliates.onLogin(userID, function (err, message) {
+              affiliates.refresh(userID, function (err, message) {
                 if (err) {
                   callback(err, 'An error occurred')
                 }
@@ -82,7 +82,7 @@ module.exports = {
                   callback(null, message);
                 }
                 else {
-                  offers.onLogin(userID, function (err, message) {
+                  offers.refresh(userID, function (err, message) {
                     if (err) {
                       callback(err, 'An error occurred')
                     }

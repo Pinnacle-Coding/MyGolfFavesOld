@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView, Text, TouchableOpacity, TextInput, FlatList, Button } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, TouchableOpacity, TextInput, FlatList, Button, Linking } from 'react-native';
 import { Font, AppLoading } from 'expo';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ModalSelector from 'react-native-modal-selector';
@@ -58,7 +58,7 @@ export default class FavoriteGolfCourses extends Component {
       }
       else {
         affiliates.forEach(function (affiliate) {
-          affiliate.key = affiliate.companyID;
+          affiliate.key = affiliate.favoriteID;
         });
         this.setState({
           nearbyAffiliates: affiliates,
@@ -97,8 +97,37 @@ export default class FavoriteGolfCourses extends Component {
     });
   }
 
-  saveNearbyAffliates() {
+  openLink(item) {
+    if (item.companyURL) {
+      var link = item.companyURL;
+      if (!link.startsWith('http://')) {
+        link = 'http://' + link;
+      }
+      Linking.openURL(link).catch(err => console.error('An error occured', err));
+    }
+  }
 
+  saveNearbyAffliates() {
+    affiliateCtrl.saveNearbyAffliates(authCtrl.getUser().memberID, this.state.nearbyAffiliates, function (err, message) {
+      if (err) {
+        this.setState({
+          modalText: err,
+          showModal: true
+        });
+      }
+      else if (message) {
+        this.setState({
+          modalText: message,
+          showModal: true
+        });
+      }
+      else {
+        this.setState({
+          modalText: 'Selections saved successfully!',
+          showModal: true
+        });
+      }
+    }.bind(this));
   }
 
   render() {
@@ -236,19 +265,25 @@ export default class FavoriteGolfCourses extends Component {
             data={this.state.nearbyAffiliates}
             renderItem={
               ({item}) =>
-              <TouchableOpacity style={{padding: 10, flexDirection: 'row'}} onPress={() => this.selectAffiliate(item)}>
+              <View style={{padding: 10, flexDirection: 'row'}}>
                 {
                   renderIf(item.memberFavorite === 'true')(
-                    <Icon name="check" size={30} color="#509E2F"/>
+                    <TouchableOpacity onPress={() => this.selectAffiliate(item)}>
+                      <Icon name="check" size={40} color="#509E2F"/>
+                    </TouchableOpacity>
                   )
                 }
                 {
                   renderIf(item.memberFavorite !== 'true')(
-                    <Icon name="add" size={30} color="#D12020"/>
+                    <TouchableOpacity onPress={() => this.selectAffiliate(item)}>
+                      <Icon name="add" size={40} color="#D12020"/>
+                    </TouchableOpacity>
                   )
                 }
-                <Text style={{fontFamily:'OpenSans-Regular', fontSize: 18, paddingLeft: 5, paddingTop: 5}}>{item.companyName} <Text style={{fontFamily:'OpenSans-Regular', fontSize: 14}}>{item.distance}</Text></Text>
-              </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.openLink(item)}>
+                  <Text style={{fontFamily:'OpenSans-Regular', fontSize: 18, paddingLeft: 10, paddingTop: 5}}>{item.companyName} <Text style={{fontFamily:'OpenSans-Regular', fontSize: 14}}>{item.distance}</Text></Text>
+                </TouchableOpacity>
+              </View>
             }
           />
 

@@ -7,8 +7,8 @@ var selectedOffer = undefined;
 
 /**
  * Generic function for accessing the API
- * @param  String url The given link
- * @param  Function callback A callback function that takes the parameters: error (null if no error), result object
+ * @param  {String} url The given link
+ * @param  {Function} callback A callback function that takes the parameters: error (null if no error), result object
  */
 var sendRequest = function(url, callback) {
   var request = new XMLHttpRequest();
@@ -50,8 +50,8 @@ module.exports = {
 
   /**
    * The user is attempting to redeem an offer.
-   * @param String offerID The ID of the user's selected offer
-   * @param Function callback A function taking returned with two arguments: error (or null) and message (not null when something went wrong but not an actual error)
+   * @param {String} offerID The ID of the user's selected offer
+   * @param {Function} callback A function taking returned with two arguments: error (or null) and message (not null when something went wrong but not an actual error)
    */
   selectOffer: function (offerID, callback) {
     sendRequest('http://business.mygolffaves.com/ws/mobilePublicService.cfc?method=getOfferDetail&UID=1&PWD=mob!leMGF&offerID='+offerID, function (err, result) {
@@ -70,7 +70,10 @@ module.exports = {
 
   /**
    * The user is attempting to redeem selectedOffer.
-   * @param Function callback A function taking returned with two arguments: error (or null) and message (not null when something went wrong but not an actual error)
+   * @param {String} userID The user's ID
+   * @param {String} redemptionCode The redemption code
+   * @param {Number} amount The amount to redeem the offer for
+   * @param {Function} callback A function taking returned with two arguments: error (or null) and message (not null when something went wrong but not an actual error)
    */
   redeemOffer: function (userID, redemptionCode, amount, callback) {
     sendRequest('http://business.mygolffaves.com/ws/mobilePublicService.cfc?method=redeemOffer&UID=1&PWD=mob!leMGF&memberID='+userID+'&companyID='+selectedOffer.companyID+'&redemptionCode='+redemptionCode+'&offerID='+selectedOffer.offerID+'&amount='+amount, function (err, result) {
@@ -98,11 +101,11 @@ module.exports = {
   },
 
   /**
-   * Called by AuthControl's login method. Populates the service with the user's offers, downloaded from the API.
-   * @param String memberID The user's ID
-   * @param Function callback A function taking returned with two arguments: error (or null) and message (not null when something went wrong but not an actual error)
+   * Populates the service with the user's offers, downloaded from the API.
+   * @param {String} memberID The user's ID
+   * @param {Function} callback A function taking returned with two arguments: error (or null) and message (not null when something went wrong but not an actual error)
    */
-  onLogin: function(memberID, callback) {
+  refresh: function(memberID, callback) {
     sendRequest('http://business.mygolffaves.com/ws/mobilePublicService.cfc?method=getMemberWallet&UID=1&PWD=mob!leMGF&memberID='+memberID, function (err, result) {
       if (err) {
         callback(err, 'An error occurred');
