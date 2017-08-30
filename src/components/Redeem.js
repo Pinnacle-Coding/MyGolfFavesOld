@@ -2,35 +2,29 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import { Font, AppLoading } from 'expo';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Form, Field } from 'simple-react-form';
 import Modal from 'react-native-modal';
 
 import history from '../utils/history.js';
+import focusTextInput from '../utils/TextInputManager.js';
 
 import Header from './Header.js';
+import TextField from '../forms/TextField.js';
 
 var authCtrl = require('../services/AuthControl.js');
 var offerCtrl = require('../services/OfferControl.js');
-
-var t = require('tcomb-form-native');
-var Form = t.form.Form;
-var RedeemModel = t.struct({
-  redemptionCode: t.String,
-  enterAmount: t.Number
-});
-var options = {
-  fields: {
-    redemptionCode: {
-      secureTextEntry: true
-    }
-  }
-};
 
 export default class Redeem extends Component {
   state = {
     loaded: false,
     showModal: false,
     modalText: '',
-    exitModal: false
+    exitModal: false,
+    enableRedeem: true,
+    form: {
+      redemptionCode: undefined,
+      redemptionAmount: undefined
+    }
   };
 
   async componentDidMount() {
@@ -51,19 +45,25 @@ export default class Redeem extends Component {
   }
 
   redeem() {
-    var formValue = this.refs.form.getValue();
-    if (formValue) {
-      offerCtrl.redeemOffer(authCtrl.getUser().memberID, authCtrl.getUser(), formValue.redemptionCode, formValue.enterAmount, function (err, message) {
+    this.setState({
+      enableRedeem: false
+    });
+    var redemptionCode = this.state.form.redemptionCode;
+    var redemptionAmount = this.state.form.redemptionAmount;
+    if (redemptionCode && redemptionAmount) {
+      offerCtrl.redeemOffer(authCtrl.getUser().memberID, authCtrl.getUser(), redemptionCode, redemptionAmount, (err, message) => {
         if (err) {
           this.setState({
             modalText: err,
-            showModal: true
+            showModal: true,
+            enableRedeem: true
           });
         }
         else if (message) {
           this.setState({
             modalText: message,
-            showModal: true
+            showModal: true,
+            enableRedeem: true
           });
         }
         else {
@@ -73,12 +73,13 @@ export default class Redeem extends Component {
             exitModal: true
           });
         }
-      }.bind(this));
+      });
     }
     else {
       this.setState({
         modalText: 'Required fields missing',
-        showModal: true
+        showModal: true,
+        enableRedeem: true
       });
     }
   }
@@ -115,13 +116,27 @@ export default class Redeem extends Component {
           <View style={{paddingBottom: 20}}>
             <Text style={styles.title}>@ {offerCtrl.getSelectedOffer().companyName}</Text>
           </View>
-          <Form
-            ref="form"
-            type={RedeemModel}
-            options={options}
-          />
-          <TouchableOpacity style={styles.button} onPress={() => this.redeem()}>
-            <Text style={styles.buttonText}>Redeem</Text>
+          <Form state={this.state.form} onChange={(state) => this.setState({form : state})}>
+            <View>
+              <Field
+                fieldName='redemptionCode'
+                placeholder='Redemption Code'
+                returnKeyType='next'
+                onSubmitEditing={() => focusTextInput(this.refs.redemptionAmount)}
+                type={TextField}/>
+              <Field
+                ref='redemptionAmount'
+                fieldName='redemptionAmount'
+                placeholder='Amount'
+                keyboardType = 'numeric'
+                type={TextField}/>
+            </View>
+          </Form>
+          <TouchableOpacity
+            disabled={!this.state.enableRedeem}
+            style={buttonStyles.solidGreenButton}
+            onPress={() => this.redeem()}>
+            <Text style={buttonStyles.solidGreenButtonText}>REDEEM</Text>
           </TouchableOpacity>
           <View style={{padding:100}}/>
       </KeyboardAwareScrollView>
@@ -130,6 +145,7 @@ export default class Redeem extends Component {
   }
 }
 
+import buttonStyles from '../styles/buttons.js';
 import modalStyles from '../styles/modal.js';
 const styles = StyleSheet.create({
   scrollContainer: {
