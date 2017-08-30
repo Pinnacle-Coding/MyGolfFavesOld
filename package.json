@@ -1,6 +1,6 @@
 {
   "name": "MyGolfFaves",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "private": true,
   "devDependencies": {
     "babel-cli": "^6.24.1",
@@ -27,6 +27,7 @@
     "react-native": "^0.44.0",
     "react-native-elements": "^0.13.0",
     "react-native-keyboard-aware-scroll-view": "^0.2.9",
+    "react-native-loading-spinner-overlay": "^0.5.2",
     "react-native-modal": "^3.0.2",
     "react-native-modal-selector": "0.0.17",
     "react-native-navbar": "^1.7.1",

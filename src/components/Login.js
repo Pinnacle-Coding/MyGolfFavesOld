@@ -4,6 +4,7 @@ import { Font, AppLoading } from 'expo';
 import { Link } from 'react-router-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Modal from 'react-native-modal';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import focusTextInput from '../utils/TextInputManager.js';
 import renderIf from '../utils/renderif.js';
@@ -104,6 +105,8 @@ export default class Login extends Component {
       return (
         <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-between'}}>
           <Header title="Login"/>
+
+          <Spinner visible={!this.state.enableLogin}/>
 
           <Modal isVisible={this.state.showModal}>
             <View style={modalStyles.modalContainer}>

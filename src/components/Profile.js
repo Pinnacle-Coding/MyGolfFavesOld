@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, ScrollView } from 'react-native';
 import { Font, AppLoading } from 'expo';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import Modal from 'react-native-modal';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import Header from './Header.js';
 
@@ -70,6 +72,9 @@ export default class Profile extends Component {
     super();
     this.state = {
       loaded: false,
+      showModal: false,
+      modalText: '',
+      enableUpdate: true,
       showChangePassword: false,
       formType: ProfileModel
     };
@@ -108,8 +113,23 @@ export default class Profile extends Component {
     }
     return (
       <View style={styles.container}>
+
         <Header title="Profile"/>
         <View style={{borderBottomColor:'gray', borderBottomWidth:1, borderStyle: 'solid', padding:0}}/>
+
+        <Spinner visible={!this.state.enableUpdate}/>
+
+        <Modal isVisible={this.state.showModal}>
+          <View style={modalStyles.modalContainer}>
+            <Text style={{fontSize: 20}}>{this.state.modalText}</Text>
+            <TouchableOpacity onPress={() => this.setState({showModal: false})}>
+              <View style={modalStyles.modalCloseButton}>
+                <Text style={{color:'#FFF'}}>Close</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+
         <KeyboardAwareScrollView
         style={styles.scrollContainer}
         resetScrollToCoords={{ x: 0, y: 0 }}
@@ -133,6 +153,8 @@ export default class Profile extends Component {
   }
 }
 
+import modalStyles from '../styles/modal.js';
+import buttonStyles from '../styles/buttons.js';
 const styles = StyleSheet.create({
   container: {
 

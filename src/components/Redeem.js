@@ -4,6 +4,8 @@ import { Font, AppLoading } from 'expo';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Form, Field } from 'simple-react-form';
 import Modal from 'react-native-modal';
+import Spinner from 'react-native-loading-spinner-overlay';
+
 
 import history from '../utils/history.js';
 import focusTextInput from '../utils/TextInputManager.js';
@@ -92,6 +94,8 @@ export default class Redeem extends Component {
       <View>
         <Header title="Redeem Offer"/>
         <View style={{borderBottomColor:'gray', borderBottomWidth:1, borderStyle: 'solid', padding:0}}/>
+
+        <Spinner visible={!this.state.enableRedeem}/>
 
         <Modal isVisible={this.state.showModal}>
           <View style={modalStyles.modalContainer}>

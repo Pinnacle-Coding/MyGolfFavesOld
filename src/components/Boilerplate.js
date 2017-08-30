@@ -24,7 +24,7 @@ export default class Boilerplate extends Component {
       return <AppLoading/>;
     }
     return (
-      <View style={styles.container}>
+      <View>
         <Header title="Placeholder"/>
         <View style={{borderBottomColor:'gray', borderBottomWidth:1, borderStyle: 'solid', padding:0}}/>
       </View>
@@ -33,7 +33,5 @@ export default class Boilerplate extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
 
-  }
 });

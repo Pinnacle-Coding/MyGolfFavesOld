@@ -4,6 +4,7 @@ import { Font, AppLoading, Location, Permissions } from 'expo';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ModalSelector from 'react-native-modal-selector';
 import Modal from 'react-native-modal';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import renderIf from '../utils/renderif.js';
 import zipcodes from '../utils/zipcodes.js';
@@ -54,10 +55,10 @@ export default class FavoriteGolfCourses extends Component {
     showModal: false,
     modalText: '',
     enableSearch: true,
-    selectedCity: 'Los Angeles',
+    selectedCity: 'Las Vegas',
     selectedZipCodeInvalid: false,
-    locationLat: citiesData['Los Angeles'].lat,
-    locationLong: citiesData['Los Angeles'].long,
+    locationLat: citiesData['Las Vegas'].lat,
+    locationLong: citiesData['Las Vegas'].long,
     locationRadius: '50',
     ignoreRadius: false,
     locationOption: 2,
@@ -119,7 +120,8 @@ export default class FavoriteGolfCourses extends Component {
     this.setState({
       ignoreRadius: !this.state.ignoreRadius
     });
-    this.getNearbyAffiliates(); // Click Show All/Less triggers a refresh of the affiliates list
+    // Click Show All/Less triggers a refresh of the affiliates list
+    // this.getNearbyAffiliates();
   }
 
   getNearbyAffiliates() {
@@ -268,6 +270,8 @@ export default class FavoriteGolfCourses extends Component {
       <View style={{flex: 1, flexDirection: 'column'}}>
         <Header title="Favorites"/>
         <View style={{borderBottomColor:'gray', borderBottomWidth:1, borderStyle: 'solid', padding:0}}/>
+
+        <Spinner visible={!this.state.enableSearch}/>
 
         <Modal isVisible={this.state.showModal}>
           <View style={modalStyles.modalContainer}>

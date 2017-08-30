@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Linking, Image, Platform } from 'react-native';
 import { Font, AppLoading } from 'expo';
 import Modal from 'react-native-modal';
+import Spinner from 'react-native-loading-spinner-overlay';
+
 
 import history from '../utils/history.js';
 
@@ -16,7 +18,8 @@ export default class Offer extends Component {
     loaded: false,
     showModal: false,
     modalText: '',
-    exitModal: false
+    exitModal: false,
+    enableOffer: true
   };
 
   async componentDidMount() {
@@ -71,24 +74,30 @@ export default class Offer extends Component {
   }
 
   accept() {
+    this.setState({
+      enableOffer: false
+    });
     offerCtrl.acceptOffer(authCtrl.getUser().memberID, authCtrl.getUser(), function (err, message) {
       if (err) {
         this.setState({
           modalText: err,
-          showModal: true
+          showModal: true,
+          enableOffer: true
         });
       }
       else if (message) {
         this.setState({
           modalText: message,
-          showModal: true
+          showModal: true,
+          enableOffer: true
         });
       }
       else {
         this.setState({
           modalText: 'Offer added to wallet!',
           showModal: true,
-          exitModal: true
+          exitModal: true,
+          enableOffer: true
         });
       }
     }.bind(this));
@@ -102,6 +111,8 @@ export default class Offer extends Component {
       <View>
         <Header title="Offer"/>
         <View style={{borderBottomColor:'gray', borderBottomWidth:1, borderStyle: 'solid', padding:0}}/>
+
+        <Spinner visible={!this.state.enableOffer}/>
 
         <Modal isVisible={this.state.showModal}>
           <View style={modalStyles.modalContainer}>
@@ -166,7 +177,10 @@ export default class Offer extends Component {
               <Text style={styles.subcontent}>{offerCtrl.getSelectedOffer().terms}</Text>
             </View>
           </View>
-          <TouchableOpacity style={buttonStyles.solidGreenButton} onPress={() => this.accept()}>
+          <TouchableOpacity
+            disabled={!this.state.enableOffer}
+            style={buttonStyles.solidGreenButton}
+            onPress={() => this.accept()}>
             <Text style={buttonStyles.solidGreenButtonText}>ADD TO WALLET</Text>
           </TouchableOpacity>
           <View style={{padding:80}}/>
