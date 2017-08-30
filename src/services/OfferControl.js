@@ -3,6 +3,7 @@ var xml2jsParseString = require('react-native-xml2js').parseString;
 
 var offers = [];
 var wallet = [];
+var offerHistory = [];
 var selectedOffer = undefined;
 
 /**
@@ -23,7 +24,11 @@ var sendRequest = function(url, callback) {
             callback(err, null);
           }
           else {
-            var result_text = result['wddxPacket']['data'][0]['string'][0].split('\\').join('\\\\');
+            var raw_result_text = result['wddxPacket']['data'][0]['string'][0];
+            if (typeof raw_result_text !== 'string') {
+              raw_result_text = raw_result_text['_'];
+            }
+            var result_text = raw_result_text.split('\\').join('\\\\');
             var result_json = JSON.parse(result_text);
             callback(null, result_json);
           }
@@ -59,7 +64,21 @@ var refreshInternal = function(memberID, memberData, callback) {
         }
         else {
           wallet = result.Offers || [];
-          callback(null, null);
+          sendRequest('http://business.mygolffaves.com/ws/mobilePublicService.cfc?method=getOfferHistory&UID=1&PWD=mob!leMGF&memberID='+memberID+'&cuttoffDate=01/01/2017', function (err, result) {
+            if (err) {
+              callback(err);
+            }
+            else if (result.fail) {
+              callback(null, result.fail);
+            }
+            else if (result.status !== 'success') {
+              callback(null, result.message);
+            }
+            else {
+              offerHistory = result.Rows || [];
+              callback(null, null);
+            }
+          });
         }
       });
     }
@@ -74,6 +93,10 @@ module.exports = {
 
   getMemberWallet: function () {
     return wallet;
+  },
+
+  getOfferHistory: function () {
+    return offerHistory;
   },
 
   getSelectedOffer: function() {

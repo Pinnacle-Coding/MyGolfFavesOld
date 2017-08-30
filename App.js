@@ -12,6 +12,7 @@ import Offers from './src/components/Offers.js';
 import Offer from './src/components/Offer.js';
 import Wallet from './src/components/Wallet.js';
 import Redeem from './src/components/Redeem.js';
+import Notifications from './src/components/Notifications.js';
 
 import history from './src/utils/history.js';
 
@@ -30,6 +31,7 @@ export default class App extends Component {
           <Route path="/wallet" component={Wallet}/>
           <Route path="/redeem" component={Redeem}/>
           <Route path="/rewards" component={Rewards}/>
+          <Route path="/notifications" component={Notifications}/>
         </Switch>
       </Router>
     );

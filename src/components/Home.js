@@ -4,7 +4,7 @@ import { Font, AppLoading } from 'expo';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Link } from 'react-router-native';
 
-import Header from './Header.js'
+import Header from './Header.js';
 
 export default class Home extends Component {
   state = {
@@ -66,13 +66,15 @@ export default class Home extends Component {
               </View>
             </View>
           </Link>
-          <View style={styles.homeLinkAccented}>
-            <Icon name="notifications" size={50} color="#509E2f"/>
-            <View style={{paddingLeft: 10}}>
-              <Text style={styles.homeTitleText}>My Notifications</Text>
-              <Text style={styles.homeSubtitleText}>View notifications</Text>
+          <Link to='/notifications'>
+            <View style={styles.homeLinkAccented}>
+              <Icon name="notifications" size={50} color="#509E2f"/>
+              <View style={{paddingLeft: 10}}>
+                <Text style={styles.homeTitleText}>My Notifications</Text>
+                <Text style={styles.homeSubtitleText}>View notifications</Text>
+              </View>
             </View>
-          </View>
+          </Link>
           <Link to='/rewards'>
             <View style={styles.homeLink}>
               <Icon name="redeem" size={50} color="#509E2f"/>

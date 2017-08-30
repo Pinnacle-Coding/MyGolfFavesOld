@@ -88,7 +88,7 @@ export default class Redeem extends Component {
       return <AppLoading/>;
     }
     return (
-      <View style={styles.container}>
+      <View>
         <Header title="Redeem Offer"/>
         <View style={{borderBottomColor:'gray', borderBottomWidth:1, borderStyle: 'solid', padding:0}}/>
 
@@ -132,11 +132,8 @@ export default class Redeem extends Component {
 
 import modalStyles from '../styles/modal.js';
 const styles = StyleSheet.create({
-  container: {
-
-  },
   scrollContainer: {
-    padding: 20
+    padding: 10
   },
   title: {
     fontSize: 22,

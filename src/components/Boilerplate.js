@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Font, AppLoading } from 'expo';
 
-import Header from './Header.js'
+import Header from './Header.js';
 
 export default class Boilerplate extends Component {
   state = {

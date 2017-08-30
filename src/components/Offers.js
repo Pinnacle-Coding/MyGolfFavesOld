@@ -83,14 +83,19 @@ export default class Offers extends Component {
             renderItem={
               ({item}) =>
               <View style={{padding: 10}}>
-                <TouchableOpacity onPress={() =>  this.selectOffer(item.offerID)}>
+                <View>
                   <Text style={styles.itemTitle}>{item.companyName}</Text>
                   <Text style={styles.itemText}><Text style={{fontWeight: 'bold'}}>Start Date:</Text> {item.startDate}</Text>
                   <Text style={styles.itemText}><Text style={{fontWeight: 'bold'}}>End Date:</Text> {item.endDate}</Text>
                   <Text style={styles.itemText}><Text style={{fontWeight: 'bold'}}>Distance:</Text> {item.distance} miles</Text>
                   <Text style={styles.itemText}><Text style={{fontWeight: 'bold'}}>Offer:</Text> {item.offerTitle}</Text>
+                  <TouchableOpacity style={buttonStyles.solidGreenButton} onPress={() =>  this.selectOffer(item.offerID)}>
+                    {
+                      <Text style={buttonStyles.solidGreenButtonText}>VIEW DETAILS</Text>
+                    }
+                  </TouchableOpacity>
                   <View style={{borderBottomColor:'lightgray', borderBottomWidth:1, borderStyle: 'solid', padding:10}}/>
-                </TouchableOpacity>
+                </View>
               </View>
             }
           />
@@ -102,6 +107,7 @@ export default class Offers extends Component {
 }
 
 import modalStyles from '../styles/modal.js';
+import buttonStyles from '../styles/buttons.js';
 const styles = StyleSheet.create({
   itemTitle: {
     fontSize: 28,

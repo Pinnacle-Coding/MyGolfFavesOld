@@ -131,7 +131,7 @@ export default class Offer extends Component {
               <Text style={styles.subtitle}>Redemption Location</Text>
             </View>
             <TouchableOpacity onPress={() => this.openOfferLocation()}>
-              <Text style={styles.subcontent}>{offerCtrl.getSelectedOffer().addressLine1 + ', ' + offerCtrl.getSelectedOffer().city + ', ' + offerCtrl.getSelectedOffer().stateCD + ' ' + offerCtrl.getSelectedOffer().zipCode}</Text>
+              <Text style={styles.subcontentClickable}>{offerCtrl.getSelectedOffer().addressLine1 + ', ' + offerCtrl.getSelectedOffer().city + ', ' + offerCtrl.getSelectedOffer().stateCD + ' ' + offerCtrl.getSelectedOffer().zipCode}</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.subsection}>
@@ -139,7 +139,7 @@ export default class Offer extends Component {
               <Text style={styles.subtitle}>Website</Text>
             </View>
             <TouchableOpacity onPress={() => {Linking.openURL(this.formatWebsite(offerCtrl.getSelectedOffer().website)).catch(err => console.error('An error occured', err))} }>
-              <Text style={styles.subcontent}>{offerCtrl.getSelectedOffer().website}</Text>
+              <Text style={styles.subcontentClickable}>{offerCtrl.getSelectedOffer().website}</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.subsection}>
@@ -196,6 +196,10 @@ const styles = StyleSheet.create({
     fontFamily: 'OpenSans-Regular',
   },
   subcontent: {
+    fontFamily: 'OpenSans-Light'
+  },
+  subcontentClickable: {
     fontFamily: 'OpenSans-Light',
+    textDecorationLine: 'underline'
   }
 });
