@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, FlatList, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { Font, AppLoading } from 'expo';
 import { Link } from 'react-router-native';
+import Modal from 'react-native-modal';
 
 import history from '../utils/history.js';
 
@@ -78,7 +79,7 @@ export default class Offers extends Component {
 
         <ScrollView>
           <FlatList
-            data={this.formatOffers(offerCtrl.getOffers())}
+            data={this.formatOffers(offerCtrl.getCurrentOffers())}
             renderItem={
               ({item}) =>
               <View style={{padding: 10}}>

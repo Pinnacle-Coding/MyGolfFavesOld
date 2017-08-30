@@ -29,7 +29,8 @@ export default class Redeem extends Component {
   state = {
     loaded: false,
     showModal: false,
-    modalText: ''
+    modalText: '',
+    exitModal: false
   };
 
   async componentDidMount() {
@@ -44,7 +45,7 @@ export default class Redeem extends Component {
 
   closeModal() {
     this.setState({showModal: false});
-    if (!offerCtrl.getSelectedOffer()) {
+    if (this.state.exitModal) {
       history.goBack();
     }
   }
@@ -52,7 +53,7 @@ export default class Redeem extends Component {
   redeem() {
     var formValue = this.refs.form.getValue();
     if (formValue) {
-      offerCtrl.redeemOffer(authCtrl.getUser().memberID, formValue.redemptionCode, formValue.enterAmount, function (err, message) {
+      offerCtrl.redeemOffer(authCtrl.getUser().memberID, authCtrl.getUser(), formValue.redemptionCode, formValue.enterAmount, function (err, message) {
         if (err) {
           this.setState({
             modalText: err,
@@ -68,7 +69,8 @@ export default class Redeem extends Component {
         else {
           this.setState({
             modalText: 'Redeemed offer successfully!',
-            showModal: true
+            showModal: true,
+            exitModal: true
           });
         }
       }.bind(this));

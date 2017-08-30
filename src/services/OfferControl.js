@@ -34,6 +34,38 @@ var sendRequest = function(url, callback) {
   request.send();
 }
 
+var refreshInternal = function(memberID, memberData, callback) {
+  sendRequest('http://business.mygolffaves.com/ws/mobilePublicService.cfc?method=getCurrentOffers&UID=1&PWD=mob!leMGF&ageMax=29&ageMin=25&genderAbbr='+memberData.genderAbbr+'&golfPartnerID='+memberData['lstGolfPartnerID']+'&originLat='+memberData.lat+'&originLong='+memberData.long+'&memberID='+memberID+'&playGolfFrequencyID='+memberData.playGolfFrequencyID+'&stateCD='+memberData.State, function (err, result) {
+    if (err) {
+      callback(err, 'An error occurred');
+    }
+    else if (result.fail) {
+      callback(null, result.fail);
+    }
+    else if (result.status !== 'success') {
+      callback(null, result.message);
+    }
+    else {
+      offers = result.Offers || [];
+      sendRequest('http://business.mygolffaves.com/ws/mobilePublicService.cfc?method=getMemberWallet&UID=1&PWD=mob!leMGF&memberID='+memberID, function (err, result) {
+        if (err) {
+           callback(err, 'An error occurred');
+        }
+        else if (result.fail) {
+          callback(null, result.fail);
+        }
+        else if (result.status !== 'success') {
+          callback(null, result.message);
+        }
+        else {
+          wallet = result.Offers || [];
+          callback(null, null);
+        }
+      });
+    }
+  });
+}
+
 module.exports = {
 
   getCurrentOffers: function () {
@@ -71,6 +103,37 @@ module.exports = {
     });
   },
 
+  acceptOffer: function (userID, userData, callback) {
+    sendRequest('http://business.mygolffaves.com/ws/mobilePublicService.cfc?method=acceptOffer&UID=1&PWD=mob!leMGF&offerID='+selectedOffer.offerID+'&memberID='+userID+'&companyID='+selectedOffer.companyID, function (err, result) {
+      if (err) {
+        callback(err, 'An error occurred');
+      }
+      else if (result.fail) {
+        callback(null, result.fail);
+      }
+      else if (result.status !== 'success') {
+        callback(null, result.message);
+      }
+      else {
+        /*
+        var ri = -1;
+        for (var i = 0; i < offers.length; i++) {
+          if (offers[i].offerID === selectedOffer.offerID) {
+            ri = i;
+            break;
+          }
+        }
+        if (ri !== -1) {
+          offers.splice(ri, 1);
+        }
+        wallet.push(selectedOffer);
+        callback(null, null);
+        */
+        refreshInternal(userID, userData, callback);
+      }
+    });
+  },
+
   /**
    * The user is attempting to redeem selectedOffer.
    * @param {String} userID The user's ID
@@ -78,7 +141,7 @@ module.exports = {
    * @param {Number} amount The amount to redeem the offer for
    * @param {Function} callback A function taking returned with two arguments: error (or null) and message (not null when something went wrong but not an actual error)
    */
-  redeemOffer: function (userID, redemptionCode, amount, callback) {
+  redeemOffer: function (userID, userData, redemptionCode, amount, callback) {
     sendRequest('http://business.mygolffaves.com/ws/mobilePublicService.cfc?method=redeemOffer&UID=1&PWD=mob!leMGF&memberID='+userID+'&companyID='+selectedOffer.companyID+'&redemptionCode='+redemptionCode+'&offerID='+selectedOffer.offerID+'&amount='+amount, function (err, result) {
       if (err) {
         callback(err, 'An error occurred');
@@ -90,6 +153,7 @@ module.exports = {
         callback(null, result.message);
       }
       else {
+        /*
         var ri = -1;
         for (var i = 0; i < wallet.length; i++) {
           if (wallet[i].offerID === selectedOffer.offerID) {
@@ -100,8 +164,9 @@ module.exports = {
         if (ri !== -1) {
           wallet.splice(ri, 1);
         }
-        selectedOffer = undefined;
         callback(null, null);
+        */
+        refreshInternal(userID, userData, callback);
       }
     })
   },
@@ -113,35 +178,7 @@ module.exports = {
    * @param {Function} callback A function taking returned with two arguments: error (or null) and message (not null when something went wrong but not an actual error)
    */
   refresh: function(memberID, memberData, callback) {
-    sendRequest('http://business.mygolffaves.com/ws/mobilePublicService.cfc?method=getCurrentOffers&UID=1&PWD=mob!leMGF&ageMax=29&ageMin=25&genderAbbr='+user.genderAbbr+'&golfPartnerID='+user['lstGolfPartnerID']+'&originLat='+user.lat+'&originLong='+user.long+'&memberID='+memberID+'&playGolfFrequencyID='+user.playGolfFrequencyID+'&stateCD='+user.State, function (err, result) {
-      if (err) {
-        callback(err, 'An error occurred');
-      }
-      else if (result.fail) {
-        callback(null, result.fail);
-      }
-      else if (result.status !== 'success') {
-        callback(null, result.message);
-      }
-      else {
-        offers = result.Offers || [];
-        sendRequest('http://business.mygolffaves.com/ws/mobilePublicService.cfc?method=getMemberWallet&UID=1&PWD=mob!leMGF&memberID='+memberID, function (err, result) {
-          if (err) {
-            callback(err, 'An error occurred');
-          }
-          else if (result.fail) {
-            callback(null, result.fail);
-          }
-          else if (result.status !== 'success') {
-            callback(null, result.message);
-          }
-          else {
-            wallet = result.Offers || [];
-            callback(null, null);
-          }
-        });
-      }
-    });
+    refreshInternal(memberID, memberData, callback);
   }
 
 }

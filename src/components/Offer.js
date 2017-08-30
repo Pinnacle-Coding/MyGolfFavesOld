@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Linking, Image, Platform } from 'react-native';
 import { Font, AppLoading } from 'expo';
+import Modal from 'react-native-modal';
+
+import history from '../utils/history.js';
 
 import Header from './Header.js';
 
+var authCtrl = require('../services/AuthControl.js');
 var offerCtrl = require('../services/OfferControl.js');
 var affiliateCtrl = require('../services/AffiliateControl.js');
 
@@ -11,7 +15,8 @@ export default class Offer extends Component {
   state = {
     loaded: false,
     showModal: false,
-    modalText: ''
+    modalText: '',
+    exitModal: false
   };
 
   async componentDidMount() {
@@ -55,7 +60,38 @@ export default class Offer extends Component {
         }
         Linking.openURL(gpsLink).catch(err => console.error('An error occured', err))
       }
-    });
+    }.bind(this));
+  }
+
+  closeModal() {
+    this.setState({showModal: false});
+    if (this.state.exitModal) {
+      history.goBack();
+    }
+  }
+
+  accept() {
+    offerCtrl.acceptOffer(authCtrl.getUser().memberID, authCtrl.getUser(), function (err, message) {
+      if (err) {
+        this.setState({
+          modalText: err,
+          showModal: true
+        });
+      }
+      else if (message) {
+        this.setState({
+          modalText: message,
+          showModal: true
+        });
+      }
+      else {
+        this.setState({
+          modalText: 'Offer added to wallet!',
+          showModal: true,
+          exitModal: true
+        });
+      }
+    }.bind(this));
   }
 
   render() {
@@ -70,7 +106,7 @@ export default class Offer extends Component {
         <Modal isVisible={this.state.showModal}>
           <View style={modalStyles.modalContainer}>
             <Text style={{fontSize: 20}}>{this.state.modalText}</Text>
-            <TouchableOpacity onPress={() => this.setState({showModal: false})}>
+            <TouchableOpacity onPress={() => this.closeModal()}>
               <View style={modalStyles.modalCloseButton}>
                 <Text style={{color:'#FFF'}}>Close</Text>
               </View>
@@ -102,7 +138,7 @@ export default class Offer extends Component {
             <View>
               <Text style={styles.subtitle}>Website</Text>
             </View>
-            <TouchableOpacity onPress={() => {Linking.openURL(formatWebsite(offerCtrl.getSelectedOffer().website)).catch(err => console.error('An error occured', err))} }>
+            <TouchableOpacity onPress={() => {Linking.openURL(this.formatWebsite(offerCtrl.getSelectedOffer().website)).catch(err => console.error('An error occured', err))} }>
               <Text style={styles.subcontent}>{offerCtrl.getSelectedOffer().website}</Text>
             </TouchableOpacity>
           </View>
@@ -130,7 +166,7 @@ export default class Offer extends Component {
               <Text style={styles.subcontent}>{offerCtrl.getSelectedOffer().terms}</Text>
             </View>
           </View>
-          <TouchableOpacity style={buttonStyles.solidGreenButton}>
+          <TouchableOpacity style={buttonStyles.solidGreenButton} onPress={() => this.accept()}>
             <Text style={buttonStyles.solidGreenButtonText}>ADD TO WALLET</Text>
           </TouchableOpacity>
           <View style={{padding:80}}/>

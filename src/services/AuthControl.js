@@ -108,6 +108,6 @@ module.exports = {
     },
 
     logout: function() {
-        user = undefined;
+      user = undefined;
     }
 }
